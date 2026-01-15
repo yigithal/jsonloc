@@ -430,12 +430,12 @@ function loadFiles(){
       setValue(filteredTargetData,item.path,targetVal)
       originalTargetValues[item.path]=targetVal
     }else{
-      // For missing keys: Use source value
+      // For missing keys: Keep empty in target so user can add translation
       // For type mismatches: Use target value (even if type is wrong) but mark as error
       if(!targetMap.hasOwnProperty(item.path)){
-        // Missing key - use source value
-        setValue(filteredTargetData,item.path,sourceVal)
-        originalTargetValues[item.path]=sourceVal
+        // Missing key - keep empty in target
+        setValue(filteredTargetData,item.path,'')
+        originalTargetValues[item.path]=''
       }else{
         // Type mismatch - use target value but mark as error
         setValue(filteredTargetData,item.path,targetVal)
@@ -671,13 +671,16 @@ function renderEditor(){
         if(isTargetChanged) targetClasses+=' changed'
         targetClasses+=targetExtraClasses
         
+        // For missing keys, targetVal will be empty string
+        let displayTargetVal = targetVal!==undefined ? escapeHtml(targetVal) : '';
+        
         html+=`<div class="translation-item">
           <div class="source-area">
             ${sourceContent}
             ${sourceError}
             <button class="lock-btn" title="${isLocked?'Unlock source':'Lock source'}" onclick="toggleSourceLock('${item.path}')">${isLocked?'🔒':'🔓'}</button>
           </div>
-          <textarea class="${targetClasses}" data-path="${escapeHtml(item.path)}" placeholder="${issue&&issue.type==='missing'?'Missing in target':'Translation...'}" oninput="updateTranslation(this,'${item.path}')" dir="${targetDir}">${targetVal!==undefined?escapeHtml(targetVal):''}</textarea>
+          <textarea class="${targetClasses}" data-path="${escapeHtml(item.path)}" placeholder="${issue&&issue.type==='missing'?'Missing in target':'Translation...'}" oninput="updateTranslation(this,'${item.path}')" dir="${targetDir}">${displayTargetVal}</textarea>
         </div>`
       }
     }else{
