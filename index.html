@@ -622,11 +622,14 @@ function renderEditor(){
       let sourceContent,sourceClasses,sourceError=''
       let targetClasses,sourceExtraClasses='',targetExtraClasses=''
       
-      // Apply error classes
+      // Apply error classes - but only if target is empty
       if(issue){
         if(issue.type==='missing'){
-          targetExtraClasses+=' missing'
-          sourceError=`<div class="error-indicator missing">Missing in target</div>`
+          // Only show missing error if target is still empty
+          if(!targetVal || targetVal.trim() === ''){
+            targetExtraClasses+=' missing'
+            sourceError=`<div class="error-indicator missing">Missing in target</div>`
+          }
         }else if(issue.type==='type-mismatch'){
           sourceExtraClasses+=' type-mismatch'
           targetExtraClasses+=' type-mismatch'
@@ -673,6 +676,10 @@ function renderEditor(){
         
         // For missing keys, targetVal will be empty string
         let displayTargetVal = targetVal!==undefined ? escapeHtml(targetVal) : '';
+        let placeholderText = 'Translation...';
+        if(issue && issue.type==='missing' && (!targetVal || targetVal.trim() === '')){
+          placeholderText = 'Missing in target';
+        }
         
         html+=`<div class="translation-item">
           <div class="source-area">
@@ -680,7 +687,7 @@ function renderEditor(){
             ${sourceError}
             <button class="lock-btn" title="${isLocked?'Unlock source':'Lock source'}" onclick="toggleSourceLock('${item.path}')">${isLocked?'🔒':'🔓'}</button>
           </div>
-          <textarea class="${targetClasses}" data-path="${escapeHtml(item.path)}" placeholder="${issue&&issue.type==='missing'?'Missing in target':'Translation...'}" oninput="updateTranslation(this,'${item.path}')" dir="${targetDir}">${displayTargetVal}</textarea>
+          <textarea class="${targetClasses}" data-path="${escapeHtml(item.path)}" placeholder="${placeholderText}" oninput="updateTranslation(this,'${item.path}')" dir="${targetDir}">${displayTargetVal}</textarea>
         </div>`
       }
     }else{
@@ -726,9 +733,15 @@ function updateTranslation(textarea,path){
   let isChanged=originalValue!==undefined && value!==originalValue
   
   // Update textarea class
-  textarea.classList.remove('changed')
+  textarea.classList.remove('changed', 'missing')
   if(isChanged){
     textarea.classList.add('changed')
+  } else if(value === '' || value.trim() === '') {
+    // If value is empty and this was a missing key, keep it red
+    let issue = itemIssues[path]
+    if(issue && issue.type === 'missing') {
+      textarea.classList.add('missing')
+    }
   }
   
   // Update text direction based on content
