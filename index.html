@@ -10,7 +10,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;m
 .reset-box{width:120px;border:2px dashed #ccc;padding:15px;text-align:center;min-height:100px;display:none;flex-direction:column;justify-content:center;position:relative;transition:all 0.3s;background:#f8f9fa;border-radius:4px;cursor:pointer}
 .reset-box:hover{background:#e9ecef;border-color:#6c757d}
 .reset-box h3{margin:0 0 8px;font-size:16px;color:#495057}
-.upload-box{flex:1;border:2px dashed #ccc;padding:15px;text-align:center;min-height:100px;display:flex;flex-direction:column;justify-content:center;position:relative;transition:all 0.3s}
+.upload-box{flex:1;border:2px dashed #ccc;padding:15px;text-align:center;min-height:100px;display:flex;flex-direction:column;justify-content:center;position:relative;transition:all 0.3s;cursor:pointer}
 .upload-box.compact{padding:8px !important;min-height:60px !important;border-width:1px !important}
 .upload-box.disabled{border-color:#e0e0e0;background:#f5f5f5;cursor:not-allowed}
 .upload-box.disabled h3,.upload-box.disabled div{color:#999}
@@ -19,8 +19,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;m
 .upload-box.compact div{font-size:11px}
 .upload-box.active{border-color:#0052cc;background:#f0f7ff}
 .upload-box.inactive{opacity:0.5;filter:grayscale(50%)}
-input[type="file"]{position:absolute;top:0;left:0;width:100%;height:100%;opacity:0;cursor:pointer}
-input[type="file"]:disabled{cursor:not-allowed}
+input[type="file"]{display:none}
 .btn{background:#0052cc;color:#fff;border:none;padding:6px 12px;border-radius:4px;cursor:pointer;margin:3px;font-size:13px}
 .btn:disabled{background:#ccc}
 .btn-secondary{background:#6c757d}
@@ -194,13 +193,13 @@ input[type="file"]:disabled{cursor:not-allowed}
 <h3>Reset</h3>
 <div>Start over</div>
 </div>
-<div class="upload-box" id="sourceBox">
+<div class="upload-box" id="sourceBox" onclick="handleSourceBoxClick()">
 <h3>Source JSON</h3>
 <div>Click or drop JSON file</div>
 <input type="file" id="sourceFile" accept=".json,application/json">
 <div class="file-info" id="sourceInfo"></div>
 </div>
-<div class="upload-box" id="targetBox">
+<div class="upload-box" id="targetBox" onclick="handleTargetBoxClick()">
 <h3>Target JSON</h3>
 <div>Click or drop JSON file</div>
 <input type="file" id="targetFile" accept=".json,application/json">
@@ -210,9 +209,6 @@ input[type="file"]:disabled{cursor:not-allowed}
 <div id="error" class="error"></div>
 <div id="warning" class="warning"></div>
 <div class="status" id="status">Load source and target JSON files to begin</div>
-<div class="load-btn-row">
-<button class="btn" id="loadBtn" onclick="loadFiles()" disabled style="display:none">Load Files</button>
-</div>
 <div class="editor" id="editor">
 <div class="editor-header">
 <div>Source Text</div>
@@ -237,6 +233,7 @@ let originalTargetValues={}
 let itemLocks={}
 let filteredTargetData=null
 let missingKeys=[], extraKeys=[], typeMismatches=[]
+let targetHasUnsavedChanges = false
 
 // Track which items have issues
 let itemIssues={} // path -> { type: 'missing'|'extra'|'type-mismatch', message: string }
@@ -252,8 +249,70 @@ const targetFileInput=document.getElementById('targetFile')
 setupDragAndDrop(sourceBox,sourceFileInput)
 setupDragAndDrop(targetBox,targetFileInput)
 
+// Add event listeners for file inputs
 document.getElementById('sourceFile').addEventListener('change',e=>handleFile(e,'source'))
 document.getElementById('targetFile').addEventListener('change',e=>handleFile(e,'target'))
+
+// Click handlers for upload boxes
+function handleSourceBoxClick() {
+  // If editor is loaded, we cannot change the source
+  if(document.getElementById('editor').style.display==='block'){
+    showError('Source file cannot be changed while editing. Please reset first.')
+    return
+  }
+  
+  // Check for unsaved changes
+  if(sourceData && (sourceChanged || targetHasUnsavedChanges)) {
+    let message = 'You have unsaved changes:\n\n'
+    let hasChanges = false
+    
+    if(sourceChanged) {
+      message += '- Source has been modified\n'
+      hasChanges = true
+    }
+    
+    if(targetHasUnsavedChanges) {
+      message += '- Target translations have been modified\n'
+      hasChanges = true
+    }
+    
+    message += '\nLoading a new file will discard these changes. Do you want to continue?'
+    
+    if(hasChanges && !confirm(message)) {
+      return
+    }
+  }
+  
+  // Trigger file input
+  sourceFileInput.click()
+}
+
+function handleTargetBoxClick() {
+  // Check for unsaved changes
+  if(targetData && (targetHasUnsavedChanges || sourceChanged)) {
+    let message = 'You have unsaved changes:\n\n'
+    let hasChanges = false
+    
+    if(sourceChanged) {
+      message += '- Source has been modified\n'
+      hasChanges = true
+    }
+    
+    if(targetHasUnsavedChanges) {
+      message += '- Target translations have been modified\n'
+      hasChanges = true
+    }
+    
+    message += '\nLoading a new file will discard these changes. Do you want to continue?'
+    
+    if(hasChanges && !confirm(message)) {
+      return
+    }
+  }
+  
+  // Trigger file input
+  targetFileInput.click()
+}
 
 function setupDragAndDrop(box,fileInput){
   box.addEventListener('dragover',e=>{
@@ -284,7 +343,50 @@ function setupDragAndDrop(box,fileInput){
     
     if(fileInput.disabled) return
     
+    // Check for unsaved changes before dropping a new file
     if(e.dataTransfer.files.length){
+      if(box === sourceBox && sourceData && (sourceChanged || targetHasUnsavedChanges)) {
+        let message = 'You have unsaved changes:\n\n'
+        let hasChanges = false
+        
+        if(sourceChanged) {
+          message += '- Source has been modified\n'
+          hasChanges = true
+        }
+        
+        if(targetHasUnsavedChanges) {
+          message += '- Target translations have been modified\n'
+          hasChanges = true
+        }
+        
+        message += '\nLoading a new file will discard these changes. Do you want to continue?'
+        
+        if(hasChanges && !confirm(message)) {
+          return
+        }
+      }
+      
+      if(box === targetBox && targetData && (targetHasUnsavedChanges || sourceChanged)) {
+        let message = 'You have unsaved changes:\n\n'
+        let hasChanges = false
+        
+        if(sourceChanged) {
+          message += '- Source has been modified\n'
+          hasChanges = true
+        }
+        
+        if(targetHasUnsavedChanges) {
+          message += '- Target translations have been modified\n'
+          hasChanges = true
+        }
+        
+        message += '\nLoading a new file will discard these changes. Do you want to continue?'
+        
+        if(hasChanges && !confirm(message)) {
+          return
+        }
+      }
+      
       fileInput.files=e.dataTransfer.files
       const event=new Event('change',{bubbles:true})
       fileInput.dispatchEvent(event)
@@ -295,13 +397,6 @@ function setupDragAndDrop(box,fileInput){
 function handleFile(e,type){
   let file=e.target.files[0]
   if(!file)return
-  
-  // Prevent source file upload if editor is loaded
-  if(type==='source' && document.getElementById('editor').style.display==='block'){
-    e.target.value='' // Clear the file input
-    showError('Source file cannot be changed while editing. Please reset first.')
-    return
-  }
   
   let reader=new FileReader()
   reader.onload=function(event){
@@ -327,6 +422,11 @@ function handleFile(e,type){
       document.getElementById('error').style.display='none'
       document.getElementById('warning').style.display='none'
       updateUIState()
+      
+      // Automatically load editor when both files are loaded
+      if(sourceData && targetData) {
+        loadFiles()
+      }
     }catch(err){
       showError(`Invalid JSON in ${type}: ${err.message}`)
     }
@@ -363,26 +463,17 @@ function updateUploadBoxes(){
 }
 
 function updateUIState(){
-  const loadBtn=document.getElementById('loadBtn')
-  
   if(sourceData&&targetData){
-    loadBtn.disabled=false
-    loadBtn.style.display='inline-block'
+    // No longer show the load button - editor loads automatically
     resetBox.style.display='flex' // Show reset box when both files loaded
     updateStatus()
   }else if(sourceData){
-    loadBtn.disabled=true
-    loadBtn.style.display='none'
     resetBox.style.display='none' // Hide reset box if not both files
     updateStatus()
   }else if(targetData){
-    loadBtn.disabled=true
-    loadBtn.style.display='none'
     resetBox.style.display='none' // Hide reset box if not both files
     updateStatus()
   }else{
-    loadBtn.disabled=true
-    loadBtn.style.display='none'
     resetBox.style.display='none' // Hide reset box if no files
     updateStatus()
   }
@@ -418,12 +509,15 @@ function updateStatus(){
   let status=document.getElementById('status')
   if(!sourceData&&!targetData){
     status.textContent='Load source and target JSON files to begin'
+    status.style.display='block'
   }else if(sourceData&&!targetData){
     status.textContent='Source loaded. Now load target JSON file.'
+    status.style.display='block'
   }else if(!sourceData&&targetData){
     status.textContent='Target loaded. Now load source JSON file.'
+    status.style.display='block'
   }else{
-    status.textContent='Ready. Click "Load Files" to start editing.'
+    status.style.display='none'
   }
 }
 
@@ -510,6 +604,7 @@ function loadFiles(){
   updateWarningPanel()
   
   sourceChanged=false
+  targetHasUnsavedChanges = false
   renderEditor()
 }
 
@@ -751,7 +846,6 @@ function renderEditor(){
   list.innerHTML=html
   document.getElementById('editor').style.display='block'
   document.getElementById('status').style.display='none'
-  document.getElementById('loadBtn').style.display='none'
   document.getElementById('scrollButtons').style.display='flex'
   
   // Make upload boxes super compact when editor is open
@@ -792,6 +886,11 @@ function updateTranslation(textarea,path){
   let dir = detectTextDirection(value);
   textarea.setAttribute('dir', dir);
   
+  // Track that there are unsaved changes
+  if(isChanged) {
+    targetHasUnsavedChanges = true
+  }
+  
   autoExpand(textarea)
 }
 
@@ -820,19 +919,11 @@ function updateSource(textarea,path){
   let dir = detectTextDirection(value);
   textarea.setAttribute('dir', dir);
   
-  // Check if any source has changed overall (for Save button)
-  let hasSourceChanges=false
-  items.forEach(item=>{
-    if(item.isExtra) return; // Skip extra target items
-    let currentValue=getValue(sourceData,item.path)
-    let lastSavedValue=lastSavedSourceValues[item.path]
-    if(lastSavedValue!==undefined && currentValue!==lastSavedValue){
-      hasSourceChanges=true
-    }
-  })
+  // Update source changed state
+  sourceChanged = isChangedForSave
   
-  sourceChanged=hasSourceChanges
-  document.getElementById('floatSaveSourceBtn').style.display=hasSourceChanges?'flex':'none'
+  // Update save source button visibility
+  document.getElementById('floatSaveSourceBtn').style.display=sourceChanged?'flex':'none'
   autoExpand(textarea)
 }
 
@@ -1068,10 +1159,35 @@ function saveTarget(){
     }
   })
   
+  // Reset unsaved changes flag
+  targetHasUnsavedChanges = false
+  
   renderEditor()
 }
 
 function resetAll(){
+  // Check for unsaved changes
+  if(sourceChanged || targetHasUnsavedChanges) {
+    let message = 'You have unsaved changes:\n\n'
+    let hasChanges = false
+    
+    if(sourceChanged) {
+      message += '- Source has been modified\n'
+      hasChanges = true
+    }
+    
+    if(targetHasUnsavedChanges) {
+      message += '- Target translations have been modified\n'
+      hasChanges = true
+    }
+    
+    message += '\nResetting will discard these changes. Do you want to continue?'
+    
+    if(hasChanges && !confirm(message)) {
+      return
+    }
+  }
+  
   // Reset all data
   sourceData=null
   targetData=null
@@ -1087,6 +1203,7 @@ function resetAll(){
   extraKeys=[]
   typeMismatches=[]
   itemIssues={}
+  targetHasUnsavedChanges = false
   
   // Clear file inputs
   document.getElementById('sourceFile').value=''
@@ -1108,7 +1225,6 @@ function resetAll(){
   // Hide editor and show status
   document.getElementById('editor').style.display='none'
   document.getElementById('status').style.display='block'
-  document.getElementById('loadBtn').style.display='none'
   document.getElementById('scrollButtons').style.display='none'
   document.getElementById('error').style.display='none'
   document.getElementById('warning').style.display='none'
