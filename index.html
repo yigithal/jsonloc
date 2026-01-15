@@ -122,6 +122,45 @@ input[type="file"]:disabled{cursor:not-allowed}
   color: #856404;
 }
 
+/* Tooltip styles */
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 300px;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 8px;
+  position: absolute;
+  z-index: 1001;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 12px;
+  white-space: pre-line;
+  pointer-events: none;
+}
+
+.tooltip .tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #333 transparent transparent transparent;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
+
 /* Prevent tooltip overflow on very small screens */
 @media (max-width: 768px) {
   .scroll-buttons {
@@ -139,6 +178,11 @@ input[type="file"]:disabled{cursor:not-allowed}
   .scroll-btn:hover::before,
   .save-btn:hover::before {
     right: -4px;
+  }
+  
+  .tooltip .tooltiptext {
+    width: 250px;
+    font-size: 11px;
   }
 }
 </style>
@@ -894,10 +938,101 @@ function saveSource(){
   renderEditor()
 }
 
+// New function to check for missing translations
+function checkForMissingTranslations() {
+  const missing = [];
+  
+  // Check all source string keys to see if they have translations
+  for(let k in keyMap){
+    if(keyMap[k] === 'string'){
+      const targetVal = getValue(targetData, k);
+      if (!targetVal || targetVal.trim() === '') {
+        missing.push(k);
+      }
+    }
+  }
+  
+  return missing;
+}
+
+// New function to show missing translations error
+function showMissingTranslationsError(missingKeys) {
+  let message = `Cannot save: ${missingKeys.length} translation(s) are missing or empty:\n\n`;
+  
+  // Limit to first 10 keys to avoid huge popup
+  const displayKeys = missingKeys.slice(0, 10);
+  displayKeys.forEach(key => {
+    message += `• ${key}\n`;
+  });
+  
+  if (missingKeys.length > 10) {
+    message += `\n... and ${missingKeys.length - 10} more`;
+  }
+  
+  message += `\n\nPlease fill in all missing translations before saving.`;
+  
+  alert(message);
+}
+
+// New function to remove extra keys from target data
+function removeExtraKeysFromData(data) {
+  // Create a deep copy to avoid modifying the original
+  const result = JSON.parse(JSON.stringify(data));
+  
+  // Function to recursively remove extra keys
+  function removeKeys(obj, path = '') {
+    for(let k in obj){
+      if(!obj.hasOwnProperty(k)) continue;
+      
+      let curPath = path ? path + '.' + k : k;
+      let val = obj[k];
+      
+      // Check if this is an extra key (not in source keyMap)
+      if (!keyMap.hasOwnProperty(curPath)) {
+        delete obj[k];
+        continue;
+      }
+      
+      // Recursively check nested objects and arrays
+      if(val !== null && typeof val === 'object'){
+        if(Array.isArray(val)){
+          val.forEach((item, i)=>{
+            let arrPath = curPath + '[' + i + ']';
+            if(item !== null && typeof item === 'object'){
+              removeKeys(item, arrPath);
+            }
+          });
+        } else {
+          removeKeys(val, curPath);
+        }
+      }
+    }
+  }
+  
+  removeKeys(result);
+  return result;
+}
+
 function saveTarget(){
   if(!targetData){
     showError('No target data to save')
     return
+  }
+  
+  // Check for missing translations
+  const missingTranslations = checkForMissingTranslations();
+  if (missingTranslations.length > 0) {
+    showMissingTranslationsError(missingTranslations);
+    return;
+  }
+  
+  // Check for extra keys and warn user
+  if (extraKeys.length > 0) {
+    const confirmed = confirm(`Warning: The target file contains ${extraKeys.length} extra key(s) that are not in the source.\n\nThese extra keys will be removed when saving because the target structure will match the source.\n\nClick OK to continue saving, or Cancel to review.`);
+    
+    if (!confirmed) {
+      return;
+    }
   }
   
   // Ask for filename
@@ -909,8 +1044,10 @@ function saveTarget(){
   // Update the filename
   targetFileName = newFilename;
   
-  // Save target in the structure of source JSON (which is what targetData now is)
-  let jsonStr=JSON.stringify(targetData,null,2)
+  // Create a copy without extra keys for saving
+  const dataToSave = removeExtraKeysFromData(targetData);
+  
+  let jsonStr=JSON.stringify(dataToSave,null,2)
   let blob=new Blob(['\uFEFF'+jsonStr],{type:'application/json;charset=utf-8'})
   let a=document.createElement('a')
   a.href=URL.createObjectURL(blob)
@@ -922,9 +1059,12 @@ function saveTarget(){
   
   // Update original values after saving (this removes orange highlights)
   items.forEach(item=>{
-    let targetVal=getValue(targetData,item.path)
-    if(targetVal!==undefined){
-      originalTargetValues[item.path]=targetVal
+    // Only update for keys that are in the source (not extra keys)
+    if (!item.isExtra) {
+      let targetVal=getValue(targetData,item.path)
+      if(targetVal!==undefined){
+        originalTargetValues[item.path]=targetVal
+      }
     }
   })
   
