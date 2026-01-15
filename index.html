@@ -26,7 +26,8 @@ input[type="file"]{display:none}
 .error{color:#d00;background:#fee;padding:8px;border-radius:4px;display:none}
 .warning{color:#856404;background:#fff3cd;padding:10px;border-radius:4px;display:none;margin:10px 0;border-left:4px solid #ffc107;max-height:400px;overflow-y:auto}
 .editor{display:none;border:1px solid #ddd;border-radius:4px;position:relative;margin-bottom:160px !important}
-.editor-header{display:grid;grid-template-columns:1fr 1fr;background:#f5f5f5;padding:8px;border-bottom:1px solid #ddd;font-size:13px}
+.editor-header{display:grid;grid-template-columns:1fr 1fr;background:#f5f5f5;padding:8px;border-bottom:1px solid #ddd;font-size:13px;position:sticky;top:0;z-index:100;border-radius:4px 4px 0 0}
+.editor-header div{font-weight:bold}
 .translation-list{}
 .translation-item{display:grid;grid-template-columns:1fr 1fr;padding:10px;border-bottom:1px solid #eee;gap:10px;align-items:start}
 .translation-item:nth-child(even){background:#fafafa}
@@ -160,6 +161,169 @@ input[type="file"]{display:none}
   visibility: visible;
 }
 
+/* Updated Changelog styles - matches editor header */
+.changelog-header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  background: #f5f5f5;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px 4px 0 0;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.changelog-header:hover {
+  background: #e9ecef;
+}
+
+.changelog-title {
+  font-weight: bold;
+  color: #495057;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.changelog-count {
+  background-color: #6c757d;
+  color: white;
+  padding: 2px 6px;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: normal;
+}
+
+/* Gray Show/Hide button */
+.changelog-toggle-btn {
+  background: #6c757d;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+  padding: 2px 10px;
+  border-radius: 4px;
+  min-width: 50px;
+  transition: background 0.2s;
+}
+
+.changelog-toggle-btn:hover {
+  background: #5a6268;
+}
+
+.changelog-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-top: none;
+  border-radius: 0 0 4px 4px;
+}
+
+.changelog-content.expanded {
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.changelog-list {
+  margin: 0;
+  padding: 8px;
+  font-size: 12px;
+}
+
+.changelog-item {
+  margin: 3px 0;
+  padding: 3px 0;
+  border-bottom: 1px dotted #dee2e6;
+  color: #495057;
+}
+
+.changelog-item:last-child {
+  border-bottom: none;
+}
+
+.changelog-time {
+  color: #6c757d;
+  font-size: 11px;
+  margin-right: 8px;
+  display: inline-block;
+  min-width: 45px;
+}
+
+.changelog-text {
+  color: #212529;
+}
+
+.changelog-source {
+  color: #6c757d;
+  font-weight: 500;
+}
+
+.changelog-target {
+  color: #6c757d;
+  font-weight: 500;
+}
+
+.changelog-load {
+  color: #6c757d;
+}
+
+.changelog-error {
+  color: #6c757d;
+  font-weight: 500;
+}
+
+/* Temporary message styles - Gray color palette */
+.temp-message {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-20px);
+  background: #6c757d;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  z-index: 10000;
+  opacity: 0;
+  transition: all 0.3s ease;
+  pointer-events: none;
+  max-width: 400px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.temp-message.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Remove color variations, all messages use same gray style */
+.temp-message.info,
+.temp-message.success,
+.temp-message.warning {
+  background: #6c757d;
+  color: white;
+}
+
+/* File info in editor header */
+.file-info-display {
+  font-weight: normal;
+  font-size: 12px;
+  color: #666;
+  margin-left: 8px;
+}
+
+.file-info-display.source {
+  color: #6c757d;
+}
+
+.file-info-display.target {
+  color: #6c757d;
+}
+
 /* Prevent tooltip overflow on very small screens */
 @media (max-width: 768px) {
   .scroll-buttons {
@@ -183,23 +347,34 @@ input[type="file"]{display:none}
     width: 250px;
     font-size: 11px;
   }
+  
+  .temp-message {
+    max-width: 300px;
+    font-size: 12px;
+    padding: 8px 16px;
+  }
+  
+  .file-info-display {
+    font-size: 11px;
+    margin-left: 4px;
+  }
 }
 </style>
 </head>
 <body>
 <div class="container">
 <div class="upload-row">
-<div class="reset-box" id="resetBox" onclick="resetAll()">
+<div class="reset-box" id="resetBox" onmousedown="handleResetBoxClick()">
 <h3>Reset</h3>
 <div>Start over</div>
 </div>
-<div class="upload-box" id="sourceBox" onclick="handleSourceBoxClick()">
+<div class="upload-box" id="sourceBox" onmousedown="handleSourceBoxClick(event)">
 <h3>Source JSON</h3>
 <div>Click or drop JSON file</div>
 <input type="file" id="sourceFile" accept=".json,application/json">
 <div class="file-info" id="sourceInfo"></div>
 </div>
-<div class="upload-box" id="targetBox" onclick="handleTargetBoxClick()">
+<div class="upload-box" id="targetBox" onmousedown="handleTargetBoxClick(event)">
 <h3>Target JSON</h3>
 <div>Click or drop JSON file</div>
 <input type="file" id="targetFile" accept=".json,application/json">
@@ -208,11 +383,29 @@ input[type="file"]{display:none}
 </div>
 <div id="error" class="error"></div>
 <div id="warning" class="warning"></div>
+
+<!-- Updated Changelog - Always visible header -->
+<div class="changelog" id="changelog">
+  <div class="changelog-header" onclick="toggleChangelog()">
+    <div class="changelog-title">
+      <span>Session History</span>
+      <span class="changelog-count" id="changelogCount">0</span>
+    </div>
+    <button class="changelog-toggle-btn" id="changelogToggleBtn">Show</button>
+  </div>
+  <div class="changelog-content" id="changelogContent">
+    <div class="changelog-list" id="changelogList"></div>
+  </div>
+</div>
+
+<!-- Temporary message container -->
+<div id="tempMessage" class="temp-message"></div>
+
 <div class="status" id="status">Load source and target JSON files to begin</div>
 <div class="editor" id="editor">
 <div class="editor-header">
-<div>Source Text</div>
-<div>Translation</div>
+<div>Source: <span id="sourceFileNameDisplay" class="file-info-display source">No file loaded</span></div>
+<div>Target: <span id="targetFileNameDisplay" class="file-info-display target">No file loaded</span></div>
 </div>
 <div class="translation-list" id="translationList"></div>
 </div>
@@ -234,6 +427,12 @@ let itemLocks={}
 let filteredTargetData=null
 let missingKeys=[], extraKeys=[], typeMismatches=[]
 let targetHasUnsavedChanges = false
+let initialLoadCompleted = false
+let isEditorLoaded = false
+
+// Changelog array to store all session events
+let changelog = []
+let changelogVisible = false
 
 // Track which items have issues
 let itemIssues={} // path -> { type: 'missing'|'extra'|'type-mismatch', message: string }
@@ -253,11 +452,141 @@ setupDragAndDrop(targetBox,targetFileInput)
 document.getElementById('sourceFile').addEventListener('change',e=>handleFile(e,'source'))
 document.getElementById('targetFile').addEventListener('change',e=>handleFile(e,'target'))
 
+// Temporary message function
+function showTempMessage(message, duration = 1000) {
+  const tempMsg = document.getElementById('tempMessage')
+  tempMsg.textContent = message
+  tempMsg.className = 'temp-message'
+  tempMsg.classList.add('show')
+  
+  setTimeout(() => {
+    tempMsg.classList.remove('show')
+  }, duration)
+}
+
+// Changelog functions
+function addChangelogEntry(type, title, details) {
+  const entry = {
+    id: Date.now(),
+    timestamp: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
+    type: type,
+    title: title,
+    details: details
+  }
+  
+  changelog.push(entry)
+  updateChangelogDisplay()
+}
+
+function updateChangelogDisplay() {
+  const list = document.getElementById('changelogList')
+  const count = document.getElementById('changelogCount')
+  
+  count.textContent = changelog.length
+  
+  if (changelog.length === 0) {
+    list.innerHTML = '<div class="changelog-item">No changes recorded yet</div>'
+    return
+  }
+  
+  // Sort by most recent first
+  const sortedLog = [...changelog].sort((a, b) => b.id - a.id)
+  
+  let html = ''
+  sortedLog.forEach(entry => {
+    let typeClass = ''
+    let prefix = ''
+    
+    switch(entry.type) {
+      case 'source':
+        typeClass = 'changelog-source'
+        prefix = 'Source: '
+        break
+      case 'target':
+        typeClass = 'changelog-target'
+        prefix = 'Target: '
+        break
+      case 'load':
+        typeClass = 'changelog-load'
+        prefix = 'Load: '
+        break
+      case 'error':
+        typeClass = 'changelog-error'
+        prefix = 'Error: '
+        break
+    }
+    
+    // Create compact display
+    let displayText = prefix + entry.title
+    if (entry.details && typeof entry.details === 'string') {
+      displayText += ' - ' + entry.details
+    } else if (entry.details && Array.isArray(entry.details) && entry.details.length > 0) {
+      const changeCount = entry.details.filter(d => typeof d === 'string' && d.includes(':')).length
+      if (changeCount > 0) {
+        displayText += ` (${changeCount} change${changeCount !== 1 ? 's' : ''})`
+      }
+    }
+    
+    html += `
+      <div class="changelog-item">
+        <span class="changelog-time">${entry.timestamp}</span>
+        <span class="changelog-text ${typeClass}">${escapeHtml(displayText)}</span>
+      </div>
+    `
+  })
+  
+  list.innerHTML = html
+}
+
+function toggleChangelog() {
+  const content = document.getElementById('changelogContent')
+  const toggleBtn = document.getElementById('changelogToggleBtn')
+  
+  if (content.classList.contains('expanded')) {
+    content.classList.remove('expanded')
+    toggleBtn.textContent = 'Show'
+    changelogVisible = false
+  } else {
+    content.classList.add('expanded')
+    toggleBtn.textContent = 'Hide'
+    changelogVisible = true
+  }
+}
+
+// Update file name displays
+function updateFileNameDisplays() {
+  const sourceDisplay = document.getElementById('sourceFileNameDisplay')
+  const targetDisplay = document.getElementById('targetFileNameDisplay')
+  
+  if (sourceData) {
+    const itemCount = Object.keys(keyMap).length
+    sourceDisplay.textContent = `${sourceFileName} (${itemCount} items)`
+    sourceDisplay.className = 'file-info-display source'
+  } else {
+    sourceDisplay.textContent = 'No file loaded'
+    sourceDisplay.className = 'file-info-display'
+  }
+  
+  if (targetData) {
+    targetDisplay.textContent = targetFileName
+    targetDisplay.className = 'file-info-display target'
+  } else {
+    targetDisplay.textContent = 'No file loaded'
+    targetDisplay.className = 'file-info-display'
+  }
+}
+
 // Click handlers for upload boxes
-function handleSourceBoxClick() {
+function handleSourceBoxClick(e) {
+  // Prevent default to avoid any potential issues
+  e.preventDefault();
+  e.stopPropagation();
+  
   // If editor is loaded, we cannot change the source
-  if(document.getElementById('editor').style.display==='block'){
+  if(isEditorLoaded){
+    // Show error and add to changelog
     showError('Source file cannot be changed while editing. Please reset first.')
+    addChangelogEntry('error', 'Cannot change source', 'Editor is active - reset required')
     return
   }
   
@@ -287,7 +616,11 @@ function handleSourceBoxClick() {
   sourceFileInput.click()
 }
 
-function handleTargetBoxClick() {
+function handleTargetBoxClick(e) {
+  // Prevent default to avoid any potential issues
+  e.preventDefault();
+  e.stopPropagation();
+  
   // Check for unsaved changes
   if(targetData && (targetHasUnsavedChanges || sourceChanged)) {
     let message = 'You have unsaved changes:\n\n'
@@ -312,6 +645,11 @@ function handleTargetBoxClick() {
   
   // Trigger file input
   targetFileInput.click()
+}
+
+function handleResetBoxClick() {
+  // Trigger reset function immediately
+  resetAll();
 }
 
 function setupDragAndDrop(box,fileInput){
@@ -409,15 +747,42 @@ function handleFile(e,type){
         sourceFileName=file.name
         document.getElementById('sourceInfo').textContent=`${file.name} (${Object.keys(keyMap).length} items)`
         
+        // Add to changelog
+        addChangelogEntry('load', 'Source loaded', `${file.name} (${Object.keys(keyMap).length} items)`)
+        
         // After loading source, update upload boxes
         updateUploadBoxes()
+        
+        // Update file name display
+        updateFileNameDisplays()
+        
+        // Show temp message if target is already loaded
+        if(targetData) {
+          showTempMessage(`Source file loaded: ${file.name}`)
+        }
       }else{
+        const wasEditorLoaded = isEditorLoaded
         targetData=data
         targetFileName=file.name
         document.getElementById('targetInfo').textContent=file.name
         
+        // Add to changelog
+        addChangelogEntry('load', 'Target loaded', file.name)
+        
         // After loading target, update upload boxes
         updateUploadBoxes()
+        
+        // Update file name display
+        updateFileNameDisplays()
+        
+        // Show appropriate temp message
+        if(isEditorLoaded) {
+          // This is a reload while editor is active
+          showTempMessage(`New target file loaded: ${file.name}`)
+        } else if(sourceData) {
+          // First load of target with source already loaded
+          showTempMessage(`Target file loaded: ${file.name}`)
+        }
       }
       document.getElementById('error').style.display='none'
       document.getElementById('warning').style.display='none'
@@ -436,7 +801,7 @@ function handleFile(e,type){
 
 function updateUploadBoxes(){
   // If editor is open, make ALL boxes super compact
-  if(document.getElementById('editor').style.display==='block'){
+  if(isEditorLoaded){
     sourceBox.classList.add('compact');
     targetBox.classList.add('compact');
     resetBox.classList.add('compact');
@@ -605,6 +970,19 @@ function loadFiles(){
   
   sourceChanged=false
   targetHasUnsavedChanges = false
+  
+  // Set editor as loaded
+  isEditorLoaded = true
+  
+  // Show initial load message if this is the first time loading both files
+  if(!initialLoadCompleted) {
+    showTempMessage('Source and target files loaded successfully!', 1500)
+    initialLoadCompleted = true
+  }
+  
+  // Add to changelog
+  addChangelogEntry('load', 'Editor loaded', `${sourceFileName} & ${targetFileName}`)
+  
   renderEditor()
 }
 
@@ -855,6 +1233,9 @@ function renderEditor(){
   sourceFileInput.disabled=true
   sourceBox.classList.add('disabled')
   
+  // Update file name displays
+  updateFileNameDisplays()
+  
   autoExpandTextareas()
   
   // Update save source button visibility
@@ -1000,6 +1381,18 @@ function saveSource(){
   // Update the filename
   sourceFileName = newFilename;
   
+  // Find what changed in source
+  const sourceChanges = []
+  items.forEach(item => {
+    if(!item.isExtra){
+      const currentValue = getValue(sourceData, item.path)
+      const lastSavedValue = lastSavedSourceValues[item.path]
+      if(lastSavedValue !== undefined && currentValue !== lastSavedValue){
+        sourceChanges.push(`${item.path}: changed`)
+      }
+    }
+  })
+  
   let jsonStr=JSON.stringify(sourceData,null,2)
   let blob=new Blob(['\uFEFF'+jsonStr],{type:'application/json;charset=utf-8'})
   let a=document.createElement('a')
@@ -1024,8 +1417,15 @@ function saveSource(){
     }
   })
   
+  // Add to changelog
+  addChangelogEntry('source', `Saved to ${sourceFileName}`, `${sourceChanges.length} string${sourceChanges.length !== 1 ? 's' : ''} updated`)
+  
   sourceChanged=false
   document.getElementById('floatSaveSourceBtn').style.display='none'
+  
+  // Update file name display
+  updateFileNameDisplays()
+  
   renderEditor()
 }
 
@@ -1118,12 +1518,14 @@ function saveTarget(){
   }
   
   // Check for extra keys and warn user
+  let extraKeysRemoved = []
   if (extraKeys.length > 0) {
     const confirmed = confirm(`Warning: The target file contains ${extraKeys.length} extra key(s) that are not in the source.\n\nThese extra keys will be removed when saving because the target structure will match the source.\n\nClick OK to continue saving, or Cancel to review.`);
     
     if (!confirmed) {
       return;
     }
+    extraKeysRemoved = [...extraKeys]
   }
   
   // Ask for filename
@@ -1137,6 +1539,18 @@ function saveTarget(){
   
   // Create a copy without extra keys for saving
   const dataToSave = removeExtraKeysFromData(targetData);
+  
+  // Find what changed in target translations
+  const targetChanges = []
+  items.forEach(item => {
+    if (!item.isExtra) {
+      const currentValue = getValue(targetData, item.path)
+      const originalValue = originalTargetValues[item.path]
+      if(originalValue !== undefined && currentValue !== originalValue){
+        targetChanges.push(`${item.path}: updated`)
+      }
+    }
+  })
   
   let jsonStr=JSON.stringify(dataToSave,null,2)
   let blob=new Blob(['\uFEFF'+jsonStr],{type:'application/json;charset=utf-8'})
@@ -1161,6 +1575,19 @@ function saveTarget(){
   
   // Reset unsaved changes flag
   targetHasUnsavedChanges = false
+  
+  // Add to changelog
+  const changeCount = targetChanges.length
+  const extraCount = extraKeysRemoved.length
+  let details = `${changeCount} translation${changeCount !== 1 ? 's' : ''} updated`
+  if (extraCount > 0) {
+    details += `, ${extraCount} extra key${extraCount !== 1 ? 's' : ''} removed`
+  }
+  
+  addChangelogEntry('target', `Saved to ${targetFileName}`, details)
+  
+  // Update file name display
+  updateFileNameDisplays()
   
   renderEditor()
 }
@@ -1188,6 +1615,14 @@ function resetAll(){
     }
   }
   
+  // Add session summary to changelog before clearing
+  if (changelog.length > 0) {
+    addChangelogEntry('load', 'Session reset', `Total events: ${changelog.length}`)
+  }
+  
+  // Clear changelog array
+  changelog = []
+  
   // Reset all data
   sourceData=null
   targetData=null
@@ -1204,6 +1639,8 @@ function resetAll(){
   typeMismatches=[]
   itemIssues={}
   targetHasUnsavedChanges = false
+  initialLoadCompleted = false
+  isEditorLoaded = false
   
   // Clear file inputs
   document.getElementById('sourceFile').value=''
@@ -1229,6 +1666,17 @@ function resetAll(){
   document.getElementById('error').style.display='none'
   document.getElementById('warning').style.display='none'
   document.getElementById('floatSaveSourceBtn').style.display='none'
+  
+  // Collapse changelog content
+  document.getElementById('changelogContent').classList.remove('expanded')
+  document.getElementById('changelogToggleBtn').textContent = 'Show'
+  changelogVisible = false
+  
+  // Update changelog display
+  updateChangelogDisplay()
+  
+  // Update file name displays
+  updateFileNameDisplays()
   
   // Reset file names
   sourceFileName='source.json'
