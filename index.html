@@ -7,7 +7,7 @@
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;margin:20px}
 .container{display:flex;flex-direction:column;gap:15px}
 .upload-row{display:flex;gap:15px}
-.reset-box{width:120px;border:2px dashed #ccc;padding:15px;text-align:center;min-height:100px;display:flex;flex-direction:column;justify-content:center;position:relative;transition:all 0.3s;background:#f8f9fa;border-radius:4px;cursor:pointer}
+.reset-box{width:120px;border:2px dashed #ccc;padding:15px;text-align:center;min-height:100px;display:none;flex-direction:column;justify-content:center;position:relative;transition:all 0.3s;background:#f8f9fa;border-radius:4px;cursor:pointer}
 .reset-box:hover{background:#e9ecef;border-color:#6c757d}
 .reset-box h3{margin:0 0 8px;font-size:16px;color:#495057}
 .upload-box{flex:1;border:2px dashed #ccc;padding:15px;text-align:center;min-height:100px;display:flex;flex-direction:column;justify-content:center;position:relative;transition:all 0.3s}
@@ -134,6 +134,7 @@ let missingKeys=[], extraKeys=[], typeMismatches=[]
 // Get references to upload boxes
 const sourceBox=document.getElementById('sourceBox')
 const targetBox=document.getElementById('targetBox')
+const resetBox=document.getElementById('resetBox')
 const sourceFileInput=document.getElementById('sourceFile')
 const targetFileInput=document.getElementById('targetFile')
 
@@ -224,8 +225,6 @@ function handleFile(e,type){
 }
 
 function updateUploadBoxes(){
-  const resetBox = document.getElementById('resetBox');
-  
   // If editor is open, make ALL boxes super compact
   if(document.getElementById('editor').style.display==='block'){
     sourceBox.classList.add('compact');
@@ -259,18 +258,22 @@ function updateUIState(){
   if(sourceData&&targetData){
     loadBtn.disabled=false
     loadBtn.style.display='inline-block'
+    resetBox.style.display='flex' // Show reset box when both files loaded
     updateStatus()
   }else if(sourceData){
     loadBtn.disabled=true
     loadBtn.style.display='none'
+    resetBox.style.display='none' // Hide reset box if not both files
     updateStatus()
   }else if(targetData){
     loadBtn.disabled=true
     loadBtn.style.display='none'
+    resetBox.style.display='none' // Hide reset box if not both files
     updateStatus()
   }else{
     loadBtn.disabled=true
     loadBtn.style.display='none'
+    resetBox.style.display='none' // Hide reset box if no files
     updateStatus()
   }
 }
@@ -737,7 +740,8 @@ function resetAll(){
   // Reset upload boxes to full size
   sourceBox.classList.remove('active','inactive','compact','disabled')
   targetBox.classList.remove('active','inactive','compact','disabled')
-  document.getElementById('resetBox').classList.remove('compact')
+  resetBox.classList.remove('compact')
+  resetBox.style.display='none' // Hide reset box after reset
   
   // Hide editor and show status
   document.getElementById('editor').style.display='none'
