@@ -79,13 +79,6 @@ input[type="file"]:disabled{cursor:not-allowed}
 .collapsible-content code{background:#f1f1f1;padding:2px 4px;border-radius:3px;color:#333}
 .reset-box.compact{padding:8px !important;min-height:60px !important;border-width:1px !important}
 
-/* RTL direction toggle button */
-.rtl-toggle-btn{background:none;border:none;cursor:pointer;font-size:12px;opacity:0.5;z-index:10;padding:2px;position:absolute;top:6px;right:25px}
-.rtl-toggle-btn:hover{opacity:1}
-.source-text[dir="rtl"],.source-input[dir="rtl"],.translation-input[dir="rtl"]{text-align:right}
-.source-text[dir="ltr"],.source-input[dir="ltr"],.translation-input[dir="ltr"]{text-align:left}
-.source-text[dir="auto"],.source-input[dir="auto"],.translation-input[dir="auto"]{text-align:start}
-
 /* Prevent tooltip overflow on very small screens */
 @media (max-width: 768px) {
   .scroll-buttons {
@@ -157,7 +150,6 @@ let originalTargetValues={}
 let itemLocks={}
 let filteredTargetData=null
 let missingKeys=[], extraKeys=[], typeMismatches=[]
-let textDirections={} // Store text direction per path
 
 // Get references to upload boxes
 const sourceBox=document.getElementById('sourceBox')
@@ -383,11 +375,6 @@ function loadFiles(){
     originalSourceValues[item.path]=sourceVal
     lastSavedSourceValues[item.path]=sourceVal
     
-    // Initialize text direction
-    if(!textDirections[item.path]) {
-      textDirections[item.path] = 'auto';
-    }
-    
     // Get value from target if it exists and type matches
     let targetVal=getValue(targetData,item.path)
     if(targetVal!==undefined && typeof targetVal===keyMap[item.path]){
@@ -507,6 +494,27 @@ function getValue(obj,path){
   return cur
 }
 
+function detectTextDirection(text) {
+  if (!text || typeof text !== 'string') return 'ltr';
+  
+  // Remove common punctuation and symbols
+  const cleanText = text.replace(/[^\p{L}\p{N}]/gu, '');
+  if (!cleanText) return 'ltr';
+  
+  // Check for RTL characters (Arabic, Hebrew, Persian, Urdu, etc.)
+  // RTL character ranges based on Unicode:
+  // Hebrew: \u0590-\u05FF
+  // Arabic: \u0600-\u06FF
+  // Persian/Arabic Extended: \u0750-\u077F, \u08A0-\u08FF
+  // Syriac: \u0700-\u074F
+  // Thaana: \u0780-\u07BF
+  // N'Ko: \u07C0-\u07FF
+  const rtlRegex = /[\u0590-\u05FF\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\u0700-\u074F\u0780-\u07BF\u07C0-\u07FF]/;
+  
+  // If text contains RTL characters, return 'rtl', otherwise 'ltr'
+  return rtlRegex.test(cleanText) ? 'rtl' : 'ltr';
+}
+
 function renderEditor(){
   let list=document.getElementById('translationList')
   let html=''
@@ -534,19 +542,20 @@ function renderEditor(){
     let isTargetChanged=originalTargetValue!==undefined && 
                        targetVal!==originalTargetValue
     
-    // Get text direction for this item
-    let dir = textDirections[item.path] || 'auto';
+    // Detect text direction for source and target separately
+    let sourceDir = detectTextDirection(currentSourceValue);
+    let targetDir = detectTextDirection(targetVal);
     
     if(item.type==='string'){
       let sourceContent,sourceClasses
       if(isLocked){
         sourceClasses='source-text'
         if(isSourceChangedForHighlight) sourceClasses+=' changed'
-        sourceContent=`<div class="${sourceClasses}" dir="${dir}">${escapeHtml(currentSourceValue)}${item.isArray?`<span class="array-indicator">[${item.index}]</span>`:''}<div class="key-path">${item.path}</div></div>`
+        sourceContent=`<div class="${sourceClasses}" dir="${sourceDir}">${escapeHtml(currentSourceValue)}${item.isArray?`<span class="array-indicator">[${item.index}]</span>`:''}<div class="key-path">${item.path}</div></div>`
       }else{
         sourceClasses='source-input'
         if(isSourceChangedForHighlight) sourceClasses+=' changed'
-        sourceContent=`<textarea class="${sourceClasses}" data-path="${escapeHtml(item.path)}" oninput="updateSource(this,'${item.path}')" dir="${dir}">${escapeHtml(currentSourceValue)}</textarea><div class="key-path">${item.path}</div>`
+        sourceContent=`<textarea class="${sourceClasses}" data-path="${escapeHtml(item.path)}" oninput="updateSource(this,'${item.path}')" dir="${sourceDir}">${escapeHtml(currentSourceValue)}</textarea><div class="key-path">${item.path}</div>`
       }
       
       let targetClasses='translation-input'
@@ -555,17 +564,13 @@ function renderEditor(){
       html+=`<div class="translation-item">
         <div class="source-area">
           ${sourceContent}
-          <button class="rtl-toggle-btn" title="Toggle text direction (Auto/RTL/LTR)" onclick="toggleTextDirection('${item.path}')">↔️</button>
           <button class="lock-btn" title="${isLocked?'Unlock source':'Lock source'}" onclick="toggleSourceLock('${item.path}')">${isLocked?'🔒':'🔓'}</button>
         </div>
-        <div style="position:relative">
-          <textarea class="${targetClasses}" data-path="${escapeHtml(item.path)}" placeholder="Translation..." oninput="updateTranslation(this,'${item.path}')" dir="${dir}">${targetVal!==undefined?escapeHtml(targetVal):''}</textarea>
-          <button class="rtl-toggle-btn" style="right:25px" title="Toggle text direction (Auto/RTL/LTR)" onclick="toggleTextDirection('${item.path}')">↔️</button>
-        </div>
+        <textarea class="${targetClasses}" data-path="${escapeHtml(item.path)}" placeholder="Translation..." oninput="updateTranslation(this,'${item.path}')" dir="${targetDir}">${targetVal!==undefined?escapeHtml(targetVal):''}</textarea>
       </div>`
     }else{
       html+=`<div class="translation-item">
-        <div class="source-text" dir="auto">${currentSourceValue}<div class="key-path">${item.path} (${item.type})</div></div>
+        <div class="source-text" dir="ltr">${currentSourceValue}<div class="key-path">${item.path} (${item.type})</div></div>
         <div style="padding:6px;color:#666;font-style:italic;font-size:13px">Not editable - ${item.type}</div>
       </div>`
     }
@@ -591,24 +596,6 @@ function renderEditor(){
   sourceChanged=hasSourceChanges
 }
 
-function toggleTextDirection(path) {
-  // Cycle through directions: auto -> rtl -> ltr -> auto
-  const currentDir = textDirections[path] || 'auto';
-  const nextDir = currentDir === 'auto' ? 'rtl' : currentDir === 'rtl' ? 'ltr' : 'auto';
-  textDirections[path] = nextDir;
-  
-  // Update the direction for both source and target textareas
-  document.querySelectorAll(`[data-path="${path}"]`).forEach(element => {
-    element.setAttribute('dir', nextDir);
-  });
-  
-  // Also update source text div if it exists
-  const sourceDiv = document.querySelector(`.source-text[dir]`);
-  if (sourceDiv && sourceDiv.closest('.source-area')?.querySelector(`.lock-btn[onclick*="${path}"]`)) {
-    sourceDiv.setAttribute('dir', nextDir);
-  }
-}
-
 function updateTranslation(textarea,path){
   let value=textarea.value
   setValue(targetData,path,value)
@@ -623,6 +610,10 @@ function updateTranslation(textarea,path){
   }else{
     textarea.classList.remove('changed')
   }
+  
+  // Update text direction based on content
+  let dir = detectTextDirection(value);
+  textarea.setAttribute('dir', dir);
   
   autoExpand(textarea)
 }
@@ -648,6 +639,10 @@ function updateSource(textarea,path){
   }else{
     textarea.classList.remove('changed')
   }
+  
+  // Update text direction based on content
+  let dir = detectTextDirection(value);
+  textarea.setAttribute('dir', dir);
   
   // Check if any source has changed overall (for Save button)
   let hasSourceChanges=false
@@ -780,7 +775,6 @@ function resetAll(){
   lastSavedSourceValues={}
   originalTargetValues={}
   itemLocks={}
-  textDirections={}
   missingKeys=[]
   extraKeys=[]
   typeMismatches=[]
