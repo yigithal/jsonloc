@@ -1,20 +1,32 @@
 <!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;margin:20px}
 .container{display:flex;flex-direction:column;gap:15px}
 .upload-row{display:flex;gap:15px}
+.reset-box{width:120px;border:2px dashed #ccc;padding:15px;text-align:center;min-height:100px;display:flex;flex-direction:column;justify-content:center;position:relative;transition:all 0.3s;background:#f8f9fa;border-radius:4px;cursor:pointer}
+.reset-box:hover{background:#e9ecef;border-color:#6c757d}
+.reset-box h3{margin:0 0 8px;font-size:16px;color:#495057}
 .upload-box{flex:1;border:2px dashed #ccc;padding:15px;text-align:center;min-height:100px;display:flex;flex-direction:column;justify-content:center;position:relative;transition:all 0.3s}
-.upload-box.compact{padding:10px;min-height:80px}
+.upload-box.compact{padding:8px !important;min-height:60px !important;border-width:1px !important}
+.upload-box.disabled{border-color:#e0e0e0;background:#f5f5f5;cursor:not-allowed}
+.upload-box.disabled h3,.upload-box.disabled div{color:#999}
 .upload-box h3{margin:0 0 8px;font-size:16px}
-.upload-box.compact h3{font-size:14px;margin:0 0 5px}
+.upload-box.compact h3{font-size:12px;margin:0 0 3px}
+.upload-box.compact div{font-size:11px}
 .upload-box.active{border-color:#0052cc;background:#f0f7ff}
 .upload-box.inactive{opacity:0.5;filter:grayscale(50%)}
 input[type="file"]{position:absolute;top:0;left:0;width:100%;height:100%;opacity:0;cursor:pointer}
+input[type="file"]:disabled{cursor:not-allowed}
 .btn{background:#0052cc;color:#fff;border:none;padding:6px 12px;border-radius:4px;cursor:pointer;margin:3px;font-size:13px}
 .btn:disabled{background:#ccc}
 .btn-secondary{background:#6c757d}
 .error{color:#d00;background:#fee;padding:8px;border-radius:4px;display:none}
-.editor{display:none;border:1px solid #ddd;border-radius:4px}
+.warning{color:#856404;background:#fff3cd;padding:10px;border-radius:4px;display:none;margin:10px 0;border-left:4px solid #ffc107;max-height:400px;overflow-y:auto}
+.editor{display:none;border:1px solid #ddd;border-radius:4px;position:relative}
 .editor-header{display:grid;grid-template-columns:1fr 1fr;background:#f5f5f5;padding:8px;border-bottom:1px solid #ddd;font-size:13px}
 .translation-list{}
 .translation-item{display:grid;grid-template-columns:1fr 1fr;padding:10px;border-bottom:1px solid #eee;gap:10px;align-items:start}
@@ -34,11 +46,47 @@ input[type="file"]{position:absolute;top:0;left:0;width:100%;height:100%;opacity
 .action-buttons{display:flex;gap:8px;justify-content:center;margin:15px 0;padding-top:15px;border-top:1px solid #e9ecef}
 .status{text-align:center;padding:15px;color:#666}
 .file-info{font-size:11px;color:#666;margin-top:5px}
-.upload-box.compact .file-info{font-size:10px}
+.upload-box.compact .file-info{font-size:9px}
 .control-buttons{display:flex;gap:8px;justify-content:center;align-items:center;margin:10px 0}
+.scroll-buttons{position:fixed;bottom:20px;right:20px;display:flex;flex-direction:column;gap:6px;z-index:1000}
+.scroll-btn{width:32px;height:32px;border-radius:50%;background:#6c757d;color:white;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;box-shadow:0 1px 4px rgba(0,0,0,0.15);transition:all 0.2s;position:relative}
+.scroll-btn:hover{background:#5a6268;transform:scale(1.05)}
+.scroll-btn:hover::after{content:attr(title);position:absolute;background:#333;color:#fff;padding:4px 8px;border-radius:4px;font-size:12px;white-space:nowrap;top:-35px;left:50%;transform:translateX(-50%);z-index:1001}
+.scroll-btn:hover::before{content:'';position:absolute;top:-6px;left:50%;transform:translateX(-50%);border:5px solid transparent;border-top-color:#333}
+.save-btn{width:32px;height:32px;border-radius:50%;background:#0052cc;color:white;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 1px 4px rgba(0,0,0,0.15);transition:all 0.2s;position:relative}
+.save-btn:hover{background:#0041a8;transform:scale(1.05)}
+.save-btn:hover::after{content:attr(title);position:absolute;background:#333;color:#fff;padding:4px 8px;border-radius:4px;font-size:12px;white-space:nowrap;top:-35px;left:50%;transform:translateX(-50%);z-index:1001}
+.save-btn:hover::before{content:'';position:absolute;top:-6px;left:50%;transform:translateX(-50%);border:5px solid transparent;border-top-color:#333}
+.save-btn.save-source{background:#28a745}
+.save-btn.save-source:hover{background:#218838}
+.load-btn-row{display:flex;justify-content:center;margin-top:10px}
+.structure-info{padding:10px;background:#e8f4fd;border-radius:4px;margin-top:10px;font-size:12px;max-height:200px;overflow-y:auto}
+.structure-info h4{margin:0 0 5px 0;color:#0052cc}
+.structure-info ul{margin:0;padding-left:20px}
+.structure-info li{margin:2px 0}
+.toggle-list-btn{background:none;border:none;color:#0052cc;cursor:pointer;font-size:11px;padding:2px 5px;margin-left:5px;text-decoration:underline}
+.toggle-list-btn:hover{color:#0041a8}
+.key-count{font-weight:normal;font-size:11px;color:#6c757d;margin-left:5px}
+.collapsible-section{margin-bottom:10px}
+.collapsible-header{display:flex;justify-content:space-between;align-items:center;cursor:pointer;padding:5px;background:#e9ecef;border-radius:4px}
+.collapsible-header:hover{background:#dee2e6}
+.collapsible-content{max-height:0;overflow:hidden;transition:max-height 0.3s ease;background:#fff;border-radius:0 0 4px 4px}
+.collapsible-content.expanded{max-height:200px;overflow-y:auto !important;padding:8px}
+.collapsible-icon{transition:transform 0.3s}
+.collapsible-icon.expanded{transform:rotate(180deg)}
+.collapsible-content ul{margin:0;padding-left:20px;max-height:180px;overflow-y:auto}
+.collapsible-content li{margin:3px 0;padding:3px;font-family:monospace;font-size:11px;word-break:break-all}
+.collapsible-content code{background:#f1f1f1;padding:2px 4px;border-radius:3px;color:#333}
+.reset-box.compact{padding:8px !important;min-height:60px !important;border-width:1px !important}
 </style>
+</head>
+<body>
 <div class="container">
 <div class="upload-row">
+<div class="reset-box" id="resetBox" onclick="resetAll()">
+<h3>Reset</h3>
+<div>Start over</div>
+</div>
 <div class="upload-box" id="sourceBox">
 <h3>Source JSON</h3>
 <div>Click or drop JSON file</div>
@@ -53,10 +101,10 @@ input[type="file"]{position:absolute;top:0;left:0;width:100%;height:100%;opacity
 </div>
 </div>
 <div id="error" class="error"></div>
+<div id="warning" class="warning"></div>
 <div class="status" id="status">Load source and target JSON files to begin</div>
-<div class="control-buttons">
+<div class="load-btn-row">
 <button class="btn" id="loadBtn" onclick="loadFiles()" disabled style="display:none">Load Files</button>
-<button class="btn btn-secondary" id="resetBtn" onclick="resetAll()" style="display:none">Reset</button>
 </div>
 <div class="editor" id="editor">
 <div class="editor-header">
@@ -64,10 +112,12 @@ input[type="file"]{position:absolute;top:0;left:0;width:100%;height:100%;opacity
 <div>Translation</div>
 </div>
 <div class="translation-list" id="translationList"></div>
-<div class="action-buttons">
-<button class="btn" id="saveSourceBtn" onclick="saveSource()" style="display:none">Save Source JSON</button>
-<button class="btn" onclick="saveTarget()">Save Target JSON</button>
 </div>
+<div class="scroll-buttons" id="scrollButtons" style="display:none">
+<button class="save-btn save-source" id="floatSaveSourceBtn" onclick="saveSource()" title="Save Source JSON" style="display:none">💾</button>
+<button class="save-btn" id="floatSaveTargetBtn" onclick="saveTarget()" title="Save Target JSON">💾</button>
+<button class="scroll-btn" onclick="scrollToTop()" title="Scroll to top">↑</button>
+<button class="scroll-btn" onclick="scrollToBottom()" title="Scroll to bottom">↓</button>
 </div>
 </div>
 <script>
@@ -75,8 +125,11 @@ let sourceData=null,targetData=null,items=[],keyMap={}
 let sourceFileName='source.json',targetFileName='translation.json'
 let sourceChanged=false
 let originalSourceValues={}
+let lastSavedSourceValues={}
 let originalTargetValues={}
 let itemLocks={}
+let filteredTargetData=null
+let missingKeys=[], extraKeys=[], typeMismatches=[]
 
 // Get references to upload boxes
 const sourceBox=document.getElementById('sourceBox')
@@ -94,6 +147,7 @@ document.getElementById('targetFile').addEventListener('change',e=>handleFile(e,
 function setupDragAndDrop(box,fileInput){
   box.addEventListener('dragover',e=>{
     e.preventDefault()
+    if(fileInput.disabled) return
     box.classList.add('active')
     if(box===sourceBox){
       targetBox.classList.add('inactive')
@@ -117,6 +171,8 @@ function setupDragAndDrop(box,fileInput){
     sourceBox.classList.remove('inactive')
     targetBox.classList.remove('inactive')
     
+    if(fileInput.disabled) return
+    
     if(e.dataTransfer.files.length){
       fileInput.files=e.dataTransfer.files
       const event=new Event('change',{bubbles:true})
@@ -128,6 +184,14 @@ function setupDragAndDrop(box,fileInput){
 function handleFile(e,type){
   let file=e.target.files[0]
   if(!file)return
+  
+  // Prevent source file upload if editor is loaded
+  if(type==='source' && document.getElementById('editor').style.display==='block'){
+    e.target.value='' // Clear the file input
+    showError('Source file cannot be changed while editing. Please reset first.')
+    return
+  }
+  
   let reader=new FileReader()
   reader.onload=function(event){
     try{
@@ -139,17 +203,18 @@ function handleFile(e,type){
         sourceFileName=file.name
         document.getElementById('sourceInfo').textContent=`${file.name} (${Object.keys(keyMap).length} items)`
         
-        // After loading source, highlight target box
-        updateUploadBoxes('source')
+        // After loading source, update upload boxes
+        updateUploadBoxes()
       }else{
         targetData=data
         targetFileName=file.name
         document.getElementById('targetInfo').textContent=file.name
         
-        // After loading target, highlight both boxes equally
-        updateUploadBoxes('target')
+        // After loading target, update upload boxes
+        updateUploadBoxes()
       }
       document.getElementById('error').style.display='none'
+      document.getElementById('warning').style.display='none'
       updateUIState()
     }catch(err){
       showError(`Invalid JSON in ${type}: ${err.message}`)
@@ -158,49 +223,54 @@ function handleFile(e,type){
   reader.readAsText(file,'UTF-8')
 }
 
-function updateUploadBoxes(loadedType){
-  // Reset all classes first
-  sourceBox.classList.remove('active','inactive','compact')
-  targetBox.classList.remove('active','inactive','compact')
+function updateUploadBoxes(){
+  const resetBox = document.getElementById('resetBox');
   
-  if(loadedType==='source'){
-    // Source is loaded, highlight target as next step
-    sourceBox.classList.add('compact')
-    targetBox.classList.add('active')
-  }else if(loadedType==='target'){
-    // Both are loaded, make both compact
-    if(sourceData){
-      sourceBox.classList.add('compact')
-      targetBox.classList.add('compact')
-    }else{
-      targetBox.classList.add('compact')
-    }
+  // If editor is open, make ALL boxes super compact
+  if(document.getElementById('editor').style.display==='block'){
+    sourceBox.classList.add('compact');
+    targetBox.classList.add('compact');
+    resetBox.classList.add('compact');
+    return;
+  }
+  
+  // Reset all classes first
+  sourceBox.classList.remove('active','inactive','compact');
+  targetBox.classList.remove('active','inactive','compact');
+  resetBox.classList.remove('compact');
+  
+  if(sourceData&&targetData){
+    // Both files loaded, make them compact
+    sourceBox.classList.add('compact');
+    targetBox.classList.add('compact');
+  }else if(sourceData){
+    // Only source loaded
+    sourceBox.classList.add('compact');
+    targetBox.classList.add('active');
+  }else if(targetData){
+    // Only target loaded
+    targetBox.classList.add('compact');
   }
 }
 
 function updateUIState(){
   const loadBtn=document.getElementById('loadBtn')
-  const resetBtn=document.getElementById('resetBtn')
   
   if(sourceData&&targetData){
     loadBtn.disabled=false
     loadBtn.style.display='inline-block'
-    resetBtn.style.display='inline-block'
     updateStatus()
   }else if(sourceData){
     loadBtn.disabled=true
     loadBtn.style.display='none'
-    resetBtn.style.display='inline-block'
     updateStatus()
   }else if(targetData){
     loadBtn.disabled=true
     loadBtn.style.display='none'
-    resetBtn.style.display='inline-block'
     updateStatus()
   }else{
     loadBtn.disabled=true
     loadBtn.style.display='none'
-    resetBtn.style.display='none'
     updateStatus()
   }
 }
@@ -251,34 +321,118 @@ function loadFiles(){
   }
   
   let targetMap=createKeyMap(targetData)
-  let errors=[]
+  missingKeys=[]
+  extraKeys=[]
+  typeMismatches=[]
   
+  // Check for mismatches
   for(let k in keyMap){
-    if(targetMap[k]&&keyMap[k]!==targetMap[k]){
-      errors.push(`Type mismatch at "${k}": source is ${keyMap[k]}, target is ${targetMap[k]}`)
+    if(!targetMap.hasOwnProperty(k)){
+      missingKeys.push(k)
+    }else if(keyMap[k]!==targetMap[k]){
+      typeMismatches.push(`"${k}": source is ${keyMap[k]}, target is ${targetMap[k]}`)
     }
   }
   
-  if(errors.length){
-    showError(errors.join('<br>'))
-    return
+  // Check for extra keys in target
+  for(let k in targetMap){
+    if(!keyMap.hasOwnProperty(k)){
+      extraKeys.push(k)
+    }
   }
   
-  // Reset changed states when loading new files
-  originalSourceValues={}
-  originalTargetValues={}
-  sourceChanged=false
+  // Build filtered target data that matches source structure
+  filteredTargetData=JSON.parse(JSON.stringify(sourceData)) // Deep clone source structure
   
+  // Populate filtered target with values from original target where keys match
   items=extractItems(sourceData)
   items.forEach(item=>{
     itemLocks[item.path]=true
-    originalSourceValues[item.path]=getValue(sourceData,item.path)
+    let sourceVal=getValue(sourceData,item.path)
+    originalSourceValues[item.path]=sourceVal
+    lastSavedSourceValues[item.path]=sourceVal
+    
+    // Get value from target if it exists and type matches
     let targetVal=getValue(targetData,item.path)
-    if(targetVal!==undefined){
+    if(targetVal!==undefined && typeof targetVal===keyMap[item.path]){
+      setValue(filteredTargetData,item.path,targetVal)
       originalTargetValues[item.path]=targetVal
+    }else{
+      // Use source value for missing/mismatched keys
+      setValue(filteredTargetData,item.path,sourceVal)
+      originalTargetValues[item.path]=sourceVal
     }
   })
+  
+  // Replace targetData with filtered version
+  targetData=filteredTargetData
+  
+  // Show warnings if there are mismatches
+  updateWarningPanel()
+  
+  sourceChanged=false
   renderEditor()
+}
+
+function updateWarningPanel(){
+  if(missingKeys.length===0 && extraKeys.length===0 && typeMismatches.length===0){
+    document.getElementById('warning').style.display='none';
+    return;
+  }
+  
+  let warningMsg='';
+  
+  if(missingKeys.length>0){
+    warningMsg+=`<div class="collapsible-section">
+      <div class="collapsible-header" onclick="toggleCollapsible('missing')">
+        <h4>Missing in target <span class="key-count">(${missingKeys.length})</span></h4>
+        <span class="collapsible-icon" id="missingIcon">▼</span>
+      </div>
+      <div class="collapsible-content" id="missingContent">
+        <ul>${missingKeys.map(k=>`<li><code>${k}</code></li>`).join('')}</ul>
+      </div>
+    </div>`;
+  }
+  
+  if(extraKeys.length>0){
+    warningMsg+=`<div class="collapsible-section">
+      <div class="collapsible-header" onclick="toggleCollapsible('extra')">
+        <h4>Extra in target <span class="key-count">(${extraKeys.length})</span></h4>
+        <span class="collapsible-icon" id="extraIcon">▼</span>
+      </div>
+      <div class="collapsible-content" id="extraContent">
+        <ul>${extraKeys.map(k=>`<li><code>${k}</code></li>`).join('')}</ul>
+      </div>
+    </div>`;
+  }
+  
+  if(typeMismatches.length>0){
+    warningMsg+=`<div class="collapsible-section">
+      <div class="collapsible-header" onclick="toggleCollapsible('type')">
+        <h4>Type mismatches <span class="key-count">(${typeMismatches.length})</span></h4>
+        <span class="collapsible-icon" id="typeIcon">▼</span>
+      </div>
+      <div class="collapsible-content" id="typeContent">
+        <ul>${typeMismatches.map(k=>`<li><code>${k}</code></li>`).join('')}</ul>
+      </div>
+    </div>`;
+  }
+  
+  document.getElementById('warning').innerHTML=warningMsg;
+  document.getElementById('warning').style.display='block';
+}
+
+function toggleCollapsible(type){
+  const content=document.getElementById(type+'Content')
+  const icon=document.getElementById(type+'Icon')
+  
+  if(content.classList.contains('expanded')){
+    content.classList.remove('expanded')
+    icon.classList.remove('expanded')
+  }else{
+    content.classList.add('expanded')
+    icon.classList.add('expanded')
+  }
 }
 
 function extractItems(obj,path=''){
@@ -321,16 +475,26 @@ function renderEditor(){
   let list=document.getElementById('translationList')
   let html=''
   
+  let hasSourceChanges=false
+  
   items.forEach((item,i)=>{
     let targetVal=getValue(targetData,item.path)
     let isLocked=itemLocks[item.path]
     let currentSourceValue=getValue(sourceData,item.path)
+    let lastSavedValue=lastSavedSourceValues[item.path]
     let originalSourceValue=originalSourceValues[item.path]
     let originalTargetValue=originalTargetValues[item.path]
     
-    // Check if value has changed from original
-    let isSourceChanged=originalSourceValue!==undefined && 
+    // Check if value has changed from last saved (for Save button)
+    let isSourceChangedForSave=lastSavedValue!==undefined && 
+                       currentSourceValue!==lastSavedValue
+    
+    // Check if value has changed from original (for highlighting)
+    let isSourceChangedForHighlight=originalSourceValue!==undefined && 
                        currentSourceValue!==originalSourceValue
+    
+    if(isSourceChangedForSave) hasSourceChanges=true
+    
     let isTargetChanged=originalTargetValue!==undefined && 
                        targetVal!==originalTargetValue
     
@@ -338,11 +502,11 @@ function renderEditor(){
       let sourceContent,sourceClasses
       if(isLocked){
         sourceClasses='source-text'
-        if(isSourceChanged) sourceClasses+=' changed'
+        if(isSourceChangedForHighlight) sourceClasses+=' changed'
         sourceContent=`<div class="${sourceClasses}">${escapeHtml(currentSourceValue)}${item.isArray?`<span class="array-indicator">[${item.index}]</span>`:''}<div class="key-path">${item.path}</div></div>`
       }else{
         sourceClasses='source-input'
-        if(isSourceChanged) sourceClasses+=' changed'
+        if(isSourceChangedForHighlight) sourceClasses+=' changed'
         sourceContent=`<textarea class="${sourceClasses}" data-path="${escapeHtml(item.path)}" oninput="updateSource(this,'${item.path}')">${escapeHtml(currentSourceValue)}</textarea><div class="key-path">${item.path}</div>`
       }
       
@@ -368,19 +532,19 @@ function renderEditor(){
   document.getElementById('editor').style.display='block'
   document.getElementById('status').style.display='none'
   document.getElementById('loadBtn').style.display='none'
-  document.getElementById('resetBtn').style.display='inline-block'
+  document.getElementById('scrollButtons').style.display='flex'
   
-  // Make upload boxes even more compact when editor is open
-  sourceBox.classList.add('compact')
-  targetBox.classList.add('compact')
+  // Make upload boxes super compact when editor is open
+  updateUploadBoxes()
+  
+  // Disable source file input and visually indicate it's disabled
+  sourceFileInput.disabled=true
+  sourceBox.classList.add('disabled')
   
   autoExpandTextareas()
   
   // Update save source button visibility
-  let hasSourceChanges=Object.keys(originalSourceValues).some(path=>{
-    return getValue(sourceData,path)!==originalSourceValues[path]
-  })
-  document.getElementById('saveSourceBtn').style.display=hasSourceChanges?'inline-block':'none'
+  document.getElementById('floatSaveSourceBtn').style.display=hasSourceChanges?'flex':'none'
   sourceChanged=hasSourceChanges
 }
 
@@ -406,24 +570,36 @@ function updateSource(textarea,path){
   let value=textarea.value
   setValue(sourceData,path,value)
   
-  // Update changed state by comparing with original
+  // Get current values for comparison
+  let currentValue=getValue(sourceData,path)
+  let lastSavedValue=lastSavedSourceValues[path]
   let originalValue=originalSourceValues[path]
-  let isChanged=originalValue!==undefined && value!==originalValue
   
-  // Update textarea class
-  if(isChanged){
+  // Update changed state for highlighting (compare with original)
+  let isChangedForHighlight=originalValue!==undefined && currentValue!==originalValue
+  
+  // Update changed state for save button (compare with last saved)
+  let isChangedForSave=lastSavedValue!==undefined && currentValue!==lastSavedValue
+  
+  // Update textarea class for highlighting
+  if(isChangedForHighlight){
     textarea.classList.add('changed')
   }else{
     textarea.classList.remove('changed')
   }
   
-  // Check if any source has changed overall
-  let hasSourceChanges=Object.keys(originalSourceValues).some(p=>{
-    return getValue(sourceData,p)!==originalSourceValues[p]
+  // Check if any source has changed overall (for Save button)
+  let hasSourceChanges=false
+  items.forEach(item=>{
+    let currentValue=getValue(sourceData,item.path)
+    let lastSavedValue=lastSavedSourceValues[item.path]
+    if(lastSavedValue!==undefined && currentValue!==lastSavedValue){
+      hasSourceChanges=true
+    }
   })
   
   sourceChanged=hasSourceChanges
-  document.getElementById('saveSourceBtn').style.display=hasSourceChanges?'inline-block':'none'
+  document.getElementById('floatSaveSourceBtn').style.display=hasSourceChanges?'flex':'none'
   autoExpand(textarea)
 }
 
@@ -456,6 +632,23 @@ function autoExpand(t){
   t.style.height=(t.scrollHeight)+'px'
 }
 
+function scrollToTop(){
+  const editor=document.getElementById('editor')
+  editor.scrollIntoView({behavior:'smooth'})
+}
+
+function scrollToBottom(){
+  const editor=document.getElementById('editor')
+  const translationList=document.getElementById('translationList')
+  const lastItem=translationList.lastElementChild
+  
+  if(lastItem){
+    lastItem.scrollIntoView({behavior:'smooth',block:'end'})
+  }else{
+    editor.scrollIntoView({behavior:'smooth',block:'end'})
+  }
+}
+
 function saveSource(){
   if(!sourceData||!sourceChanged){
     showError('No changes to save')
@@ -471,13 +664,18 @@ function saveSource(){
   document.body.removeChild(a)
   URL.revokeObjectURL(a.href)
   
-  // Update original values after saving
+  // Lock all source fields
   items.forEach(item=>{
-    originalSourceValues[item.path]=getValue(sourceData,item.path)
+    itemLocks[item.path]=true
+  })
+  
+  // Update last saved values (for Save button logic)
+  items.forEach(item=>{
+    lastSavedSourceValues[item.path]=getValue(sourceData,item.path)
   })
   
   sourceChanged=false
-  document.getElementById('saveSourceBtn').style.display='none'
+  document.getElementById('floatSaveSourceBtn').style.display='none'
   renderEditor()
 }
 
@@ -486,6 +684,8 @@ function saveTarget(){
     showError('No target data to save')
     return
   }
+  
+  // Save target in the structure of source JSON (which is what targetData now is)
   let jsonStr=JSON.stringify(targetData,null,2)
   let blob=new Blob(['\uFEFF'+jsonStr],{type:'application/json;charset=utf-8'})
   let a=document.createElement('a')
@@ -496,7 +696,7 @@ function saveTarget(){
   document.body.removeChild(a)
   URL.revokeObjectURL(a.href)
   
-  // Update original values after saving
+  // Update original values after saving (this removes orange highlights)
   items.forEach(item=>{
     let targetVal=getValue(targetData,item.path)
     if(targetVal!==undefined){
@@ -508,35 +708,45 @@ function saveTarget(){
 }
 
 function resetAll(){
-  // Clear all data
+  // Reset all data
   sourceData=null
   targetData=null
+  filteredTargetData=null
   items=[]
   keyMap={}
   sourceChanged=false
   originalSourceValues={}
+  lastSavedSourceValues={}
   originalTargetValues={}
   itemLocks={}
+  missingKeys=[]
+  extraKeys=[]
+  typeMismatches=[]
   
   // Clear file inputs
   document.getElementById('sourceFile').value=''
   document.getElementById('targetFile').value=''
   
+  // Enable source file input
+  sourceFileInput.disabled=false
+  
   // Clear file info displays
   document.getElementById('sourceInfo').textContent=''
   document.getElementById('targetInfo').textContent=''
   
-  // Reset upload boxes
-  sourceBox.classList.remove('active','inactive','compact')
-  targetBox.classList.remove('active','inactive','compact')
+  // Reset upload boxes to full size
+  sourceBox.classList.remove('active','inactive','compact','disabled')
+  targetBox.classList.remove('active','inactive','compact','disabled')
+  document.getElementById('resetBox').classList.remove('compact')
   
   // Hide editor and show status
   document.getElementById('editor').style.display='none'
   document.getElementById('status').style.display='block'
   document.getElementById('loadBtn').style.display='none'
-  document.getElementById('resetBtn').style.display='none'
+  document.getElementById('scrollButtons').style.display='none'
   document.getElementById('error').style.display='none'
-  document.getElementById('saveSourceBtn').style.display='none'
+  document.getElementById('warning').style.display='none'
+  document.getElementById('floatSaveSourceBtn').style.display='none'
   
   // Reset file names
   sourceFileName='source.json'
@@ -549,6 +759,7 @@ function showError(msg){
   let e=document.getElementById('error')
   e.innerHTML=msg
   e.style.display='block'
+  document.getElementById('warning').style.display='none'
 }
 
 function escapeHtml(t){
@@ -556,3 +767,5 @@ function escapeHtml(t){
   return t.toString().replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))
 }
 </script>
+</body>
+</html>
