@@ -1,93 +1,550 @@
-<!DOCTYPE html><style>body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;margin:20px}.container{display:flex;flex-direction:column;gap:20px}.upload-row{display:flex;gap:20px}.upload-box{flex:1;border:2px dashed #ccc;padding:20px;text-align:center;min-height:120px;display:flex;flex-direction:column;justify-content:center;position:relative}.upload-box h3{margin:0 0 10px}input[type="file"]{position:absolute;top:0;left:0;width:100%;height:100%;opacity:0;cursor:pointer}.btn{background:#0052cc;color:#fff;border:none;padding:8px 16px;border-radius:4px;cursor:pointer;margin:5px}.btn:disabled{background:#ccc}.error{color:#d00;background:#fee;padding:10px;border-radius:4px;display:none}.editor{display:none;border:1px solid #ddd;border-radius:4px}.editor-header{display:grid;grid-template-columns:1fr 1fr;background:#f5f5f5;padding:10px;border-bottom:1px solid #ddd}.translation-list{max-height:500px;overflow-y:auto}.translation-item{display:grid;grid-template-columns:1fr 1fr;padding:15px;border-bottom:1px solid #eee;gap:15px;align-items:start}.translation-item:nth-child(even){background:#fafafa}.source-text{padding:8px;border-left:3px solid #0052cc;background:#f0f7ff;border-radius:4px;white-space:pre-wrap;word-break:break-word}.translation-input{width:100%;padding:8px;border:1px solid #ddd;border-radius:4px;resize:vertical;font-family:inherit;min-height:40px;transition:height 0.2s}.translation-input:focus{outline:none;border-color:#0052cc;box-shadow:0 0 0 2px rgba(0,82,204,0.1)}.key-path{font-family:monospace;font-size:12px;color:#666;padding:8px;background:#f8f9fa;border-radius:4px}.array-indicator{color:#28a745;font-size:11px;margin-left:5px}.action-buttons{display:flex;gap:10px;justify-content:center;margin:20px 0}.status{text-align:center;padding:20px;color:#666}.file-info{font-size:12px;color:#666;margin-top:10px}</style><div class="container"><div class="upload-row"><div class="upload-box"><h3>Source JSON</h3><div>Click or drop JSON file</div><input type="file" id="sourceFile" accept=".json,application/json"><div class="file-info" id="sourceInfo"></div></div><div class="upload-box"><h3>Target JSON</h3><div>Click or drop JSON file</div><input type="file" id="targetFile" accept=".json,application/json"><div class="file-info" id="targetInfo"></div></div></div><div id="error" class="error"></div><div class="status" id="status">Load source and target JSON files to begin</div><div class="editor" id="editor"><div class="editor-header"><div>Source Text</div><div>Translation</div></div><div class="translation-list" id="translationList"></div><div class="action-buttons"><button class="btn" onclick="saveSource()">Save Source JSON</button><button class="btn" onclick="saveTarget()">Save Target JSON</button></div></div></div><script>
+<!DOCTYPE html>
+<style>
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;margin:20px}
+.container{display:flex;flex-direction:column;gap:20px}
+.upload-row{display:flex;gap:20px}
+.upload-box{flex:1;border:2px dashed #ccc;padding:20px;text-align:center;min-height:120px;display:flex;flex-direction:column;justify-content:center;position:relative;transition:all 0.3s}
+.upload-box h3{margin:0 0 10px}
+.upload-box.active{border-color:#0052cc;background:#f0f7ff}
+.upload-box.inactive{opacity:0.5;filter:grayscale(50%)}
+input[type="file"]{position:absolute;top:0;left:0;width:100%;height:100%;opacity:0;cursor:pointer}
+.btn{background:#0052cc;color:#fff;border:none;padding:8px 16px;border-radius:4px;cursor:pointer;margin:5px}
+.btn:disabled{background:#ccc}
+.btn-secondary{background:#6c757d}
+.btn-danger{background:#dc3545}
+.error{color:#d00;background:#fee;padding:10px;border-radius:4px;display:none}
+.editor{display:none;border:1px solid #ddd;border-radius:4px}
+.editor-header{display:grid;grid-template-columns:1fr 1fr;background:#f5f5f5;padding:10px;border-bottom:1px solid #ddd}
+.translation-list{max-height:500px;overflow-y:auto}
+.translation-item{display:grid;grid-template-columns:1fr 1fr;padding:15px;border-bottom:1px solid #eee;gap:15px;align-items:start}
+.translation-item:nth-child(even){background:#fafafa}
+.source-area{position:relative}
+.source-text{padding:8px;border-left:3px solid #0052cc;background:#f0f7ff;border-radius:4px;white-space:pre-wrap;word-break:break-word;transition:border-color 0.2s}
+.source-text.changed{border-left-color:#ff9800 !important;background:#fff8e1}
+.source-input{width:100%;padding:8px;border:1px solid #b3d4ff;border-radius:4px;resize:vertical;font-family:inherit;min-height:40px;box-sizing:border-box}
+.source-input.changed{border-color:#ff9800 !important;background:#fff8e1}
+.lock-btn{position:absolute;top:8px;right:8px;background:none;border:none;cursor:pointer;font-size:14px;opacity:0.5;z-index:10}
+.lock-btn:hover{opacity:1}
+.translation-input{width:100%;padding:8px;border:1px solid #ddd;border-radius:4px;resize:vertical;font-family:inherit;min-height:40px;transition:border-color 0.2s, background-color 0.2s}
+.translation-input:focus{outline:none;border-color:#0052cc;box-shadow:0 0 0 2px rgba(0,82,204,0.1)}
+.translation-input.changed{border-color:#ff9800 !important;background:#fff8e1}
+.key-path{font-family:monospace;font-size:12px;color:#666;padding:8px;background:#f8f9fa;border-radius:4px}
+.array-indicator{color:#28a745;font-size:11px;margin-left:5px}
+.action-buttons{display:flex;gap:10px;justify-content:center;margin:20px 0}
+.status{text-align:center;padding:20px;color:#666}
+.file-info{font-size:12px;color:#666;margin-top:10px}
+.reset-container{display:flex;justify-content:center;margin-top:10px}
+</style>
+<div class="container">
+<div class="upload-row">
+<div class="upload-box" id="sourceBox">
+<h3>Source JSON</h3>
+<div>Click or drop JSON file</div>
+<input type="file" id="sourceFile" accept=".json,application/json">
+<div class="file-info" id="sourceInfo"></div>
+</div>
+<div class="upload-box" id="targetBox">
+<h3>Target JSON</h3>
+<div>Click or drop JSON file</div>
+<input type="file" id="targetFile" accept=".json,application/json">
+<div class="file-info" id="targetInfo"></div>
+</div>
+</div>
+<div id="error" class="error"></div>
+<div class="status" id="status">Load source and target JSON files to begin</div>
+<div class="reset-container">
+<button class="btn" id="loadBtn" onclick="loadFiles()" disabled style="display:none">Load Files</button>
+<button class="btn btn-danger" id="resetBtn" onclick="resetAll()" style="display:none">Reset & Start Over</button>
+</div>
+<div class="editor" id="editor">
+<div class="editor-header">
+<div>Source Text</div>
+<div>Translation</div>
+</div>
+<div class="translation-list" id="translationList"></div>
+<div class="action-buttons">
+<button class="btn" id="saveSourceBtn" onclick="saveSource()" style="display:none">Save Source JSON</button>
+<button class="btn" onclick="saveTarget()">Save Target JSON</button>
+</div>
+</div>
+</div>
+<script>
 let sourceData=null,targetData=null,items=[],keyMap={}
 let sourceFileName='source.json',targetFileName='translation.json'
+let sourceChanged=false
+let originalSourceValues={}
+let originalTargetValues={}
+let itemLocks={}
+
+// Get references to upload boxes
+const sourceBox=document.getElementById('sourceBox')
+const targetBox=document.getElementById('targetBox')
+const sourceFileInput=document.getElementById('sourceFile')
+const targetFileInput=document.getElementById('targetFile')
+
+// Setup drag and drop events
+setupDragAndDrop(sourceBox,sourceFileInput)
+setupDragAndDrop(targetBox,targetFileInput)
+
 document.getElementById('sourceFile').addEventListener('change',e=>handleFile(e,'source'))
 document.getElementById('targetFile').addEventListener('change',e=>handleFile(e,'target'))
-function handleFile(e,type){let file=e.target.files[0]
-if(!file)return
-let reader=new FileReader()
-reader.onload=function(event){try{let text=event.target.result
-let data=JSON.parse(text)
-if(type==='source'){sourceData=data
-keyMap=createKeyMap(sourceData)
-sourceFileName=file.name
-document.getElementById('sourceInfo').textContent=`${file.name} (${Object.keys(keyMap).length} items)`}else{targetData=data
-targetFileName=file.name
-document.getElementById('targetInfo').textContent=file.name}
-document.getElementById('error').style.display='none'
-checkStructure()}catch(err){showError(`Invalid JSON in ${type}: ${err.message}`)}}
-reader.readAsText(file,'UTF-8')}
-function createKeyMap(obj,path=''){let map={}
-for(let k in obj){if(!obj.hasOwnProperty(k))continue
-let cur=path?path+'.'+k:k
-let val=obj[k]
-if(val!==null&&typeof val==='object'){if(Array.isArray(val)){val.forEach((item,i)=>{let arrPath=cur+'['+i+']'
-if(typeof item==='string'){map[arrPath]='string'}else if(item!==null&&typeof item==='object'){Object.assign(map,createKeyMap(item,arrPath))}})}else{Object.assign(map,createKeyMap(val,cur))}}else{map[cur]=typeof val}}
-return map}
-function checkStructure(){if(!sourceData||!targetData){document.getElementById('status').textContent=sourceData&&!targetData?'Load target JSON':'Load source JSON'
-return}
-let targetMap=createKeyMap(targetData)
-let errors=[]
-for(let k in keyMap){if(targetMap[k]&&keyMap[k]!==targetMap[k]){errors.push(`Type mismatch at "${k}": source is ${keyMap[k]}, target is ${targetMap[k]}`)}}
-if(errors.length){showError(errors.join('<br>'))
-return}
-items=extractItems(sourceData)
-renderEditor()}
-function extractItems(obj,path=''){let result=[]
-for(let k in obj){if(!obj.hasOwnProperty(k))continue
-let cur=path?path+'.'+k:k
-let val=obj[k]
-if(val!==null&&typeof val==='object'){if(Array.isArray(val)){val.forEach((item,i)=>{let arrPath=cur+'['+i+']'
-if(typeof item==='string'){result.push({path:arrPath,key:cur,value:item,type:'string',isArray:true,index:i})}else if(item!==null&&typeof item==='object'){result=result.concat(extractItems(item,arrPath))}})}else{result=result.concat(extractItems(val,cur))}}else{result.push({path:cur,key:cur,value:val,type:typeof val,isArray:false})}}
-return result}
-function getValue(obj,path){let parts=path.split(/[\.\[\]]+/).filter(p=>p!=='')
-let cur=obj
-for(let p of parts){if(cur===undefined||cur===null)return undefined
-cur=cur[p]}
-return cur}
-function renderEditor(){let list=document.getElementById('translationList')
-let html=''
-items.forEach((item,i)=>{let targetVal=getValue(targetData,item.path)
-if(item.type==='string'){html+=`<div class="translation-item"><div class="source-text">${escapeHtml(item.value)}${item.isArray?`<span class="array-indicator">[${item.index}]</span>`:''}<div class="key-path">${item.path}</div></div><textarea class="translation-input" data-path="${escapeHtml(item.path)}" placeholder="Translation..." oninput="updateTranslation(this,'${i}')">${targetVal!==undefined?escapeHtml(targetVal):''}</textarea></div>`}else{html+=`<div class="translation-item"><div class="source-text">${item.value}<div class="key-path">${item.path} (${item.type})</div></div><div style="padding:8px;color:#666;font-style:italic">Not editable - ${item.type}</div></div>`}})
-list.innerHTML=html
-document.getElementById('editor').style.display='block'
-document.getElementById('status').style.display='none'
-autoExpandTextareas()}
-function updateTranslation(textarea,index){let path=textarea.getAttribute('data-path')
-let value=textarea.value
-setValue(targetData,path,value)
-autoExpand(textarea)}
-function setValue(obj,path,value){let parts=path.split(/[\.\[\]]+/).filter(p=>p!=='')
-let cur=obj
-for(let i=0;i<parts.length-1;i++){let p=parts[i]
-if(cur[p]===undefined){cur[p]=/^\d+$/.test(parts[i+1])?[]:{}}cur=cur[p]}
-if(parts.length>0){cur[parts[parts.length-1]]=value}}
-function autoExpandTextareas(){document.querySelectorAll('.translation-input').forEach(t=>autoExpand(t))}
-function autoExpand(t){t.style.height='auto'
-t.style.height=(t.scrollHeight)+'px'}
-function saveSource(){if(!sourceData){showError('No source data to save');return}
-let jsonStr=JSON.stringify(sourceData,null,2)
-let blob=new Blob(['\uFEFF'+jsonStr],{type:'application/json;charset=utf-8'})
-let a=document.createElement('a')
-a.href=URL.createObjectURL(blob)
-a.download=sourceFileName
-document.body.appendChild(a)
-a.click()
-document.body.removeChild(a)
-URL.revokeObjectURL(a.href)}
-function saveTarget(){if(!targetData){showError('No target data to save');return}
-let jsonStr=JSON.stringify(targetData,null,2)
-let blob=new Blob(['\uFEFF'+jsonStr],{type:'application/json;charset=utf-8'})
-let a=document.createElement('a')
-a.href=URL.createObjectURL(blob)
-a.download=targetFileName
-document.body.appendChild(a)
-a.click()
-document.body.removeChild(a)
-URL.revokeObjectURL(a.href)}
-function showError(msg){let e=document.getElementById('error')
-e.innerHTML=msg
-e.style.display='block'}
-function escapeHtml(t){if(t===null||t===undefined)return''
-return t.toString().replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+
+function setupDragAndDrop(box,fileInput){
+  box.addEventListener('dragover',e=>{
+    e.preventDefault()
+    box.classList.add('active')
+    if(box===sourceBox){
+      targetBox.classList.add('inactive')
+    }else{
+      sourceBox.classList.add('inactive')
+    }
+  })
+  
+  box.addEventListener('dragleave',e=>{
+    e.preventDefault()
+    if(!box.contains(e.relatedTarget)){
+      box.classList.remove('active')
+      sourceBox.classList.remove('inactive')
+      targetBox.classList.remove('inactive')
+    }
+  })
+  
+  box.addEventListener('drop',e=>{
+    e.preventDefault()
+    box.classList.remove('active')
+    sourceBox.classList.remove('inactive')
+    targetBox.classList.remove('inactive')
+    
+    if(e.dataTransfer.files.length){
+      fileInput.files=e.dataTransfer.files
+      const event=new Event('change',{bubbles:true})
+      fileInput.dispatchEvent(event)
+    }
+  })
+}
+
+function handleFile(e,type){
+  let file=e.target.files[0]
+  if(!file)return
+  let reader=new FileReader()
+  reader.onload=function(event){
+    try{
+      let text=event.target.result
+      let data=JSON.parse(text)
+      if(type==='source'){
+        sourceData=data
+        keyMap=createKeyMap(sourceData)
+        sourceFileName=file.name
+        document.getElementById('sourceInfo').textContent=`${file.name} (${Object.keys(keyMap).length} items)`
+        
+        // After loading source, highlight target box
+        updateUploadBoxes('source')
+      }else{
+        targetData=data
+        targetFileName=file.name
+        document.getElementById('targetInfo').textContent=file.name
+        
+        // After loading target, highlight both boxes equally
+        updateUploadBoxes('target')
+      }
+      document.getElementById('error').style.display='none'
+      updateUIState()
+    }catch(err){
+      showError(`Invalid JSON in ${type}: ${err.message}`)
+    }
+  }
+  reader.readAsText(file,'UTF-8')
+}
+
+function updateUploadBoxes(loadedType){
+  // Reset all classes first
+  sourceBox.classList.remove('active','inactive')
+  targetBox.classList.remove('active','inactive')
+  
+  if(loadedType==='source'){
+    // Source is loaded, highlight target as next step
+    sourceBox.classList.add('inactive')
+    targetBox.classList.add('active')
+  }else if(loadedType==='target'){
+    // Both are loaded, show both as normal
+    if(sourceData){
+      // Both files loaded
+      sourceBox.classList.remove('active','inactive')
+      targetBox.classList.remove('active','inactive')
+    }
+  }
+}
+
+function updateUIState(){
+  const loadBtn=document.getElementById('loadBtn')
+  const resetBtn=document.getElementById('resetBtn')
+  
+  if(sourceData&&targetData){
+    loadBtn.disabled=false
+    loadBtn.style.display='block'
+    resetBtn.style.display='block'
+    updateStatus()
+  }else if(sourceData){
+    loadBtn.disabled=true
+    loadBtn.style.display='none'
+    resetBtn.style.display='block'
+    updateStatus()
+  }else if(targetData){
+    loadBtn.disabled=true
+    loadBtn.style.display='none'
+    resetBtn.style.display='block'
+    updateStatus()
+  }else{
+    loadBtn.disabled=true
+    loadBtn.style.display='none'
+    resetBtn.style.display='none'
+    updateStatus()
+  }
+}
+
+function createKeyMap(obj,path=''){
+  let map={}
+  for(let k in obj){
+    if(!obj.hasOwnProperty(k))continue
+    let cur=path?path+'.'+k:k
+    let val=obj[k]
+    if(val!==null&&typeof val==='object'){
+      if(Array.isArray(val)){
+        val.forEach((item,i)=>{
+          let arrPath=cur+'['+i+']'
+          if(typeof item==='string'){
+            map[arrPath]='string'
+          }else if(item!==null&&typeof item==='object'){
+            Object.assign(map,createKeyMap(item,arrPath))
+          }
+        })
+      }else{
+        Object.assign(map,createKeyMap(val,cur))
+      }
+    }else{
+      map[cur]=typeof val
+    }
+  }
+  return map
+}
+
+function updateStatus(){
+  let status=document.getElementById('status')
+  if(!sourceData&&!targetData){
+    status.textContent='Load source and target JSON files to begin'
+  }else if(sourceData&&!targetData){
+    status.textContent='Source loaded. Now load target JSON file.'
+  }else if(!sourceData&&targetData){
+    status.textContent='Target loaded. Now load source JSON file.'
+  }else{
+    status.textContent='Ready. Click "Load Files" to start editing.'
+  }
+}
+
+function loadFiles(){
+  if(!sourceData||!targetData){
+    showError('Please load both files first')
+    return
+  }
+  
+  let targetMap=createKeyMap(targetData)
+  let errors=[]
+  
+  for(let k in keyMap){
+    if(targetMap[k]&&keyMap[k]!==targetMap[k]){
+      errors.push(`Type mismatch at "${k}": source is ${keyMap[k]}, target is ${targetMap[k]}`)
+    }
+  }
+  
+  if(errors.length){
+    showError(errors.join('<br>'))
+    return
+  }
+  
+  // Reset changed states when loading new files
+  originalSourceValues={}
+  originalTargetValues={}
+  sourceChanged=false
+  
+  items=extractItems(sourceData)
+  items.forEach(item=>{
+    itemLocks[item.path]=true
+    originalSourceValues[item.path]=getValue(sourceData,item.path)
+    let targetVal=getValue(targetData,item.path)
+    if(targetVal!==undefined){
+      originalTargetValues[item.path]=targetVal
+    }
+  })
+  renderEditor()
+}
+
+function extractItems(obj,path=''){
+  let result=[]
+  for(let k in obj){
+    if(!obj.hasOwnProperty(k))continue
+    let cur=path?path+'.'+k:k
+    let val=obj[k]
+    if(val!==null&&typeof val==='object'){
+      if(Array.isArray(val)){
+        val.forEach((item,i)=>{
+          let arrPath=cur+'['+i+']'
+          if(typeof item==='string'){
+            result.push({path:arrPath,key:cur,value:item,type:'string',isArray:true,index:i})
+          }else if(item!==null&&typeof item==='object'){
+            result=result.concat(extractItems(item,arrPath))
+          }
+        })
+      }else{
+        result=result.concat(extractItems(val,cur))
+      }
+    }else{
+      result.push({path:cur,key:cur,value:val,type:typeof val,isArray:false})
+    }
+  }
+  return result
+}
+
+function getValue(obj,path){
+  let parts=path.split(/[\.\[\]]+/).filter(p=>p!=='')
+  let cur=obj
+  for(let p of parts){
+    if(cur===undefined||cur===null)return undefined
+    cur=cur[p]
+  }
+  return cur
+}
+
+function renderEditor(){
+  let list=document.getElementById('translationList')
+  let html=''
+  
+  items.forEach((item,i)=>{
+    let targetVal=getValue(targetData,item.path)
+    let isLocked=itemLocks[item.path]
+    let currentSourceValue=getValue(sourceData,item.path)
+    let originalSourceValue=originalSourceValues[item.path]
+    let originalTargetValue=originalTargetValues[item.path]
+    
+    // Check if value has changed from original
+    let isSourceChanged=originalSourceValue!==undefined && 
+                       currentSourceValue!==originalSourceValue
+    let isTargetChanged=originalTargetValue!==undefined && 
+                       targetVal!==originalTargetValue
+    
+    if(item.type==='string'){
+      let sourceContent,sourceClasses
+      if(isLocked){
+        sourceClasses='source-text'
+        if(isSourceChanged) sourceClasses+=' changed'
+        sourceContent=`<div class="${sourceClasses}">${escapeHtml(currentSourceValue)}${item.isArray?`<span class="array-indicator">[${item.index}]</span>`:''}<div class="key-path">${item.path}</div></div>`
+      }else{
+        sourceClasses='source-input'
+        if(isSourceChanged) sourceClasses+=' changed'
+        sourceContent=`<textarea class="${sourceClasses}" data-path="${escapeHtml(item.path)}" oninput="updateSource(this,'${item.path}')">${escapeHtml(currentSourceValue)}</textarea><div class="key-path">${item.path}</div>`
+      }
+      
+      let targetClasses='translation-input'
+      if(isTargetChanged) targetClasses+=' changed'
+      
+      html+=`<div class="translation-item">
+        <div class="source-area">
+          ${sourceContent}
+          <button class="lock-btn" title="${isLocked?'Unlock source':'Lock source'}" onclick="toggleSourceLock('${item.path}')">${isLocked?'🔒':'🔓'}</button>
+        </div>
+        <textarea class="${targetClasses}" data-path="${escapeHtml(item.path)}" placeholder="Translation..." oninput="updateTranslation(this,'${item.path}')">${targetVal!==undefined?escapeHtml(targetVal):''}</textarea>
+      </div>`
+    }else{
+      html+=`<div class="translation-item">
+        <div class="source-text">${currentSourceValue}<div class="key-path">${item.path} (${item.type})</div></div>
+        <div style="padding:8px;color:#666;font-style:italic">Not editable - ${item.type}</div>
+      </div>`
+    }
+  })
+  
+  list.innerHTML=html
+  document.getElementById('editor').style.display='block'
+  document.getElementById('status').style.display='none'
+  document.getElementById('loadBtn').style.display='none'
+  document.getElementById('resetBtn').style.display='block'
+  autoExpandTextareas()
+  
+  // Update save source button visibility
+  let hasSourceChanges=Object.keys(originalSourceValues).some(path=>{
+    return getValue(sourceData,path)!==originalSourceValues[path]
+  })
+  document.getElementById('saveSourceBtn').style.display=hasSourceChanges?'inline-block':'none'
+  sourceChanged=hasSourceChanges
+}
+
+function updateTranslation(textarea,path){
+  let value=textarea.value
+  setValue(targetData,path,value)
+  
+  // Update changed state by comparing with original
+  let originalValue=originalTargetValues[path]
+  let isChanged=originalValue!==undefined && value!==originalValue
+  
+  // Update textarea class
+  if(isChanged){
+    textarea.classList.add('changed')
+  }else{
+    textarea.classList.remove('changed')
+  }
+  
+  autoExpand(textarea)
+}
+
+function updateSource(textarea,path){
+  let value=textarea.value
+  setValue(sourceData,path,value)
+  
+  // Update changed state by comparing with original
+  let originalValue=originalSourceValues[path]
+  let isChanged=originalValue!==undefined && value!==originalValue
+  
+  // Update textarea class
+  if(isChanged){
+    textarea.classList.add('changed')
+  }else{
+    textarea.classList.remove('changed')
+  }
+  
+  // Check if any source has changed overall
+  let hasSourceChanges=Object.keys(originalSourceValues).some(p=>{
+    return getValue(sourceData,p)!==originalSourceValues[p]
+  })
+  
+  sourceChanged=hasSourceChanges
+  document.getElementById('saveSourceBtn').style.display=hasSourceChanges?'inline-block':'none'
+  autoExpand(textarea)
+}
+
+function setValue(obj,path,value){
+  let parts=path.split(/[\.\[\]]+/).filter(p=>p!=='')
+  let cur=obj
+  for(let i=0;i<parts.length-1;i++){
+    let p=parts[i]
+    if(cur[p]===undefined){
+      cur[p]=/^\d+$/.test(parts[i+1])?[]:{}
+    }
+    cur=cur[p]
+  }
+  if(parts.length>0){
+    cur[parts[parts.length-1]]=value
+  }
+}
+
+function toggleSourceLock(path){
+  itemLocks[path]=!itemLocks[path]
+  renderEditor()
+}
+
+function autoExpandTextareas(){
+  document.querySelectorAll('.source-input, .translation-input').forEach(t=>autoExpand(t))
+}
+
+function autoExpand(t){
+  t.style.height='auto'
+  t.style.height=(t.scrollHeight)+'px'
+}
+
+function saveSource(){
+  if(!sourceData||!sourceChanged){
+    showError('No changes to save')
+    return
+  }
+  let jsonStr=JSON.stringify(sourceData,null,2)
+  let blob=new Blob(['\uFEFF'+jsonStr],{type:'application/json;charset=utf-8'})
+  let a=document.createElement('a')
+  a.href=URL.createObjectURL(blob)
+  a.download=sourceFileName
+  document.body.appendChild(a)
+  a.click()
+  document.body.removeChild(a)
+  URL.revokeObjectURL(a.href)
+  
+  // Update original values after saving
+  items.forEach(item=>{
+    originalSourceValues[item.path]=getValue(sourceData,item.path)
+  })
+  
+  sourceChanged=false
+  document.getElementById('saveSourceBtn').style.display='none'
+  renderEditor()
+}
+
+function saveTarget(){
+  if(!targetData){
+    showError('No target data to save')
+    return
+  }
+  let jsonStr=JSON.stringify(targetData,null,2)
+  let blob=new Blob(['\uFEFF'+jsonStr],{type:'application/json;charset=utf-8'})
+  let a=document.createElement('a')
+  a.href=URL.createObjectURL(blob)
+  a.download=targetFileName
+  document.body.appendChild(a)
+  a.click()
+  document.body.removeChild(a)
+  URL.revokeObjectURL(a.href)
+  
+  // Update original values after saving
+  items.forEach(item=>{
+    let targetVal=getValue(targetData,item.path)
+    if(targetVal!==undefined){
+      originalTargetValues[item.path]=targetVal
+    }
+  })
+  
+  renderEditor()
+}
+
+function resetAll(){
+  // Clear all data
+  sourceData=null
+  targetData=null
+  items=[]
+  keyMap={}
+  sourceChanged=false
+  originalSourceValues={}
+  originalTargetValues={}
+  itemLocks={}
+  
+  // Clear file inputs
+  document.getElementById('sourceFile').value=''
+  document.getElementById('targetFile').value=''
+  
+  // Clear file info displays
+  document.getElementById('sourceInfo').textContent=''
+  document.getElementById('targetInfo').textContent=''
+  
+  // Reset upload boxes
+  sourceBox.classList.remove('active','inactive')
+  targetBox.classList.remove('active','inactive')
+  
+  // Hide editor and show status
+  document.getElementById('editor').style.display='none'
+  document.getElementById('status').style.display='block'
+  document.getElementById('loadBtn').style.display='none'
+  document.getElementById('resetBtn').style.display='none'
+  document.getElementById('error').style.display='none'
+  document.getElementById('saveSourceBtn').style.display='none'
+  
+  // Reset file names
+  sourceFileName='source.json'
+  targetFileName='translation.json'
+  
+  updateStatus()
+}
+
+function showError(msg){
+  let e=document.getElementById('error')
+  e.innerHTML=msg
+  e.style.display='block'
+}
+
+function escapeHtml(t){
+  if(t===null||t===undefined)return''
+  return t.toString().replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))
+}
 </script>
