@@ -822,11 +822,33 @@ function scrollToBottom(){
   }
 }
 
+function promptForFilename(defaultName, title) {
+  const newName = prompt(`${title}\n\nEnter filename:`, defaultName);
+  if (newName === null) {
+    return null; // User cancelled
+  }
+  // Ensure the filename ends with .json
+  if (newName.trim() && !newName.toLowerCase().endsWith('.json')) {
+    return newName.trim() + '.json';
+  }
+  return newName.trim() || defaultName;
+}
+
 function saveSource(){
   if(!sourceData||!sourceChanged){
     showError('No changes to save')
     return
   }
+  
+  // Ask for filename
+  const newFilename = promptForFilename(sourceFileName, 'Save Source JSON');
+  if (newFilename === null) {
+    return; // User cancelled
+  }
+  
+  // Update the filename
+  sourceFileName = newFilename;
+  
   let jsonStr=JSON.stringify(sourceData,null,2)
   let blob=new Blob(['\uFEFF'+jsonStr],{type:'application/json;charset=utf-8'})
   let a=document.createElement('a')
@@ -861,6 +883,15 @@ function saveTarget(){
     showError('No target data to save')
     return
   }
+  
+  // Ask for filename
+  const newFilename = promptForFilename(targetFileName, 'Save Target JSON');
+  if (newFilename === null) {
+    return; // User cancelled
+  }
+  
+  // Update the filename
+  targetFileName = newFilename;
   
   // Save target in the structure of source JSON (which is what targetData now is)
   let jsonStr=JSON.stringify(targetData,null,2)
