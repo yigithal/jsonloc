@@ -26,22 +26,22 @@ input[type="file"]:disabled{cursor:not-allowed}
 .btn-secondary{background:#6c757d}
 .error{color:#d00;background:#fee;padding:8px;border-radius:4px;display:none}
 .warning{color:#856404;background:#fff3cd;padding:10px;border-radius:4px;display:none;margin:10px 0;border-left:4px solid #ffc107;max-height:400px;overflow-y:auto}
-.editor{display:none;border:1px solid #ddd;border-radius:4px;position:relative}
+.editor{display:none;border:1px solid #ddd;border-radius:4px;position:relative;margin-bottom:160px !important}
 .editor-header{display:grid;grid-template-columns:1fr 1fr;background:#f5f5f5;padding:8px;border-bottom:1px solid #ddd;font-size:13px}
 .translation-list{}
 .translation-item{display:grid;grid-template-columns:1fr 1fr;padding:10px;border-bottom:1px solid #eee;gap:10px;align-items:start}
 .translation-item:nth-child(even){background:#fafafa}
 .source-area{position:relative}
-.source-text{padding:6px;border-left:3px solid #0052cc;background:#f0f7ff;border-radius:4px;white-space:pre-wrap;word-break:break-word;transition:border-color 0.2s;font-size:13px}
+.source-text{padding:6px;border-left:3px solid #0052cc;background:#f0f7ff;border-radius:4px;white-space:pre-wrap;word-break:break-word;transition:border-color 0.2s;font-size:13px;unicode-bidi:plaintext;text-align:start}
 .source-text.changed{border-left-color:#ff9800 !important;background:#fff8e1}
-.source-input{width:100%;padding:6px;border:1px solid #b3d4ff;border-radius:4px;resize:vertical;font-family:inherit;min-height:35px;box-sizing:border-box;font-size:13px}
+.source-input{width:100%;padding:6px;border:1px solid #b3d4ff;border-radius:4px;resize:vertical;font-family:inherit;min-height:35px;box-sizing:border-box;font-size:13px;unicode-bidi:plaintext;text-align:start}
 .source-input.changed{border-color:#ff9800 !important;background:#fff8e1}
 .lock-btn{position:absolute;top:6px;right:6px;background:none;border:none;cursor:pointer;font-size:12px;opacity:0.5;z-index:10;padding:2px}
 .lock-btn:hover{opacity:1}
-.translation-input{width:100%;padding:6px;border:1px solid #ddd;border-radius:4px;resize:vertical;font-family:inherit;min-height:35px;transition:border-color 0.2s, background-color 0.2s;font-size:13px}
+.translation-input{width:100%;padding:6px;border:1px solid #ddd;border-radius:4px;resize:vertical;font-family:inherit;min-height:35px;transition:border-color 0.2s, background-color 0.2s;font-size:13px;unicode-bidi:plaintext;text-align:start}
 .translation-input:focus{outline:none;border-color:#0052cc;box-shadow:0 0 0 2px rgba(0,82,204,0.1)}
 .translation-input.changed{border-color:#ff9800 !important;background:#fff8e1}
-.key-path{font-family:monospace;font-size:11px;color:#666;padding:4px 0 0 0;margin-top:4px;border-top:1px dashed #ddd}
+.key-path{font-family:monospace;font-size:11px;color:#666;padding:4px 0 0 0;margin-top:4px;border-top:1px dashed #ddd;unicode-bidi:plaintext;text-align:start}
 .array-indicator{color:#28a745;font-size:10px;margin-left:4px;background:#e8f5e9;padding:1px 4px;border-radius:8px}
 .action-buttons{display:flex;gap:8px;justify-content:center;margin:15px 0;padding-top:15px;border-top:1px solid #e9ecef}
 .status{text-align:center;padding:15px;color:#666}
@@ -51,12 +51,12 @@ input[type="file"]:disabled{cursor:not-allowed}
 .scroll-buttons{position:fixed;bottom:20px;right:20px;display:flex;flex-direction:column;gap:6px;z-index:1000}
 .scroll-btn{width:32px;height:32px;border-radius:50%;background:#6c757d;color:white;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;box-shadow:0 1px 4px rgba(0,0,0,0.15);transition:all 0.2s;position:relative}
 .scroll-btn:hover{background:#5a6268;transform:scale(1.05)}
-.scroll-btn:hover::after{content:attr(title);position:absolute;background:#333;color:#fff;padding:4px 8px;border-radius:4px;font-size:12px;white-space:nowrap;top:-35px;left:50%;transform:translateX(-50%);z-index:1001}
-.scroll-btn:hover::before{content:'';position:absolute;top:-6px;left:50%;transform:translateX(-50%);border:5px solid transparent;border-top-color:#333}
+.scroll-btn:hover::after{content:attr(title);position:absolute;background:#333;color:#fff;padding:4px 8px;border-radius:4px;font-size:12px;white-space:nowrap;right:calc(100% + 10px);top:50%;transform:translateY(-50%);z-index:1001;pointer-events:none}
+.scroll-btn:hover::before{content:'';position:absolute;right:-5px;top:50%;transform:translateY(-50%);border:5px solid transparent;border-left-color:#333;pointer-events:none}
 .save-btn{width:32px;height:32px;border-radius:50%;background:#0052cc;color:white;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 1px 4px rgba(0,0,0,0.15);transition:all 0.2s;position:relative}
 .save-btn:hover{background:#0041a8;transform:scale(1.05)}
-.save-btn:hover::after{content:attr(title);position:absolute;background:#333;color:#fff;padding:4px 8px;border-radius:4px;font-size:12px;white-space:nowrap;top:-35px;left:50%;transform:translateX(-50%);z-index:1001}
-.save-btn:hover::before{content:'';position:absolute;top:-6px;left:50%;transform:translateX(-50%);border:5px solid transparent;border-top-color:#333}
+.save-btn:hover::after{content:attr(title);position:absolute;background:#333;color:#fff;padding:4px 8px;border-radius:4px;font-size:12px;white-space:nowrap;right:calc(100% + 10px);top:50%;transform:translateY(-50%);z-index:1001;pointer-events:none}
+.save-btn:hover::before{content:'';position:absolute;right:-5px;top:50%;transform:translateY(-50%);border:5px solid transparent;border-left-color:#333;pointer-events:none}
 .save-btn.save-source{background:#28a745}
 .save-btn.save-source:hover{background:#218838}
 .load-btn-row{display:flex;justify-content:center;margin-top:10px}
@@ -78,6 +78,33 @@ input[type="file"]:disabled{cursor:not-allowed}
 .collapsible-content li{margin:3px 0;padding:3px;font-family:monospace;font-size:11px;word-break:break-all}
 .collapsible-content code{background:#f1f1f1;padding:2px 4px;border-radius:3px;color:#333}
 .reset-box.compact{padding:8px !important;min-height:60px !important;border-width:1px !important}
+
+/* RTL direction toggle button */
+.rtl-toggle-btn{background:none;border:none;cursor:pointer;font-size:12px;opacity:0.5;z-index:10;padding:2px;position:absolute;top:6px;right:25px}
+.rtl-toggle-btn:hover{opacity:1}
+.source-text[dir="rtl"],.source-input[dir="rtl"],.translation-input[dir="rtl"]{text-align:right}
+.source-text[dir="ltr"],.source-input[dir="ltr"],.translation-input[dir="ltr"]{text-align:left}
+.source-text[dir="auto"],.source-input[dir="auto"],.translation-input[dir="auto"]{text-align:start}
+
+/* Prevent tooltip overflow on very small screens */
+@media (max-width: 768px) {
+  .scroll-buttons {
+    bottom: 10px;
+    right: 10px;
+  }
+  
+  .scroll-btn:hover::after,
+  .save-btn:hover::after {
+    right: calc(100% + 5px);
+    font-size: 11px;
+    padding: 3px 6px;
+  }
+  
+  .scroll-btn:hover::before,
+  .save-btn:hover::before {
+    right: -4px;
+  }
+}
 </style>
 </head>
 <body>
@@ -130,6 +157,7 @@ let originalTargetValues={}
 let itemLocks={}
 let filteredTargetData=null
 let missingKeys=[], extraKeys=[], typeMismatches=[]
+let textDirections={} // Store text direction per path
 
 // Get references to upload boxes
 const sourceBox=document.getElementById('sourceBox')
@@ -355,6 +383,11 @@ function loadFiles(){
     originalSourceValues[item.path]=sourceVal
     lastSavedSourceValues[item.path]=sourceVal
     
+    // Initialize text direction
+    if(!textDirections[item.path]) {
+      textDirections[item.path] = 'auto';
+    }
+    
     // Get value from target if it exists and type matches
     let targetVal=getValue(targetData,item.path)
     if(targetVal!==undefined && typeof targetVal===keyMap[item.path]){
@@ -501,16 +534,19 @@ function renderEditor(){
     let isTargetChanged=originalTargetValue!==undefined && 
                        targetVal!==originalTargetValue
     
+    // Get text direction for this item
+    let dir = textDirections[item.path] || 'auto';
+    
     if(item.type==='string'){
       let sourceContent,sourceClasses
       if(isLocked){
         sourceClasses='source-text'
         if(isSourceChangedForHighlight) sourceClasses+=' changed'
-        sourceContent=`<div class="${sourceClasses}">${escapeHtml(currentSourceValue)}${item.isArray?`<span class="array-indicator">[${item.index}]</span>`:''}<div class="key-path">${item.path}</div></div>`
+        sourceContent=`<div class="${sourceClasses}" dir="${dir}">${escapeHtml(currentSourceValue)}${item.isArray?`<span class="array-indicator">[${item.index}]</span>`:''}<div class="key-path">${item.path}</div></div>`
       }else{
         sourceClasses='source-input'
         if(isSourceChangedForHighlight) sourceClasses+=' changed'
-        sourceContent=`<textarea class="${sourceClasses}" data-path="${escapeHtml(item.path)}" oninput="updateSource(this,'${item.path}')">${escapeHtml(currentSourceValue)}</textarea><div class="key-path">${item.path}</div>`
+        sourceContent=`<textarea class="${sourceClasses}" data-path="${escapeHtml(item.path)}" oninput="updateSource(this,'${item.path}')" dir="${dir}">${escapeHtml(currentSourceValue)}</textarea><div class="key-path">${item.path}</div>`
       }
       
       let targetClasses='translation-input'
@@ -519,13 +555,17 @@ function renderEditor(){
       html+=`<div class="translation-item">
         <div class="source-area">
           ${sourceContent}
+          <button class="rtl-toggle-btn" title="Toggle text direction (Auto/RTL/LTR)" onclick="toggleTextDirection('${item.path}')">↔️</button>
           <button class="lock-btn" title="${isLocked?'Unlock source':'Lock source'}" onclick="toggleSourceLock('${item.path}')">${isLocked?'🔒':'🔓'}</button>
         </div>
-        <textarea class="${targetClasses}" data-path="${escapeHtml(item.path)}" placeholder="Translation..." oninput="updateTranslation(this,'${item.path}')">${targetVal!==undefined?escapeHtml(targetVal):''}</textarea>
+        <div style="position:relative">
+          <textarea class="${targetClasses}" data-path="${escapeHtml(item.path)}" placeholder="Translation..." oninput="updateTranslation(this,'${item.path}')" dir="${dir}">${targetVal!==undefined?escapeHtml(targetVal):''}</textarea>
+          <button class="rtl-toggle-btn" style="right:25px" title="Toggle text direction (Auto/RTL/LTR)" onclick="toggleTextDirection('${item.path}')">↔️</button>
+        </div>
       </div>`
     }else{
       html+=`<div class="translation-item">
-        <div class="source-text">${currentSourceValue}<div class="key-path">${item.path} (${item.type})</div></div>
+        <div class="source-text" dir="auto">${currentSourceValue}<div class="key-path">${item.path} (${item.type})</div></div>
         <div style="padding:6px;color:#666;font-style:italic;font-size:13px">Not editable - ${item.type}</div>
       </div>`
     }
@@ -549,6 +589,24 @@ function renderEditor(){
   // Update save source button visibility
   document.getElementById('floatSaveSourceBtn').style.display=hasSourceChanges?'flex':'none'
   sourceChanged=hasSourceChanges
+}
+
+function toggleTextDirection(path) {
+  // Cycle through directions: auto -> rtl -> ltr -> auto
+  const currentDir = textDirections[path] || 'auto';
+  const nextDir = currentDir === 'auto' ? 'rtl' : currentDir === 'rtl' ? 'ltr' : 'auto';
+  textDirections[path] = nextDir;
+  
+  // Update the direction for both source and target textareas
+  document.querySelectorAll(`[data-path="${path}"]`).forEach(element => {
+    element.setAttribute('dir', nextDir);
+  });
+  
+  // Also update source text div if it exists
+  const sourceDiv = document.querySelector(`.source-text[dir]`);
+  if (sourceDiv && sourceDiv.closest('.source-area')?.querySelector(`.lock-btn[onclick*="${path}"]`)) {
+    sourceDiv.setAttribute('dir', nextDir);
+  }
 }
 
 function updateTranslation(textarea,path){
@@ -722,6 +780,7 @@ function resetAll(){
   lastSavedSourceValues={}
   originalTargetValues={}
   itemLocks={}
+  textDirections={}
   missingKeys=[]
   extraKeys=[]
   typeMismatches=[]
