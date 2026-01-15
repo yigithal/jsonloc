@@ -79,6 +79,49 @@ input[type="file"]:disabled{cursor:not-allowed}
 .collapsible-content code{background:#f1f1f1;padding:2px 4px;border-radius:3px;color:#333}
 .reset-box.compact{padding:8px !important;min-height:60px !important;border-width:1px !important}
 
+/* Error highlighting styles */
+.source-text.missing, .source-input.missing, .translation-input.missing {
+  border-color: #dc3545 !important;
+  background-color: #fff5f5 !important;
+  color: #dc3545 !important;
+}
+
+.source-text.extra, .source-input.extra, .translation-input.extra {
+  border-color: #6c757d !important;
+  background-color: #f8f9fa !important;
+  color: #6c757d !important;
+}
+
+.source-text.type-mismatch, .source-input.type-mismatch, .translation-input.type-mismatch {
+  border-color: #ffc107 !important;
+  background-color: #fff9e6 !important;
+  color: #856404 !important;
+}
+
+.error-indicator {
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 3px;
+  margin-top: 4px;
+  display: inline-block;
+  font-weight: bold;
+}
+
+.error-indicator.missing {
+  background-color: #dc3545;
+  color: white;
+}
+
+.error-indicator.extra {
+  background-color: #6c757d;
+  color: white;
+}
+
+.error-indicator.type-mismatch {
+  background-color: #ffc107;
+  color: #856404;
+}
+
 /* Prevent tooltip overflow on very small screens */
 @media (max-width: 768px) {
   .scroll-buttons {
@@ -150,6 +193,9 @@ let originalTargetValues={}
 let itemLocks={}
 let filteredTargetData=null
 let missingKeys=[], extraKeys=[], typeMismatches=[]
+
+// Track which items have issues
+let itemIssues={} // path -> { type: 'missing'|'extra'|'type-mismatch', message: string }
 
 // Get references to upload boxes
 const sourceBox=document.getElementById('sourceBox')
@@ -347,13 +393,16 @@ function loadFiles(){
   missingKeys=[]
   extraKeys=[]
   typeMismatches=[]
+  itemIssues={}
   
   // Check for mismatches
   for(let k in keyMap){
     if(!targetMap.hasOwnProperty(k)){
       missingKeys.push(k)
+      itemIssues[k]={type:'missing',message:'Missing in target'}
     }else if(keyMap[k]!==targetMap[k]){
       typeMismatches.push(`"${k}": source is ${keyMap[k]}, target is ${targetMap[k]}`)
+      itemIssues[k]={type:'type-mismatch',message:`Type mismatch: source is ${keyMap[k]}, target is ${targetMap[k]}`}
     }
   }
   
@@ -381,10 +430,33 @@ function loadFiles(){
       setValue(filteredTargetData,item.path,targetVal)
       originalTargetValues[item.path]=targetVal
     }else{
-      // Use source value for missing/mismatched keys
-      setValue(filteredTargetData,item.path,sourceVal)
-      originalTargetValues[item.path]=sourceVal
+      // For missing keys: Use source value
+      // For type mismatches: Use target value (even if type is wrong) but mark as error
+      if(!targetMap.hasOwnProperty(item.path)){
+        // Missing key - use source value
+        setValue(filteredTargetData,item.path,sourceVal)
+        originalTargetValues[item.path]=sourceVal
+      }else{
+        // Type mismatch - use target value but mark as error
+        setValue(filteredTargetData,item.path,targetVal)
+        originalTargetValues[item.path]=targetVal
+      }
     }
+  })
+  
+  // For extra keys in target, create special items
+  extraKeys.forEach(path=>{
+    let targetVal=getValue(targetData,path)
+    items.push({
+      path: path,
+      key: path,
+      value: targetVal,
+      type: typeof targetVal,
+      isArray: false,
+      isExtra: true // Mark as extra key
+    })
+    itemIssues[path]={type:'extra',message:'Extra in target'}
+    originalTargetValues[path]=targetVal
   })
   
   // Replace targetData with filtered version
@@ -501,17 +573,9 @@ function detectTextDirection(text) {
   const cleanText = text.replace(/[^\p{L}\p{N}]/gu, '');
   if (!cleanText) return 'ltr';
   
-  // Check for RTL characters (Arabic, Hebrew, Persian, Urdu, etc.)
-  // RTL character ranges based on Unicode:
-  // Hebrew: \u0590-\u05FF
-  // Arabic: \u0600-\u06FF
-  // Persian/Arabic Extended: \u0750-\u077F, \u08A0-\u08FF
-  // Syriac: \u0700-\u074F
-  // Thaana: \u0780-\u07BF
-  // N'Ko: \u07C0-\u07FF
+  // Check for RTL characters
   const rtlRegex = /[\u0590-\u05FF\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\u0700-\u074F\u0780-\u07BF\u07C0-\u07FF]/;
   
-  // If text contains RTL characters, return 'rtl', otherwise 'ltr'
   return rtlRegex.test(cleanText) ? 'rtl' : 'ltr';
 }
 
@@ -521,13 +585,21 @@ function renderEditor(){
   
   let hasSourceChanges=false
   
+  // Sort items: source items first, then extra target items
+  items.sort((a, b) => {
+    if (a.isExtra && !b.isExtra) return 1;
+    if (!a.isExtra && b.isExtra) return -1;
+    return 0;
+  });
+  
   items.forEach((item,i)=>{
     let targetVal=getValue(targetData,item.path)
-    let isLocked=itemLocks[item.path]
+    let isLocked=itemLocks[item.path] || false
     let currentSourceValue=getValue(sourceData,item.path)
     let lastSavedValue=lastSavedSourceValues[item.path]
     let originalSourceValue=originalSourceValues[item.path]
     let originalTargetValue=originalTargetValues[item.path]
+    let issue=itemIssues[item.path]
     
     // Check if value has changed from last saved (for Save button)
     let isSourceChangedForSave=lastSavedValue!==undefined && 
@@ -542,35 +614,81 @@ function renderEditor(){
     let isTargetChanged=originalTargetValue!==undefined && 
                        targetVal!==originalTargetValue
     
-    // Detect text direction for source and target separately
+    // Detect text direction
     let sourceDir = detectTextDirection(currentSourceValue);
     let targetDir = detectTextDirection(targetVal);
     
     if(item.type==='string'){
-      let sourceContent,sourceClasses
-      if(isLocked){
-        sourceClasses='source-text'
-        if(isSourceChangedForHighlight) sourceClasses+=' changed'
-        sourceContent=`<div class="${sourceClasses}" dir="${sourceDir}">${escapeHtml(currentSourceValue)}${item.isArray?`<span class="array-indicator">[${item.index}]</span>`:''}<div class="key-path">${item.path}</div></div>`
-      }else{
-        sourceClasses='source-input'
-        if(isSourceChangedForHighlight) sourceClasses+=' changed'
-        sourceContent=`<textarea class="${sourceClasses}" data-path="${escapeHtml(item.path)}" oninput="updateSource(this,'${item.path}')" dir="${sourceDir}">${escapeHtml(currentSourceValue)}</textarea><div class="key-path">${item.path}</div>`
+      let sourceContent,sourceClasses,sourceError=''
+      let targetClasses,sourceExtraClasses='',targetExtraClasses=''
+      
+      // Apply error classes
+      if(issue){
+        if(issue.type==='missing'){
+          targetExtraClasses+=' missing'
+          sourceError=`<div class="error-indicator missing">Missing in target</div>`
+        }else if(issue.type==='type-mismatch'){
+          sourceExtraClasses+=' type-mismatch'
+          targetExtraClasses+=' type-mismatch'
+          sourceError=`<div class="error-indicator type-mismatch">Type mismatch</div>`
+        }else if(issue.type==='extra'){
+          sourceExtraClasses+=' extra'
+          sourceError=`<div class="error-indicator extra">Extra in target</div>`
+        }
       }
       
-      let targetClasses='translation-input'
-      if(isTargetChanged) targetClasses+=' changed'
+      if(item.isExtra){
+        // This is an extra key in target (not in source)
+        sourceClasses='source-text extra'
+        sourceContent=`<div class="${sourceClasses}" dir="ltr"><em>Key not in source</em><div class="key-path">${item.path}</div></div>`
+        
+        targetClasses='translation-input'
+        if(isTargetChanged) targetClasses+=' changed'
+        targetClasses+=targetExtraClasses
+        
+        html+=`<div class="translation-item">
+          <div class="source-area">
+            ${sourceContent}
+            ${sourceError}
+          </div>
+          <textarea class="${targetClasses}" data-path="${escapeHtml(item.path)}" placeholder="Extra key in target..." oninput="updateTranslation(this,'${item.path}')" dir="${targetDir}">${targetVal!==undefined?escapeHtml(targetVal):''}</textarea>
+        </div>`
+      }else{
+        // Normal source key
+        if(isLocked){
+          sourceClasses='source-text'
+          if(isSourceChangedForHighlight) sourceClasses+=' changed'
+          sourceClasses+=sourceExtraClasses
+          sourceContent=`<div class="${sourceClasses}" dir="${sourceDir}">${escapeHtml(currentSourceValue)}${item.isArray?`<span class="array-indicator">[${item.index}]</span>`:''}<div class="key-path">${item.path}</div></div>`
+        }else{
+          sourceClasses='source-input'
+          if(isSourceChangedForHighlight) sourceClasses+=' changed'
+          sourceClasses+=sourceExtraClasses
+          sourceContent=`<textarea class="${sourceClasses}" data-path="${escapeHtml(item.path)}" oninput="updateSource(this,'${item.path}')" dir="${sourceDir}">${escapeHtml(currentSourceValue)}</textarea><div class="key-path">${item.path}</div>`
+        }
+        
+        targetClasses='translation-input'
+        if(isTargetChanged) targetClasses+=' changed'
+        targetClasses+=targetExtraClasses
+        
+        html+=`<div class="translation-item">
+          <div class="source-area">
+            ${sourceContent}
+            ${sourceError}
+            <button class="lock-btn" title="${isLocked?'Unlock source':'Lock source'}" onclick="toggleSourceLock('${item.path}')">${isLocked?'🔒':'🔓'}</button>
+          </div>
+          <textarea class="${targetClasses}" data-path="${escapeHtml(item.path)}" placeholder="${issue&&issue.type==='missing'?'Missing in target':'Translation...'}" oninput="updateTranslation(this,'${item.path}')" dir="${targetDir}">${targetVal!==undefined?escapeHtml(targetVal):''}</textarea>
+        </div>`
+      }
+    }else{
+      // Non-string type
+      let sourceExtraClasses=''
+      if(issue&&issue.type==='type-mismatch'){
+        sourceExtraClasses+=' type-mismatch'
+      }
       
       html+=`<div class="translation-item">
-        <div class="source-area">
-          ${sourceContent}
-          <button class="lock-btn" title="${isLocked?'Unlock source':'Lock source'}" onclick="toggleSourceLock('${item.path}')">${isLocked?'🔒':'🔓'}</button>
-        </div>
-        <textarea class="${targetClasses}" data-path="${escapeHtml(item.path)}" placeholder="Translation..." oninput="updateTranslation(this,'${item.path}')" dir="${targetDir}">${targetVal!==undefined?escapeHtml(targetVal):''}</textarea>
-      </div>`
-    }else{
-      html+=`<div class="translation-item">
-        <div class="source-text" dir="ltr">${currentSourceValue}<div class="key-path">${item.path} (${item.type})</div></div>
+        <div class="source-text ${sourceExtraClasses}" dir="ltr">${currentSourceValue}<div class="key-path">${item.path} (${item.type})</div></div>
         <div style="padding:6px;color:#666;font-style:italic;font-size:13px">Not editable - ${item.type}</div>
       </div>`
     }
@@ -605,10 +723,9 @@ function updateTranslation(textarea,path){
   let isChanged=originalValue!==undefined && value!==originalValue
   
   // Update textarea class
+  textarea.classList.remove('changed')
   if(isChanged){
     textarea.classList.add('changed')
-  }else{
-    textarea.classList.remove('changed')
   }
   
   // Update text direction based on content
@@ -634,10 +751,9 @@ function updateSource(textarea,path){
   let isChangedForSave=lastSavedValue!==undefined && currentValue!==lastSavedValue
   
   // Update textarea class for highlighting
+  textarea.classList.remove('changed')
   if(isChangedForHighlight){
     textarea.classList.add('changed')
-  }else{
-    textarea.classList.remove('changed')
   }
   
   // Update text direction based on content
@@ -647,6 +763,7 @@ function updateSource(textarea,path){
   // Check if any source has changed overall (for Save button)
   let hasSourceChanges=false
   items.forEach(item=>{
+    if(item.isExtra) return; // Skip extra target items
     let currentValue=getValue(sourceData,item.path)
     let lastSavedValue=lastSavedSourceValues[item.path]
     if(lastSavedValue!==undefined && currentValue!==lastSavedValue){
@@ -722,12 +839,16 @@ function saveSource(){
   
   // Lock all source fields
   items.forEach(item=>{
-    itemLocks[item.path]=true
+    if(!item.isExtra){
+      itemLocks[item.path]=true
+    }
   })
   
   // Update last saved values (for Save button logic)
   items.forEach(item=>{
-    lastSavedSourceValues[item.path]=getValue(sourceData,item.path)
+    if(!item.isExtra){
+      lastSavedSourceValues[item.path]=getValue(sourceData,item.path)
+    }
   })
   
   sourceChanged=false
@@ -778,6 +899,7 @@ function resetAll(){
   missingKeys=[]
   extraKeys=[]
   typeMismatches=[]
+  itemIssues={}
   
   // Clear file inputs
   document.getElementById('sourceFile').value=''
