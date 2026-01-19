@@ -4,377 +4,145 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;margin:20px}
-.container{display:flex;flex-direction:column;gap:15px}
-.upload-row{display:flex;gap:15px}
-.reset-box{width:120px;border:2px dashed #ccc;padding:15px;text-align:center;min-height:100px;display:none;flex-direction:column;justify-content:center;position:relative;transition:all 0.3s;background:#f8f9fa;border-radius:4px;cursor:pointer}
-.reset-box:hover{background:#e9ecef;border-color:#6c757d}
-.reset-box h3{margin:0 0 8px;font-size:16px;color:#495057}
-.upload-box{flex:1;border:2px dashed #ccc;padding:15px;text-align:center;min-height:100px;display:flex;flex-direction:column;justify-content:center;position:relative;transition:all 0.3s;cursor:pointer}
-.upload-box.compact{padding:8px !important;min-height:60px !important;border-width:1px !important}
-.upload-box.disabled{border-color:#e0e0e0;background:#f5f5f5;cursor:not-allowed}
-.upload-box.disabled h3,.upload-box.disabled div{color:#999}
-.upload-box h3{margin:0 0 8px;font-size:16px}
-.upload-box.compact h3{font-size:12px;margin:0 0 3px}
-.upload-box.compact div{font-size:11px}
-.upload-box.active{border-color:#0052cc;background:#f0f7ff}
-.upload-box.inactive{opacity:0.5;filter:grayscale(50%)}
-input[type="file"]{display:none}
-.btn{background:#0052cc;color:#fff;border:none;padding:6px 12px;border-radius:4px;cursor:pointer;margin:3px;font-size:13px}
-.btn:disabled{background:#ccc}
-.btn-secondary{background:#6c757d}
-.error{color:#d00;background:#fee;padding:8px;border-radius:4px;display:none}
-.warning{color:#856404;background:#fff3cd;padding:10px;border-radius:4px;display:none;margin:10px 0;border-left:4px solid #ffc107;max-height:400px;overflow-y:auto}
-.editor{display:none;border:1px solid #ddd;border-radius:4px;position:relative;margin-bottom:160px !important}
-.editor-header{display:grid;grid-template-columns:1fr 1fr;background:#f5f5f5;padding:8px;border-bottom:1px solid #ddd;font-size:13px;position:sticky;top:0;z-index:100;border-radius:4px 4px 0 0}
-.editor-header div{font-weight:bold}
-.translation-list{}
-.translation-item{display:grid;grid-template-columns:1fr 1fr;padding:10px;border-bottom:1px solid #eee;gap:10px;align-items:start}
-.translation-item:nth-child(even){background:#fafafa}
-.source-area{position:relative}
-.source-text{padding:6px;border-left:3px solid #0052cc;background:#f0f7ff;border-radius:4px;white-space:pre-wrap;word-break:break-word;transition:border-color 0.2s;font-size:13px;unicode-bidi:plaintext;text-align:start}
-.source-text.changed{border-left-color:#ff9800 !important;background:#fff8e1}
-.source-input{width:100%;padding:6px;border:1px solid #b3d4ff;border-radius:4px;resize:vertical;font-family:inherit;min-height:35px;box-sizing:border-box;font-size:13px;unicode-bidi:plaintext;text-align:start}
-.source-input.changed{border-color:#ff9800 !important;background:#fff8e1}
-.lock-btn{position:absolute;top:6px;right:6px;background:none;border:none;cursor:pointer;font-size:12px;opacity:0.5;z-index:10;padding:2px}
-.lock-btn:hover{opacity:1}
-.translation-input{width:100%;padding:6px;border:1px solid #ddd;border-radius:4px;resize:vertical;font-family:inherit;min-height:35px;transition:border-color 0.2s, background-color 0.2s;font-size:13px;unicode-bidi:plaintext;text-align:start}
-.translation-input:focus{outline:none;border-color:#0052cc;box-shadow:0 0 0 2px rgba(0,82,204,0.1)}
-.translation-input.changed{border-color:#ff9800 !important;background:#fff8e1}
-.key-path{font-family:monospace;font-size:11px;color:#666;padding:4px 0 0 0;margin-top:4px;border-top:1px dashed #ddd;unicode-bidi:plaintext;text-align:start}
-.array-indicator{color:#28a745;font-size:10px;margin-left:4px;background:#e8f5e9;padding:1px 4px;border-radius:8px}
-.action-buttons{display:flex;gap:8px;justify-content:center;margin:15px 0;padding-top:15px;border-top:1px solid #e9ecef}
-.status{text-align:center;padding:15px;color:#666}
-.file-info{font-size:11px;color:#666;margin-top:5px}
-.upload-box.compact .file-info{font-size:9px}
-.control-buttons{display:flex;gap:8px;justify-content:center;align-items:center;margin:10px 0}
-.scroll-buttons{position:fixed;bottom:20px;right:20px;display:flex;flex-direction:column;gap:6px;z-index:1000}
-.scroll-btn{width:32px;height:32px;border-radius:50%;background:#6c757d;color:white;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;box-shadow:0 1px 4px rgba(0,0,0,0.15);transition:all 0.2s;position:relative}
-.scroll-btn:hover{background:#5a6268;transform:scale(1.05)}
-.scroll-btn:hover::after{content:attr(title);position:absolute;background:#333;color:#fff;padding:4px 8px;border-radius:4px;font-size:12px;white-space:nowrap;right:calc(100% + 10px);top:50%;transform:translateY(-50%);z-index:1001;pointer-events:none}
-.scroll-btn:hover::before{content:'';position:absolute;right:-5px;top:50%;transform:translateY(-50%);border:5px solid transparent;border-left-color:#333;pointer-events:none}
-.save-btn{width:32px;height:32px;border-radius:50%;background:#0052cc;color:white;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 1px 4px rgba(0,0,0,0.15);transition:all 0.2s;position:relative}
-.save-btn:hover{background:#0041a8;transform:scale(1.05)}
-.save-btn:hover::after{content:attr(title);position:absolute;background:#333;color:#fff;padding:4px 8px;border-radius:4px;font-size:12px;white-space:nowrap;right:calc(100% + 10px);top:50%;transform:translateY(-50%);z-index:1001;pointer-events:none}
-.save-btn:hover::before{content:'';position:absolute;right:-5px;top:50%;transform:translateY(-50%);border:5px solid transparent;border-left-color:#333;pointer-events:none}
-.save-btn.save-source{background:#28a745}
-.save-btn.save-source:hover{background:#218838}
-.load-btn-row{display:flex;justify-content:center;margin-top:10px}
-.structure-info{padding:10px;background:#e8f4fd;border-radius:4px;margin-top:10px;font-size:12px;max-height:200px;overflow-y:auto}
-.structure-info h4{margin:0 0 5px 0;color:#0052cc}
-.structure-info ul{margin:0;padding-left:20px}
-.structure-info li{margin:2px 0}
-.toggle-list-btn{background:none;border:none;color:#0052cc;cursor:pointer;font-size:11px;padding:2px 5px;margin-left:5px;text-decoration:underline}
-.toggle-list-btn:hover{color:#0041a8}
-.key-count{font-weight:normal;font-size:11px;color:#6c757d;margin-left:5px}
-.collapsible-section{margin-bottom:10px}
-.collapsible-header{display:flex;justify-content:space-between;align-items:center;cursor:pointer;padding:5px;background:#e9ecef;border-radius:4px}
-.collapsible-header:hover{background:#dee2e6}
-.collapsible-content{max-height:0;overflow:hidden;transition:max-height 0.3s ease;background:#fff;border-radius:0 0 4px 4px}
-.collapsible-content.expanded{max-height:200px;overflow-y:auto !important;padding:8px}
-.collapsible-icon{transition:transform 0.3s}
-.collapsible-icon.expanded{transform:rotate(180deg)}
-.collapsible-content ul{margin:0;padding-left:20px;max-height:180px;overflow-y:auto}
-.collapsible-content li{margin:3px 0;padding:3px;font-family:monospace;font-size:11px;word-break:break-all}
-.collapsible-content code{background:#f1f1f1;padding:2px 4px;border-radius:3px;color:#333}
-.reset-box.compact{padding:8px !important;min-height:60px !important;border-width:1px !important}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;margin:20px;transition:background-color 0.3s,color 0.3s}.container{display:flex;flex-direction:column;gap:10px}.upload-row{display:flex;gap:15px}.reset-box{width:120px;border:2px dashed #ccc;padding:15px;text-align:center;min-height:100px;display:none;flex-direction:column;justify-content:center;position:relative;transition:all 0.3s;background:#f8f9fa;border-radius:4px;cursor:pointer}.reset-box:hover{background:#e9ecef;border-color:#6c757d}.reset-box h3{margin:0 0 8px;font-size:16px;color:#495057}.upload-box{flex:1;border:2px dashed #ccc;padding:15px;text-align:center;min-height:100px;display:flex;flex-direction:column;justify-content:center;position:relative;transition:all 0.3s;cursor:pointer}.upload-box.compact{padding:8px !important;min-height:60px !important;border-width:1px !important}.upload-box.disabled{border-color:#e0e0e0;background:#f5f5f5;cursor:not-allowed}.upload-box.disabled h3,.upload-box.disabled div{color:#999}.upload-box h3{margin:0 0 8px;font-size:16px}.upload-box.compact h3{font-size:12px;margin:0 0 3px}.upload-box.compact div{font-size:11px}.upload-box.active{border-color:#0052cc;background:#f0f7ff}.upload-box.inactive{opacity:0.5;filter:grayscale(50%)}input[type="file"]{display:none}.btn{background:#0052cc;color:#fff;border:none;padding:6px 12px;border-radius:4px;cursor:pointer;margin:3px;font-size:13px}.btn:disabled{background:#ccc}.btn-secondary{background:#6c757d}.btn-success{background:#28a745}.btn-warning{background:#ffc107;color:#212529}.btn-danger{background:#dc3545}.btn-small{font-size:11px;padding:4px 8px}.error{color:#d00;background:#fee;padding:8px;border-radius:4px;display:none;margin:0 0 10px 0}.warning{color:#856404;background:#fff3cd;padding:10px;border-radius:4px;display:none;margin:0;border-left:4px solid #ffc107;max-height:400px;overflow-y:auto}.editor{display:none;border:1px solid #ddd;border-radius:4px;position:relative;margin-bottom:230px !important}.editor-header{display:grid;grid-template-columns:1fr 1fr;background:#f5f5f5;padding:8px;border-bottom:1px solid #ddd;font-size:13px;position:sticky;top:0;z-index:100;border-radius:4px 4px 0 0}.editor-header div{font-weight:bold}.translation-list{}.translation-item{display:grid;grid-template-columns:1fr 1fr;padding:10px;border-bottom:1px solid #eee;gap:10px;align-items:start}.translation-item:nth-child(even){background:#fafafa}.source-area{position:relative}.source-text{padding:6px;border-left:3px solid #0052cc;background:#f0f7ff;border-radius:4px;white-space:pre-wrap;word-break:break-word;transition:border-color 0.2s;font-size:13px;unicode-bidi:plaintext;text-align:start}.source-text.changed{border-left-color:#ff9800 !important;background:#fff8e1}.source-input{width:100%;padding:6px;border:1px solid #b3d4ff;border-radius:4px;resize:vertical;font-family:inherit;min-height:35px;box-sizing:border-box;font-size:13px;unicode-bidi:plaintext;text-align:start}.source-input.changed{border-color:#ff9800 !important;background:#fff8e1}.lock-btn{position:absolute;top:6px;right:6px;background:none;border:none;cursor:pointer;font-size:12px;opacity:0.5;z-index:10;padding:2px}.lock-btn:hover{opacity:1}.translation-input{width:100%;padding:6px;border:1px solid #ddd;border-radius:4px;resize:vertical;font-family:inherit;min-height:35px;transition:border-color 0.2s,background-color 0.2s;font-size:13px;unicode-bidi:plaintext;text-align:start}.translation-input:focus{outline:none;border-color:#0052cc;box-shadow:0 0 0 2px rgba(0,82,204,0.1)}.translation-input.changed{border-color:#ff9800 !important;background:#fff8e1}.key-path{font-family:monospace;font-size:11px;color:#666;padding:4px 0 0 0;margin-top:4px;border-top:1px dashed #ddd;unicode-bidi:plaintext;text-align:start}.array-indicator{color:#28a745;font-size:10px;margin-left:4px;background:#e8f5e9;padding:1px 4px;border-radius:8px}.action-buttons{display:flex;gap:8px;justify-content:center;margin:15px 0;padding-top:15px;border-top:1px solid #e9ecef}.status{text-align:center;padding:15px;color:#666}.file-info{font-size:11px;color:#666;margin-top:5px}.upload-box.compact .file-info{font-size:9px}.control-buttons{display:flex;gap:8px;justify-content:center;align-items:center;margin:10px 0}.scroll-buttons{position:fixed;bottom:20px;right:20px;display:flex;flex-direction:column;gap:6px;z-index:1000}.scroll-btn{width:32px;height:32px;border-radius:50%;background:#6c757d;color:white;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;box-shadow:0 1px 4px rgba(0,0,0,0.15);transition:all 0.2s;position:relative}.scroll-btn:hover{background:#5a6268;transform:scale(1.05)}.save-btn{width:32px;height:32px;border-radius:50%;background:#0052cc;color:white;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 1px 4px rgba(0,0,0,0.15);transition:all 0.2s;position:relative}.save-btn:hover{background:#0041a8;transform:scale(1.05)}.save-btn.save-source{background:#28a745}.save-btn.save-source:hover{background:#218838}.csv-btn{width:32px;height:32px;border-radius:50%;background:#6c757d;color:white;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;box-shadow:0 1px 4px rgba(0,0,0,0.15);transition:all 0.2s;position:relative}.csv-btn:hover{background:#5a6268;transform:scale(1.05)}.load-btn-row{display:flex;justify-content:center;margin-top:10px}.structure-info{padding:10px;background:#e8f4fd;border-radius:4px;margin-top:10px;font-size:12px;max-height:200px;overflow-y:auto}.structure-info h4{margin:0 0 5px 0;color:#0052cc}.structure-info ul{margin:0;padding-left:20px}.structure-info li{margin:2px 0}.toggle-list-btn{background:none;border:none;color:#0052cc;cursor:pointer;font-size:11px;padding:2px 5px;margin-left:5px;text-decoration:underline}.toggle-list-btn:hover{color:#0041a8}.key-count{font-weight:normal;font-size:11px;color:#6c757d;margin-left:5px}.collapsible-section{margin-bottom:10px}.collapsible-header{display:flex;justify-content:space-between;align-items:center;cursor:pointer;padding:5px;background:#e9ecef;border-radius:4px}.collapsible-header:hover{background:#dee2e6}.collapsible-content{max-height:0;overflow:hidden;transition:max-height 0.3s ease;background:#fff;border-radius:0 0 4px 4px}.collapsible-content.expanded{max-height:200px;overflow-y:auto !important;padding:8px}.collapsible-icon{transition:transform 0.3s}.collapsible-icon.expanded{transform:rotate(180deg)}.collapsible-content ul{margin:0;padding-left:20px;max-height:180px;overflow-y:auto}.collapsible-content li{margin:3px 0;padding:3px;font-family:monospace;font-size:11px;word-break:break-all}.collapsible-content code{background:#f1f1f1;padding:2px 4px;border-radius:3px;color:#333}.reset-box.compact{padding:8px !important;min-height:60px !important;border-width:1px !important}.source-text.missing,.source-input.missing,.translation-input.missing{border-color:#dc3545 !important;background-color:#fff5f5 !important;color:#dc3545 !important}.source-text.empty,.source-input.empty,.translation-input.empty{border-color:#fd7e14 !important;background-color:#fff3e6 !important;color:#fd7e14 !important}.source-text.extra,.source-input.extra,.translation-input.extra{border-color:#ffc107 !important;background-color:#fff9e6 !important;color:#856404 !important}.source-text.type-mismatch,.source-input.type-mismatch,.translation-input.type-mismatch{border-color:#17a2b8 !important;background-color:#e6f9ff !important;color:#17a2b8 !important}.source-text.exact-match,.source-input.exact-match,.translation-input.exact-match{border-color:#9c27b0 !important;background-color:#f3e5f5 !important}.error-indicator{font-size:10px;padding:2px 6px;border-radius:3px;margin-top:4px;display:inline-block;font-weight:bold}.error-indicator.missing{background-color:#dc3545;color:white}.error-indicator.empty{background-color:#fd7e14;color:white}.error-indicator.extra{background-color:#ffc107;color:#856404}.error-indicator.type-mismatch{background-color:#17a2b8;color:white}.error-indicator.exact-match{background-color:#9c27b0;color:white}.tooltip{position:relative;display:inline-block}.tooltip .tooltiptext{visibility:hidden;width:300px;background-color:#333;color:#fff;text-align:center;border-radius:6px;padding:8px;position:absolute;z-index:1001;bottom:125%;left:50%;transform:translateX(-50%);font-size:12px;white-space:pre-line;pointer-events:none}.tooltip .tooltiptext::after{content:"";position:absolute;top:100%;left:50%;margin-left:-5px;border-width:5px;border-style:solid;border-color:#333 transparent transparent transparent}.tooltip:hover .tooltiptext{visibility:visible}.changelog-header{display:grid;grid-template-columns:1fr auto;background:#f5f5f5;padding:8px;border:1px solid #ddd;border-radius:4px 4px 0 0;font-size:13px;cursor:pointer;margin-top:-1px}.changelog-header:hover{background:#e9ecef}.changelog-title{font-weight:bold;color:#495057;display:flex;align-items:center;gap:8px}.changelog-count{background-color:#6c757d;color:white;padding:2px 6px;border-radius:10px;font-size:11px;font-weight:normal}.changelog-toggle-btn{background:#6c757d;color:white;border:none;cursor:pointer;font-size:12px;padding:2px 10px;border-radius:4px;min-width:50px;transition:background 0.2s}.changelog-toggle-btn:hover{background:#5a6268}.changelog-content{max-height:0;overflow:hidden;transition:max-height 0.3s ease;background-color:white;border:1px solid #ddd;border-top:none;border-radius:0 0 4px 4px}.changelog-content.expanded{max-height:200px;overflow-y:auto}.changelog-list{margin:0;padding:8px;font-size:12px}.changelog-item{margin:3px 0;padding:3px 0;border-bottom:1px dotted #dee2e6;color:#495057}.changelog-item:last-child{border-bottom:none}.changelog-time{color:#6c757d;font-size:11px;margin-right:8px;display:inline-block;min-width:45px}.changelog-text{color:#212529}.changelog-source{color:#6c757d;font-weight:500}.changelog-target{color:#6c757d;font-weight:500}.changelog-load{color:#6c757d}.changelog-error{color:#6c757d;font-weight:500}.temp-message{position:fixed;top:20px;left:50%;transform:translateX(-50%) translateY(-20px);background:#6c757d;color:white;padding:10px 20px;border-radius:4px;box-shadow:0 2px 8px rgba(0,0,0,0.2);z-index:10000;opacity:0;transition:all 0.3s ease;pointer-events:none;max-width:400px;text-align:center;font-size:14px;font-weight:500}.temp-message.show{opacity:1;transform:translateX(-50%) translateY(0)}.temp-message.info,.temp-message.success,.temp-message.warning{background:#6c757d;color:white}.file-info-display{font-weight:normal;font-size:12px;color:#666;margin-left:8px}.file-info-display.source{color:#6c757d}.file-info-display.target{color:#6c757d}.import-export-toolbar{display:none;margin-bottom:0}.toolbar-header{display:grid;grid-template-columns:1fr auto;background:#f5f5f5;padding:8px;border:1px solid #ddd;border-radius:4px 4px 0 0;font-size:13px;cursor:pointer}.toolbar-header:hover{background:#e9ecef}.toolbar-title{font-weight:bold;color:#495057;display:flex;align-items:center;gap:8px}.toolbar-toggle-btn{background:#6c757d;color:white;border:none;cursor:pointer;font-size:12px;padding:2px 10px;border-radius:4px;min-width:50px;transition:background 0.2s}.toolbar-toggle-btn:hover{background:#5a6268}.toolbar-content{max-height:0;overflow:hidden;transition:max-height 0.3s ease;background-color:white;border:1px solid #ddd;border-top:none;border-radius:0 0 4px 4px}.toolbar-content.expanded{max-height:200px;overflow-y:auto;padding:10px}.toolbar-buttons{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px}.toolbar-section{margin-top:8px;padding-top:8px;border-top:1px dashed #dee2e6}.toolbar-section h4{margin:0 0 6px 0;font-size:12px;color:#6c757d}.toolbar-btn{background:#6c757d;color:white;border:none;padding:6px 10px;border-radius:4px;cursor:pointer;font-size:12px;transition:background 0.2s}.toolbar-btn:hover{background:#5a6268}.toolbar-btn-warning{background:#6c757d;color:white}.format-selection{margin:10px 0;padding:8px;background:#f8f9fa;border-radius:4px;border:1px solid #dee2e6}.format-options{display:flex;flex-direction:column;gap:6px;margin-bottom:10px}.format-option{display:flex;align-items:center;gap:6px}.format-option input[type="radio"]{margin:0}.format-option label{font-size:12px;color:#495057;cursor:pointer}.format-note{font-size:11px;color:#6c757d;margin-top:4px;font-style:italic}.theme-toggle-btn{width:32px;height:32px;border-radius:50%;background:#6c757d;color:white;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;box-shadow:0 1px 4px rgba(0,0,0,0.15);transition:all 0.2s;position:relative}.theme-toggle-btn:hover{background:#5a6268;transform:scale(1.05)}.placeholder{background-color:#e6f7ff;border:1px solid #91d5ff;border-radius:2px;padding:0 2px;color:#0050b3;font-family:monospace;font-size:11px}.placeholder.missing{background-color:#fff2f0;border-color:#ffccc7;color:#cf1322}.length-warning{background-color:#fffbe6 !important;border-left-color:#ffc107 !important}.word-count{position:absolute;bottom:-18px;right:0;font-size:10px;color:#6c757d;background:white;padding:1px 4px;border-radius:2px;border:1px solid #dee2e6}.source-area,.translation-input-container{position:relative}.key-path-row{display:flex;justify-content:space-between;align-items:center;margin-top:4px;padding-top:4px;border-top:1px dashed #ddd}.key-path-text{font-family:monospace;font-size:11px;color:#666;unicode-bidi:plaintext;text-align:start}.key-path-lock-btn{background:none;border:none;cursor:pointer;font-size:11px;opacity:0.5;padding:2px 4px;border-radius:3px}.key-path-lock-btn:hover{opacity:1;background:#e9ecef}.key-path-copy-btn{background:none;border:none;cursor:pointer;font-size:11px;opacity:0.5;padding:2px 4px;border-radius:3px;margin-right:4px}.key-path-copy-btn:hover{opacity:1;background:#e9ecef}.key-path-return-btn{background:none;border:none;cursor:pointer;font-size:11px;opacity:0.5;padding:2px 4px;border-radius:3px;margin-right:4px}.key-path-return-btn:hover{opacity:1;background:#e9ecef}.ignore-warning-btn{background:none;border:none;cursor:pointer;font-size:11px;opacity:0.5;padding:2px 4px;border-radius:3px;margin-left:8px}.ignore-warning-btn:hover{opacity:1;background:#e9ecef}.error-indicator.type-mismatch,.translation-input.length-warning,.error-indicator.type-mismatch.length-warning{border-color:#ffc107 !important;background-color:#fff9e6 !important;color:#856404 !important}
 
-/* Error highlighting styles */
-.source-text.missing, .source-input.missing, .translation-input.missing {
-  border-color: #dc3545 !important;
-  background-color: #fff5f5 !important;
-  color: #dc3545 !important;
+/* FIXED TOOLTIP STYLES - APPEAR ON LEFT WITH !IMPORTANT */
+.scroll-btn:hover::after,
+.save-btn:hover::after,
+.csv-btn:hover::after,
+.theme-toggle-btn:hover::after {
+    content: attr(title) !important;
+    position: absolute !important;
+    background: #333 !important;
+    color: white !important;
+    padding: 8px 12px !important;
+    border-radius: 6px !important;
+    font-size: 12px !important;
+    white-space: nowrap !important;
+    z-index: 1001 !important;
+    pointer-events: none !important;
+    
+    /* Position to the LEFT of the button */
+    right: calc(100% + 15px) !important;
+    left: auto !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    width: auto !important;
+    min-width: 120px !important;
+    max-width: 200px !important;
+    text-align: center !important;
 }
 
-.source-text.extra, .source-input.extra, .translation-input.extra {
-  border-color: #6c757d !important;
-  background-color: #f8f9fa !important;
-  color: #6c757d !important;
+/* Arrow pointing RIGHT (to the button) */
+.scroll-btn:hover::before,
+.save-btn:hover::before,
+.csv-btn:hover::before,
+.theme-toggle-btn:hover::before {
+    content: '' !important;
+    position: absolute !important;
+    border: 6px solid transparent !important;
+    border-left-color: #333 !important;
+    z-index: 1001 !important;
+    pointer-events: none !important;
+    
+    /* Position arrow on left side of tooltip */
+    right: -12px !important;
+    left: auto !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
 }
 
-.source-text.type-mismatch, .source-input.type-mismatch, .translation-input.type-mismatch {
-  border-color: #ffc107 !important;
-  background-color: #fff9e6 !important;
-  color: #856404 !important;
+/* Dark theme tooltips */
+body.dark-theme .scroll-btn:hover::after,
+body.dark-theme .save-btn:hover::after,
+body.dark-theme .csv-btn:hover::after,
+body.dark-theme .theme-toggle-btn:hover::after {
+    background: #222 !important;
+    color: #fff !important;
 }
 
-.error-indicator {
-  font-size: 10px;
-  padding: 2px 6px;
-  border-radius: 3px;
-  margin-top: 4px;
-  display: inline-block;
-  font-weight: bold;
+body.dark-theme .scroll-btn:hover::before,
+body.dark-theme .save-btn:hover::before,
+body.dark-theme .csv-btn:hover::before,
+body.dark-theme .theme-toggle-btn:hover::before {
+    border-left-color: #222 !important;
 }
 
-.error-indicator.missing {
-  background-color: #dc3545;
-  color: white;
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    .scroll-buttons {
+        bottom: 15px !important;
+        right: 15px !important;
+    }
+    
+    .scroll-btn:hover::after,
+    .save-btn:hover::after,
+    .csv-btn:hover::after,
+    .theme-toggle-btn:hover::after {
+        right: calc(100% + 10px) !important;
+        font-size: 11px !important;
+        padding: 6px 8px !important;
+        min-width: 100px !important;
+        max-width: 150px !important;
+    }
+    
+    .scroll-btn:hover::before,
+    .save-btn:hover::before,
+    .csv-btn:hover::before,
+    .theme-toggle-btn:hover::before {
+        right: -10px !important;
+        border-width: 5px !important;
+    }
 }
 
-.error-indicator.extra {
-  background-color: #6c757d;
-  color: white;
-}
-
-.error-indicator.type-mismatch {
-  background-color: #ffc107;
-  color: #856404;
-}
-
-/* Tooltip styles */
-.tooltip {
-  position: relative;
-  display: inline-block;
-}
-
-.tooltip .tooltiptext {
-  visibility: hidden;
-  width: 300px;
-  background-color: #333;
-  color: #fff;
-  text-align: center;
-  border-radius: 6px;
-  padding: 8px;
-  position: absolute;
-  z-index: 1001;
-  bottom: 125%;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 12px;
-  white-space: pre-line;
-  pointer-events: none;
-}
-
-.tooltip .tooltiptext::after {
-  content: "";
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  margin-left: -5px;
-  border-width: 5px;
-  border-style: solid;
-  border-color: #333 transparent transparent transparent;
-}
-
-.tooltip:hover .tooltiptext {
-  visibility: visible;
-}
-
-/* Updated Changelog styles - matches editor header */
-.changelog-header {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  background: #f5f5f5;
-  padding: 8px;
-  border: 1px solid #ddd;
-  border-radius: 4px 4px 0 0;
-  font-size: 13px;
-  cursor: pointer;
-}
-
-.changelog-header:hover {
-  background: #e9ecef;
-}
-
-.changelog-title {
-  font-weight: bold;
-  color: #495057;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.changelog-count {
-  background-color: #6c757d;
-  color: white;
-  padding: 2px 6px;
-  border-radius: 10px;
-  font-size: 11px;
-  font-weight: normal;
-}
-
-/* Gray Show/Hide button */
-.changelog-toggle-btn {
-  background: #6c757d;
-  color: white;
+/* Add to fix copy button styling */
+.key-path-copy-btn, .key-path-return-btn {
+  background: none;
   border: none;
   cursor: pointer;
-  font-size: 12px;
-  padding: 2px 10px;
-  border-radius: 4px;
-  min-width: 50px;
-  transition: background 0.2s;
-}
-
-.changelog-toggle-btn:hover {
-  background: #5a6268;
-}
-
-.changelog-content {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.3s ease;
-  background-color: white;
-  border: 1px solid #ddd;
-  border-top: none;
-  border-radius: 0 0 4px 4px;
-}
-
-.changelog-content.expanded {
-  max-height: 200px;
-  overflow-y: auto;
-}
-
-.changelog-list {
-  margin: 0;
-  padding: 8px;
-  font-size: 12px;
-}
-
-.changelog-item {
-  margin: 3px 0;
-  padding: 3px 0;
-  border-bottom: 1px dotted #dee2e6;
-  color: #495057;
-}
-
-.changelog-item:last-child {
-  border-bottom: none;
-}
-
-.changelog-time {
-  color: #6c757d;
   font-size: 11px;
-  margin-right: 8px;
+  opacity: 0.7;
+  padding: 2px 4px;
+  border-radius: 3px;
+  margin-right: 4px;
   display: inline-block;
-  min-width: 45px;
+  vertical-align: middle;
 }
 
-.changelog-text {
-  color: #212529;
-}
-
-.changelog-source {
-  color: #6c757d;
-  font-weight: 500;
-}
-
-.changelog-target {
-  color: #6c757d;
-  font-weight: 500;
-}
-
-.changelog-load {
-  color: #6c757d;
-}
-
-.changelog-error {
-  color: #6c757d;
-  font-weight: 500;
-}
-
-/* Temporary message styles - Gray color palette */
-.temp-message {
-  position: fixed;
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%) translateY(-20px);
-  background: #6c757d;
-  color: white;
-  padding: 10px 20px;
-  border-radius: 4px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-  z-index: 10000;
-  opacity: 0;
-  transition: all 0.3s ease;
-  pointer-events: none;
-  max-width: 400px;
-  text-align: center;
-  font-size: 14px;
-  font-weight: 500;
-}
-
-.temp-message.show {
+.key-path-copy-btn:hover, .key-path-return-btn:hover {
   opacity: 1;
-  transform: translateX(-50%) translateY(0);
+  background: rgba(0, 0, 0, 0.1);
 }
 
-/* Remove color variations, all messages use same gray style */
-.temp-message.info,
-.temp-message.success,
-.temp-message.warning {
-  background: #6c757d;
-  color: white;
+body.dark-theme .key-path-copy-btn:hover,
+body.dark-theme .key-path-return-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
 }
 
-/* File info in editor header */
-.file-info-display {
-  font-weight: normal;
-  font-size: 12px;
-  color: #666;
-  margin-left: 8px;
+/* Fix button container alignment */
+.key-path-row > div:last-child {
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
-.file-info-display.source {
-  color: #6c757d;
-}
-
-.file-info-display.target {
-  color: #6c757d;
-}
-
-/* Prevent tooltip overflow on very small screens */
-@media (max-width: 768px) {
-  .scroll-buttons {
-    bottom: 10px;
-    right: 10px;
-  }
-  
-  .scroll-btn:hover::after,
-  .save-btn:hover::after {
-    right: calc(100% + 5px);
-    font-size: 11px;
-    padding: 3px 6px;
-  }
-  
-  .scroll-btn:hover::before,
-  .save-btn:hover::before {
-    right: -4px;
-  }
-  
-  .tooltip .tooltiptext {
-    width: 250px;
-    font-size: 11px;
-  }
-  
-  .temp-message {
-    max-width: 300px;
-    font-size: 12px;
-    padding: 8px 16px;
-  }
-  
-  .file-info-display {
-    font-size: 11px;
-    margin-left: 4px;
-  }
-}
+body.dark-theme{background-color:#1a1a1a;color:#e0e0e0}body.dark-theme .upload-box{background:#2d2d2d;border-color:#444;color:#e0e0e0}body.dark-theme .upload-box:hover{background:#3d3d3d;border-color:#666}body.dark-theme .upload-box.active{border-color:#4d8be8;background:#2a4365}body.dark-theme .upload-box.disabled{background:#2a2a2a;border-color:#444;color:#777}body.dark-theme .reset-box{background:#2d2d2d;border-color:#444;color:#e0e0e0}body.dark-theme .reset-box:hover{background:#3d3d3d;border-color:#666}body.dark-theme .editor{border-color:#444;background:#2d2d2d}body.dark-theme .editor-header{background:#333;border-color:#444;color:#e0e0e0}body.dark-theme .translation-item{border-color:#444}body.dark-theme .translation-item:nth-child(even){background:#252525}body.dark-theme .source-text{background:#2a4365;border-left-color:#4d8be8;color:#e0e0e0}body.dark-theme .source-text.changed{border-left-color:#e6a700 !important;background:#332b00}body.dark-theme .source-text.exact-match{border-left-color:#9c27b0 !important;background:#4a1a5a !important}body.dark-theme .source-input,body.dark-theme .translation-input{background:#333;border-color:#555;color:#e0e0e0}body.dark-theme .source-input:focus,body.dark-theme .translation-input:focus{border-color:#4d8be8;box-shadow:0 0 0 2px rgba(77,139,232,0.2)}body.dark-theme .source-input.changed,body.dark-theme .translation-input.changed{border-color:#e6a700 !important;background:#332b00}body.dark-theme .source-input.exact-match,body.dark-theme .translation-input.exact-match{border-color:#9c27b0 !important;background:#4a1a5a !important}body.dark-theme .key-path-text{color:#999}body.dark-theme .key-path-row{border-color:#444}body.dark-theme .key-path-lock-btn:hover{background:#333}body.dark-theme .key-path-copy-btn:hover{background:#333}body.dark-theme .key-path-return-btn:hover{background:#333}body.dark-theme .ignore-warning-btn:hover{background:#333}body.dark-theme .import-export-toolbar .toolbar-header{background:#333;border-color:#444;color:#e0e0e0}body.dark-theme .import-export-toolbar .toolbar-content{background:#2d2d2d;border-color:#444}body.dark-theme .changelog-header{background:#333;border-color:#444;color:#e0e0e0}body.dark-theme .changelog-content{background:#2d2d2d;border-color:#444}body.dark-theme .changelog-text{color:#e0e0e0}body.dark-theme .changelog-list{background:#2d2d2d}body.dark-theme .changelog-item{color:#e0e0e0;border-color:#444}body.dark-theme .changelog-time{color:#999}body.dark-theme .temp-message{background:#444;color:#fff}body.dark-theme .warning{background:#332b00;border-color:#665800;color:#ffd54f}body.dark-theme .warning h4{color:#ffd54f}body.dark-theme .warning .collapsible-header{background:#2a2300;color:#ffd54f}body.dark-theme .warning .collapsible-header:hover{background:#332b00}body.dark-theme .warning .collapsible-content{background:#1a1a1a;color:#e0e0e0}body.dark-theme .warning .collapsible-content code{background:#2d2d2d;color:#ffd54f;border:1px solid #444}body.dark-theme .warning .key-count{color:#ffd54f}body.dark-theme .error{background:#331a1a;color:#ff6b6b;border-color:#dc3545}body.dark-theme .placeholder{background-color:#003a6d;border-color:#005c99;color:#91d5ff}body.dark-theme .placeholder.missing{background-color:#331a1a;border-color:#662a2a;color:#ff6b6b}body.dark-theme .word-count{background:#333;border-color:#444;color:#999}body.dark-theme .format-selection{background:#2d2d2d;border-color:#444}body.dark-theme .format-option label{color:#e0e0e0}body.dark-theme .format-note{color:#999}body.dark-theme .collapsible-section .collapsible-header{background:#333;color:#e0e0e0}body.dark-theme .collapsible-section .collapsible-header:hover{background:#3d3d3d}body.dark-theme .collapsible-section .collapsible-content{background:#2d2d2d;color:#e0e0e0}body.dark-theme .collapsible-section .collapsible-content ul{background:#2d2d2d}body.dark-theme .collapsible-section .collapsible-content code{background:#1a1a1a;color:#e0e0e0;border:1px solid #444}body.dark-theme .key-count{color:#999}body.dark-theme .csv-btn{background:#5a6268;color:white}body.dark-theme .csv-btn:hover{background:#495057}body.dark-theme .array-indicator{background:#1a331a;color:#28a745;border:1px solid #28a745}body.dark-theme .error-indicator.missing{background-color:#dc3545;color:white}body.dark-theme .error-indicator.empty{background-color:#fd7e14;color:#212529}body.dark-theme .error-indicator.extra{background-color:#ffc107;color:#212529}body.dark-theme .error-indicator.type-mismatch{background-color:#17a2b8;color:white}body.dark-theme .error-indicator.exact-match{background-color:#9c27b0;color:white}body.dark-theme .translation-input.length-warning{background-color:#332b00 !important;border-color:#e6a700 !important;color:#ffd54f !important}body.dark-theme .error-indicator.type-mismatch.length-warning{background-color:#e6a700 !important;color:#212529 !important;border:1px solid #e6a700}body.dark-theme .source-text.missing,body.dark-theme .source-input.missing,body.dark-theme .translation-input.missing{border-color:#dc3545 !important;background-color:#331a1a !important;color:#ff6b6b !important}body.dark-theme .source-text.empty,body.dark-theme .source-input.empty,body.dark-theme .translation-input.empty{border-color:#fd7e14 !important;background-color:#332b00 !important;color:#ffc107 !important}body.dark-theme .source-text.extra,body.dark-theme .source-input.extra,body.dark-theme .translation-input.extra{border-color:#ffc107 !important;background-color:#332b00 !important;color:#ffd54f !important}body.dark-theme .source-text.type-mismatch,body.dark-theme .source-input.type-mismatch,body.dark-theme .translation-input.type-mismatch{border-color:#17a2b8 !important;background-color:#00323d !important;color:#6edff6 !important}body.dark-theme .source-text.exact-match,body.dark-theme .source-input.exact-match,body.dark-theme .translation-input.exact-match{border-color:#9c27b0 !important;background-color:#4a1a5a !important}body.dark-theme .status{color:#999}body.dark-theme .file-info{color:#999}body.dark-theme .file-info-display{color:#999}body.dark-theme .file-info-display.source{color:#4d8be8}body.dark-theme .file-info-display.target{color:#4d8be8}body.dark-theme .translation-item div[style*="color:#666"]{color:#999 !important}body.dark-theme .translation-item div[style*="font-style:italic"]{color:#999 !important}body.dark-theme .key-path-lock-btn{color:#999}body.dark-theme .key-path-lock-btn:hover{background:#444}body.dark-theme .toolbar-btn{background:#5a6268;color:white}body.dark-theme .toolbar-btn:hover{background:#495057}body.dark-theme .toolbar-toggle-btn{background:#5a6268;color:white}body.dark-theme .toolbar-toggle-btn:hover{background:#495057}body.dark-theme .toolbar-section{border-color:#444}body.dark-theme .toolbar-section h4{color:#999}body.dark-theme .changelog-toggle-btn{background:#5a6268;color:white}body.dark-theme .changelog-toggle-btn:hover{background:#495057}.target-info-line{display:flex;gap:8px;align-items:center;margin-top:4px;flex-wrap:wrap}.word-count-inline{font-size:10px;color:#6c757d;background:#f8f9fa;padding:2px 6px;border-radius:3px;border:1px solid #dee2e6}body.dark-theme .word-count-inline{background:#333;border-color:#444;color:#999}
 </style>
 </head>
 <body>
 <div class="container">
 <div class="upload-row">
-<div class="reset-box" id="resetBox" onmousedown="handleResetBoxClick()">
+<div class="reset-box" id="resetBox" onclick="resetAll()">
 <h3>Reset</h3>
 <div>Start over</div>
 </div>
-<div class="upload-box" id="sourceBox" onmousedown="handleSourceBoxClick(event)">
+<div class="upload-box" id="sourceBox" onclick="handleSourceBoxClick()">
 <h3>Source JSON</h3>
 <div>Click or drop JSON file</div>
 <input type="file" id="sourceFile" accept=".json,application/json">
 <div class="file-info" id="sourceInfo"></div>
 </div>
-<div class="upload-box" id="targetBox" onmousedown="handleTargetBoxClick(event)">
+<div class="upload-box" id="targetBox" onclick="handleTargetBoxClick()">
 <h3>Target JSON</h3>
 <div>Click or drop JSON file</div>
 <input type="file" id="targetFile" accept=".json,application/json">
@@ -383,6 +151,22 @@ input[type="file"]{display:none}
 </div>
 <div id="error" class="error"></div>
 <div id="warning" class="warning"></div>
+
+<!-- Import/Export Toolbar - Only for missing translations (JSON only) -->
+<div class="import-export-toolbar" id="importExportToolbar">
+  <div class="toolbar-header" onclick="toggleImportExportToolbar()">
+    <div class="toolbar-title">
+      <span>Missing Translations</span>
+    </div>
+    <button class="toolbar-toggle-btn" id="toolbarToggleBtn">Show</button>
+  </div>
+  <div class="toolbar-content" id="toolbarContent">
+    <div class="toolbar-buttons">
+      <button class="toolbar-btn" onclick="exportMissingTranslations()">Export Missing (JSON)</button>
+      <button class="toolbar-btn" onclick="importMissingTranslations()">Import Missing (JSON)</button>
+    </div>
+  </div>
+</div>
 
 <!-- Updated Changelog - Always visible header -->
 <div class="changelog" id="changelog">
@@ -411,67 +195,151 @@ input[type="file"]{display:none}
 </div>
 <div class="scroll-buttons" id="scrollButtons" style="display:none">
 <button class="save-btn save-source" id="floatSaveSourceBtn" onclick="saveSource()" title="Save Source JSON" style="display:none">💾</button>
-<button class="save-btn" id="floatSaveTargetBtn" onclick="saveTarget()" title="Save Target JSON">💾</button>
-<button class="scroll-btn" onclick="scrollToTop()" title="Scroll to top">↑</button>
-<button class="scroll-btn" onclick="scrollToBottom()" title="Scroll to bottom">↓</button>
+<button class="save-btn" id="floatSaveTargetBtn" onclick="saveTarget()" title="Save Target JSON" style="display:none">💾</button>
+<button class="scroll-btn" onclick="scrollToTop()" title="Scroll to top" style="display:none">↑</button>
+<button class="scroll-btn" onclick="scrollToBottom()" title="Scroll to bottom" style="display:none">↓</button>
+<button class="csv-btn" onclick="exportCSV()" title="Export CSV" style="display:none">📊</button>
+<button class="theme-toggle-btn" onclick="toggleTheme()" title="Toggle Dark/Light Theme">🌓</button>
 </div>
 </div>
 <script>
-let sourceData=null,targetData=null,items=[],keyMap={}
-let sourceFileName='source.json',targetFileName='translation.json'
-let sourceChanged=false
-let originalSourceValues={}
-let lastSavedSourceValues={}
-let originalTargetValues={}
-let itemLocks={}
-let filteredTargetData=null
-let missingKeys=[], extraKeys=[], typeMismatches=[]
+// ==================== STATE MANAGEMENT ====================
+let sourceData = null
+let targetData = null
+let items = []
+let keyMap = {}
+let sourceFileName = 'source.json'
+let targetFileName = 'translation.json'
+let sourceChanged = false
+let originalSourceValues = {}
+let lastSavedSourceValues = {}
+let originalTargetValues = {}
+let itemLocks = {} // path -> boolean (true = locked, false = unlocked)
+let filteredTargetData = null
+let missingKeys = []
+let extraKeys = []
+let typeMismatches = []
+let emptyKeys = []
+let exactMatchKeys = []
 let targetHasUnsavedChanges = false
 let initialLoadCompleted = false
 let isEditorLoaded = false
+let currentTheme = 'light'
 
-// Changelog array to store all session events
+// Warnings management
+let itemIssues = {} // path -> { type: string, message: string }
+let ignoredWarnings = {} // path -> { 'exact-match': boolean, 'length': boolean }
+let copiedStates = {} // path -> { previousValue: string, timestamp: number }
+
+// Changelog
 let changelog = []
 let changelogVisible = false
+let importExportToolbarVisible = false
 
-// Track which items have issues
-let itemIssues={} // path -> { type: 'missing'|'extra'|'type-mismatch', message: string }
+// ==================== DOM REFERENCES ====================
+const sourceBox = document.getElementById('sourceBox')
+const targetBox = document.getElementById('targetBox')
+const resetBox = document.getElementById('resetBox')
+const sourceFileInput = document.getElementById('sourceFile')
+const targetFileInput = document.getElementById('targetFile')
 
-// Get references to upload boxes
-const sourceBox=document.getElementById('sourceBox')
-const targetBox=document.getElementById('targetBox')
-const resetBox=document.getElementById('resetBox')
-const sourceFileInput=document.getElementById('sourceFile')
-const targetFileInput=document.getElementById('targetFile')
+// ==================== INITIALIZATION ====================
+// Setup drag and drop
+setupDragAndDrop(sourceBox, sourceFileInput)
+setupDragAndDrop(targetBox, targetFileInput)
 
-// Setup drag and drop events
-setupDragAndDrop(sourceBox,sourceFileInput)
-setupDragAndDrop(targetBox,targetFileInput)
+// Event listeners
+sourceFileInput.addEventListener('change', e => handleFile(e, 'source'))
+targetFileInput.addEventListener('change', e => handleFile(e, 'target'))
 
-// Add event listeners for file inputs
-document.getElementById('sourceFile').addEventListener('change',e=>handleFile(e,'source'))
-document.getElementById('targetFile').addEventListener('change',e=>handleFile(e,'target'))
+// Keyboard shortcuts
+document.addEventListener('keydown', handleKeyboardShortcuts)
 
-// Temporary message function
+// Load theme
+loadThemePreference()
+
+// Show theme toggle initially
+document.getElementById('scrollButtons').style.display = 'flex'
+
+// ==================== UTILITY FUNCTIONS ====================
+function escapeHtml(text) {
+  if (text === null || text === undefined) return ''
+  return text.toString()
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;')
+}
+
+function formatTextForDisplay(text) {
+  if (text === null || text === undefined) return ''
+  return text.toString()
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;')
+}
+
+function escapeAttr(text) {
+  if (text === null || text === undefined) return ''
+  return text.toString()
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;')
+}
+
 function showTempMessage(message, duration = 1000) {
   const tempMsg = document.getElementById('tempMessage')
   tempMsg.textContent = message
   tempMsg.className = 'temp-message'
   tempMsg.classList.add('show')
   
-  setTimeout(() => {
-    tempMsg.classList.remove('show')
-  }, duration)
+  setTimeout(() => tempMsg.classList.remove('show'), duration)
 }
 
-// Changelog functions
-function addChangelogEntry(type, title, details) {
+function showError(msg) {
+  const e = document.getElementById('error')
+  e.innerHTML = msg
+  e.style.display = 'block'
+  document.getElementById('warning').style.display = 'none'
+}
+
+// ==================== THEME FUNCTIONS ====================
+function toggleTheme() {
+  if (currentTheme === 'light') {
+    document.body.classList.add('dark-theme')
+    currentTheme = 'dark'
+    localStorage.setItem('theme', 'dark')
+    showTempMessage('Switched to dark theme')
+  } else {
+    document.body.classList.remove('dark-theme')
+    currentTheme = 'light'
+    localStorage.setItem('theme', 'light')
+    showTempMessage('Switched to light theme')
+  }
+}
+
+function loadThemePreference() {
+  const savedTheme = localStorage.getItem('theme')
+  if (savedTheme === 'dark') {
+    document.body.classList.add('dark-theme')
+    currentTheme = 'dark'
+  }
+}
+
+// ==================== CHANGELOG FUNCTIONS ====================
+function addChangelogEntry(type, title, details, filename = null) {
   const entry = {
     id: Date.now(),
-    timestamp: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
+    timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
     type: type,
     title: title,
-    details: details
+    details: details,
+    filename: filename
   }
   
   changelog.push(entry)
@@ -489,48 +357,32 @@ function updateChangelogDisplay() {
     return
   }
   
-  // Sort by most recent first
   const sortedLog = [...changelog].sort((a, b) => b.id - a.id)
-  
   let html = ''
+  
   sortedLog.forEach(entry => {
     let typeClass = ''
     let prefix = ''
+    let fileIndicator = entry.filename ? ` (${entry.filename})` : ''
     
     switch(entry.type) {
-      case 'source':
-        typeClass = 'changelog-source'
-        prefix = 'Source: '
-        break
-      case 'target':
-        typeClass = 'changelog-target'
-        prefix = 'Target: '
-        break
-      case 'load':
-        typeClass = 'changelog-load'
-        prefix = 'Load: '
-        break
-      case 'error':
-        typeClass = 'changelog-error'
-        prefix = 'Error: '
-        break
+      case 'source': typeClass = 'changelog-source'; prefix = 'Source'; break
+      case 'target': typeClass = 'changelog-target'; prefix = 'Target'; break
+      case 'load': typeClass = 'changelog-load'; prefix = entry.title.includes('Target') ? 'Load: Target' : 'Load: Source'; break
+      case 'error': typeClass = 'changelog-error'; prefix = 'Error'; break
+      case 'import': typeClass = 'changelog-source'; prefix = entry.title.includes('Target') ? 'Import: Target' : 'Import: Source'; break
+      case 'export': typeClass = 'changelog-target'; prefix = entry.title.includes('Target') || entry.title.includes('Exported') ? 'Export: Target' : 'Export: Source'; break
     }
     
-    // Create compact display
-    let displayText = prefix + entry.title
+    let displayText = prefix + fileIndicator + ': ' + entry.title
     if (entry.details && typeof entry.details === 'string') {
       displayText += ' - ' + entry.details
-    } else if (entry.details && Array.isArray(entry.details) && entry.details.length > 0) {
-      const changeCount = entry.details.filter(d => typeof d === 'string' && d.includes(':')).length
-      if (changeCount > 0) {
-        displayText += ` (${changeCount} change${changeCount !== 1 ? 's' : ''})`
-      }
     }
     
     html += `
       <div class="changelog-item">
         <span class="changelog-time">${entry.timestamp}</span>
-        <span class="changelog-text ${typeClass}">${escapeHtml(displayText)}</span>
+        <span class="changelog-text ${typeClass}">${displayText}</span>
       </div>
     `
   })
@@ -553,7 +405,1097 @@ function toggleChangelog() {
   }
 }
 
-// Update file name displays
+// ==================== IMPORT/EXPORT TOOLBAR ====================
+function toggleImportExportToolbar() {
+  const toolbarContent = document.getElementById('toolbarContent')
+  const toggleBtn = document.getElementById('toolbarToggleBtn')
+  
+  if (toolbarContent.classList.contains('expanded')) {
+    toolbarContent.classList.remove('expanded')
+    toggleBtn.textContent = 'Show'
+    importExportToolbarVisible = false
+  } else {
+    toolbarContent.classList.add('expanded')
+    toggleBtn.textContent = 'Hide'
+    importExportToolbarVisible = true
+  }
+}
+
+// ==================== LOCK/UNLOCK SYSTEM ====================
+function toggleSourceLock(path) {
+  // Toggle lock state
+  itemLocks[path] = !itemLocks[path]
+  
+  // Find the row for this path
+  const row = document.querySelector(`.translation-item [data-path="${escapeAttr(path)}"]`)?.closest('.translation-item')
+  if (!row) return
+  
+  const sourceArea = row.querySelector('.source-area')
+  const sourceVal = getValue(sourceData, path)
+  
+  if (itemLocks[path]) {
+    // Switch to locked mode (display div)
+    const textarea = sourceArea.querySelector('.source-input')
+    if (textarea) {
+      const displayDiv = document.createElement('div')
+      displayDiv.className = 'source-text'
+      displayDiv.setAttribute('dir', detectTextDirection(sourceVal))
+      displayDiv.innerHTML = highlightPlaceholders(sourceVal)
+      textarea.replaceWith(displayDiv)
+    }
+  } else {
+    // Switch to unlocked mode (textarea)
+    const displayDiv = sourceArea.querySelector('.source-text')
+    if (displayDiv) {
+      const textarea = document.createElement('textarea')
+      textarea.className = 'source-input'
+      textarea.setAttribute('data-path', escapeAttr(path))
+      textarea.setAttribute('dir', detectTextDirection(sourceVal))
+      textarea.value = sourceVal
+      textarea.oninput = () => updateSource(textarea, path)
+      displayDiv.replaceWith(textarea)
+      autoExpand(textarea)
+    }
+  }
+  
+  // Update lock button
+  const lockBtn = row.querySelector('.key-path-lock-btn')
+  if (lockBtn) {
+    lockBtn.innerHTML = itemLocks[path] ? '🔒' : '🔓'
+    lockBtn.title = itemLocks[path] ? 'Unlock source' : 'Lock source'
+  }
+  
+  // Update copy button visibility
+  updateCopyReturnButtonForRow(row, path)
+  
+  addChangelogEntry('source', `Source ${itemLocks[path] ? 'locked' : 'unlocked'}`, path, sourceFileName)
+}
+
+// ==================== COPY TO TARGET SYSTEM ====================
+function copySourceToTarget(path) {
+  const sourceVal = getValue(sourceData, path)
+  const currentTargetVal = getValue(targetData, path)
+  
+  // Store previous state for undo
+  if (!copiedStates[path]) {
+    copiedStates[path] = {
+      previousValue: currentTargetVal,
+      timestamp: Date.now()
+    }
+  }
+  
+  // Update target value
+  setValue(targetData, path, sourceVal)
+  
+  // Find and update the target textarea
+  const row = document.querySelector(`.translation-item textarea[data-path="${escapeAttr(path)}"]`)?.closest('.translation-item')
+  if (row) {
+    const targetTextarea = row.querySelector('.translation-input')
+    if (targetTextarea) {
+      targetTextarea.value = formatTextForDisplay(sourceVal)
+      
+      // Remove error classes
+      targetTextarea.classList.remove('changed', 'missing', 'empty')
+      
+      // Check for exact match (will be true after copy)
+      if (sourceVal && sourceVal.trim() !== '') {
+        if (shouldShowWarning(path, 'exact-match')) {
+          targetTextarea.classList.add('exact-match')
+        }
+        itemIssues[path] = { type: 'exact-match', message: 'Source and target are identical' }
+      }
+      
+      // Update word count
+      updateWordCount(targetTextarea, sourceVal)
+      
+      // Update copy/return button visibility
+      updateCopyReturnButtonForRow(row, path)
+      
+      autoExpand(targetTextarea)
+    }
+  }
+  
+  targetHasUnsavedChanges = true
+  addChangelogEntry('target', 'Copied source to target', path, targetFileName)
+}
+
+function returnToPreviousState(path) {
+  if (!copiedStates[path]) return
+  
+  const previousState = copiedStates[path]
+  const sourceVal = getValue(sourceData, path)
+  
+  // Restore previous value
+  setValue(targetData, path, previousState.previousValue)
+  
+  // Find and update the target textarea
+  const row = document.querySelector(`.translation-item textarea[data-path="${escapeAttr(path)}"]`)?.closest('.translation-item')
+  if (row) {
+    const targetTextarea = row.querySelector('.translation-input')
+    if (targetTextarea) {
+      targetTextarea.value = formatTextForDisplay(previousState.previousValue)
+      
+      // Clear all styling
+      targetTextarea.classList.remove('changed', 'missing', 'empty', 'exact-match')
+      
+      // Check what issue should be shown now
+      const targetVal = previousState.previousValue
+      if (!targetVal || targetVal.trim() === '') {
+        if (sourceVal && sourceVal.trim() !== '') {
+          targetTextarea.classList.add('empty')
+          itemIssues[path] = { type: 'empty', message: 'Empty in target' }
+        }
+      } else if (targetVal === sourceVal) {
+        if (shouldShowWarning(path, 'exact-match')) {
+          targetTextarea.classList.add('exact-match')
+        }
+        itemIssues[path] = { type: 'exact-match', message: 'Source and target are identical' }
+      } else {
+        delete itemIssues[path]
+      }
+      
+      // Update word count
+      updateWordCount(targetTextarea, targetVal)
+      
+      // Update copy/return button visibility
+      updateCopyReturnButtonForRow(row, path)
+      
+      autoExpand(targetTextarea)
+    }
+  }
+  
+  // Remove from copied states
+  delete copiedStates[path]
+  
+  targetHasUnsavedChanges = true
+  addChangelogEntry('target', 'Returned to previous state', path, targetFileName)
+}
+
+// FIXED: Update copy/return button function
+function updateCopyReturnButtonForRow(row, path) {
+  const sourceVal = getValue(sourceData, path);
+  const targetVal = getValue(targetData, path);
+  const buttonContainer = row.querySelector('.key-path-row > div:last-child');
+  
+  if (!buttonContainer) return;
+  
+  // Remove existing buttons
+  const existingCopyBtn = buttonContainer.querySelector('.key-path-copy-btn');
+  const existingReturnBtn = buttonContainer.querySelector('.key-path-return-btn');
+  if (existingCopyBtn) existingCopyBtn.remove();
+  if (existingReturnBtn) existingReturnBtn.remove();
+  
+  // Add appropriate button based on current state
+  if (copiedStates[path]) {
+    // Show return button if we've copied recently
+    const returnBtn = document.createElement('button');
+    returnBtn.className = 'key-path-return-btn';
+    returnBtn.title = 'Return to previous state';
+    returnBtn.innerHTML = '↶';
+    returnBtn.onclick = (e) => {
+      e.stopPropagation();
+      returnToPreviousState(path);
+    };
+    
+    const lockBtn = buttonContainer.querySelector('.key-path-lock-btn');
+    if (lockBtn) {
+      buttonContainer.insertBefore(returnBtn, lockBtn);
+    } else {
+      buttonContainer.appendChild(returnBtn);
+    }
+    
+  } else if (sourceVal !== targetVal) {
+    // Show copy button only if values are different
+    const copyBtn = document.createElement('button');
+    copyBtn.className = 'key-path-copy-btn';
+    copyBtn.title = 'Copy source to target';
+    copyBtn.innerHTML = '📋';
+    copyBtn.onclick = (e) => {
+      e.stopPropagation();
+      copySourceToTarget(path);
+    };
+    
+    const lockBtn = buttonContainer.querySelector('.key-path-lock-btn');
+    if (lockBtn) {
+      buttonContainer.insertBefore(copyBtn, lockBtn);
+    } else {
+      buttonContainer.appendChild(copyBtn);
+    }
+  }
+  // If values are equal and not in copiedStates, don't show any button
+}
+
+// ==================== WARNING IGNORE SYSTEM ====================
+function ignoreWarning(path, type) {
+  // Initialize if needed
+  if (!ignoredWarnings[path]) {
+    ignoredWarnings[path] = {}
+  }
+  
+  // Mark this warning type as ignored
+  ignoredWarnings[path][type] = true
+  
+  // Update UI immediately
+  const row = document.querySelector(`.translation-item textarea[data-path="${escapeAttr(path)}"]`)?.closest('.translation-item')
+  if (row) {
+    if (type === 'exact-match') {
+      // Remove exact-match styling
+      row.querySelector('.source-text, .source-input')?.classList.remove('exact-match')
+      row.querySelector('.translation-input')?.classList.remove('exact-match')
+      
+      // Remove warning indicator
+      const warningIndicator = row.querySelector('.error-indicator.exact-match')
+      if (warningIndicator) warningIndicator.remove()
+    } else if (type === 'length') {
+      // Remove length warning styling
+      row.querySelector('.translation-input')?.classList.remove('length-warning')
+      
+      // Remove warning indicator
+      const warningIndicator = row.querySelector('.error-indicator.type-mismatch.length-warning')
+      if (warningIndicator) warningIndicator.remove()
+    }
+    
+    // Remove the ignore button for this specific warning
+    const ignoreButtons = row.querySelectorAll('.ignore-warning-btn')
+    ignoreButtons.forEach(btn => {
+      if (btn.onclick && btn.onclick.toString().includes(`'${type}'`)) {
+        btn.remove()
+      }
+    })
+  }
+  
+  addChangelogEntry('target', `Ignored ${type} warning`, path, targetFileName)
+}
+
+function shouldShowWarning(path, type) {
+  return !(ignoredWarnings[path] && ignoredWarnings[path][type])
+}
+
+function clearAllIgnoredWarnings() {
+  ignoredWarnings = {}
+}
+
+// ==================== TEXT UTILITIES ====================
+function detectTextDirection(text) {
+  if (!text || typeof text !== 'string') return 'ltr'
+  const cleanText = text.replace(/[^\p{L}\p{N}]/gu, '')
+  if (!cleanText) return 'ltr'
+  const rtlRegex = /[\u0590-\u05FF\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\u0700-\u074F\u0780-\u07BF\u07C0-\u07FF]/
+  return rtlRegex.test(cleanText) ? 'rtl' : 'ltr'
+}
+
+function highlightPlaceholders(text) {
+  if (!text || typeof text !== 'string') return formatTextForDisplay(text)
+  const placeholderRegex = /(\{\{[^}]+\}\}|\{[^}]+\}|%[sdfic]|%\d+\$[sdfic]|\$[a-zA-Z_][a-zA-Z0-9_]*)/g
+  const result = text.replace(placeholderRegex, match => `<span class="placeholder">${formatTextForDisplay(match)}</span>`)
+  return result
+}
+
+function extractPlaceholders(text) {
+  if (!text || typeof text !== 'string') return []
+  const placeholderRegex = /(\{\{[^}]+\}\}|\{[^}]+\}|%[sdfic]|%\d+\$[sdfic]|\$[a-zA-Z_][a-zA-Z0-9_]*)/g
+  const matches = text.match(placeholderRegex)
+  return matches ? [...new Set(matches)] : []
+}
+
+function convertBrToNewlines(text) {
+  if (!text || typeof text !== 'string') return text
+  return text.replace(/<br\s*\/?>/gi, '\n')
+}
+
+function preserveExactFormatting(text) {
+  if (text === null || text === undefined) return text
+  return text.toString()
+}
+
+function checkPlaceholderConsistency(sourceText, targetText) {
+  const sourcePlaceholders = extractPlaceholders(sourceText)
+  const targetPlaceholders = extractPlaceholders(targetText)
+  const missingInTarget = sourcePlaceholders.filter(p => !targetPlaceholders.includes(p))
+  const extraInTarget = targetPlaceholders.filter(p => !sourcePlaceholders.includes(p))
+  return { missingInTarget, extraInTarget }
+}
+
+function checkLengthWarning(sourceText, targetText) {
+  if (!sourceText || !targetText) return false
+  return targetText.length > sourceText.length * 1.5
+}
+
+function checkSpecialCharacters(text) {
+  if (!text || typeof text !== 'string') return []
+  const specialCharRegex = /[<>"&`]/g
+  const matches = text.match(specialCharRegex)
+  return matches ? [...new Set(matches)] : []
+}
+
+function countWords(text) {
+  if (!text || typeof text !== 'string') return 0
+  return text.trim().split(/[\s\p{P}]+/u).filter(word => word.length > 0).length
+}
+
+function updateWordCount(element, text) {
+  const infoLine = element.parentElement.querySelector('.target-info-line')
+  if (infoLine) {
+    const wordCountSpan = infoLine.querySelector('.word-count-inline')
+    if (wordCountSpan) {
+      wordCountSpan.textContent = text ? text.length + ' chars, ' + countWords(text) + ' words' : ''
+    }
+  }
+}
+
+// ==================== FILE HANDLING ====================
+function handleSourceBoxClick() {
+  if (isEditorLoaded) {
+    showError('Source file cannot be changed while editing. Please reset first.')
+    addChangelogEntry('error', 'Cannot change source', 'Editor is active - reset required', sourceFileName)
+    return
+  }
+  
+  if (sourceData && (sourceChanged || targetHasUnsavedChanges)) {
+    const message = 'You have unsaved changes. Loading a new file will discard these changes. Do you want to continue?'
+    if (!confirm(message)) return
+  }
+  
+  sourceFileInput.click()
+}
+
+function handleTargetBoxClick() {
+  if (targetData && (targetHasUnsavedChanges || sourceChanged)) {
+    const message = 'You have unsaved changes. Loading a new file will discard these changes. Do you want to continue?'
+    if (!confirm(message)) return
+  }
+  
+  targetFileInput.click()
+}
+
+function setupDragAndDrop(box, fileInput) {
+  box.addEventListener('dragover', e => {
+    e.preventDefault()
+    if (fileInput.disabled) return
+    box.classList.add('active')
+    box === sourceBox ? targetBox.classList.add('inactive') : sourceBox.classList.add('inactive')
+  })
+  
+  box.addEventListener('dragleave', e => {
+    e.preventDefault()
+    if (!box.contains(e.relatedTarget)) {
+      box.classList.remove('active')
+      sourceBox.classList.remove('inactive')
+      targetBox.classList.remove('inactive')
+    }
+  })
+  
+  box.addEventListener('drop', e => {
+    e.preventDefault()
+    box.classList.remove('active')
+    sourceBox.classList.remove('inactive')
+    targetBox.classList.remove('inactive')
+    
+    if (fileInput.disabled) return
+    
+    if (e.dataTransfer.files.length) {
+      // Check for unsaved changes
+      if ((box === sourceBox && sourceData && (sourceChanged || targetHasUnsavedChanges)) ||
+          (box === targetBox && targetData && (targetHasUnsavedChanges || sourceChanged))) {
+        const message = 'You have unsaved changes. Loading a new file will discard these changes. Do you want to continue?'
+        if (!confirm(message)) return
+      }
+      
+      fileInput.files = e.dataTransfer.files
+      fileInput.dispatchEvent(new Event('change'))
+    }
+  })
+}
+
+function handleFile(e, type) {
+  const file = e.target.files[0]
+  if (!file) return
+  
+  const reader = new FileReader()
+  reader.onload = function(event) {
+    try {
+      let text = event.target.result
+      // Remove BOM if present
+      if (text.charCodeAt(0) === 0xFEFF) text = text.substring(1)
+      
+      // Convert br tags to newlines for target files to preserve exact formatting
+      if (type === 'target') {
+        text = convertBrToNewlines(text)
+      }
+      
+      const data = JSON.parse(text)
+      
+      if (type === 'source') {
+        sourceData = data
+        keyMap = createKeyMap(sourceData)
+        sourceFileName = file.name
+        document.getElementById('sourceInfo').textContent = `${file.name} (${Object.keys(keyMap).length} items)`
+        addChangelogEntry('import', `Loaded source file`, `${Object.keys(keyMap).length} items`, file.name)
+        
+        if (targetData) {
+          showTempMessage(`Source file loaded: ${file.name}`)
+        }
+      } else {
+        targetData = data
+        targetFileName = file.name
+        document.getElementById('targetInfo').textContent = file.name
+        clearAllIgnoredWarnings()
+        addChangelogEntry('import', `Loaded target file`, '', file.name)
+        
+        if (isEditorLoaded) {
+          showTempMessage(`New target file loaded: ${file.name}`)
+          setTimeout(() => {
+            checkAllIssuesAndExactMatches()
+            updateMissingSegmentsSection()
+          }, 100)
+        } else if (sourceData) {
+          showTempMessage(`Target file loaded: ${file.name}`)
+        }
+      }
+      
+      document.getElementById('error').style.display = 'none'
+      updateUIState()
+      
+      if (sourceData && targetData) {
+        loadFiles()
+      }
+    } catch (err) {
+      showError(`Invalid JSON in ${type}: ${err.message}`)
+      addChangelogEntry('error', `Failed to load ${type} file`, err.message, file.name)
+    }
+  }
+  
+  reader.onerror = () => {
+    showError(`Error reading ${type} file`)
+    addChangelogEntry('error', `Failed to read ${type} file`, 'File read error')
+  }
+  
+  reader.readAsText(file, 'UTF-8')
+}
+
+function updateUIState() {
+  if (sourceData && targetData) {
+    resetBox.style.display = 'flex'
+    updateStatus()
+  } else if (sourceData || targetData) {
+    resetBox.style.display = 'none'
+    updateStatus()
+  } else {
+    resetBox.style.display = 'none'
+    updateStatus()
+  }
+}
+
+function updateStatus() {
+  const status = document.getElementById('status')
+  if (!sourceData && !targetData) {
+    status.textContent = 'Load source and target JSON files to begin'
+    status.style.display = 'block'
+  } else if (sourceData && !targetData) {
+    status.textContent = 'Source loaded. Now load target JSON file.'
+    status.style.display = 'block'
+  } else if (!sourceData && targetData) {
+    status.textContent = 'Target loaded. Now load source JSON file.'
+    status.style.display = 'block'
+  } else {
+    status.style.display = 'none'
+  }
+}
+
+// ==================== JSON DATA FUNCTIONS ====================
+function createKeyMap(obj, path = '') {
+  let map = {}
+  for (let k in obj) {
+    if (!obj.hasOwnProperty(k)) continue
+    let cur = path ? path + '.' + k : k
+    let val = obj[k]
+    if (val !== null && typeof val === 'object') {
+      if (Array.isArray(val)) {
+        val.forEach((item, i) => {
+          let arrPath = cur + '[' + i + ']'
+          if (typeof item === 'string') {
+            map[arrPath] = 'string'
+          } else if (item !== null && typeof item === 'object') {
+            Object.assign(map, createKeyMap(item, arrPath))
+          } else {
+            map[arrPath] = typeof item
+          }
+        })
+      } else {
+        Object.assign(map, createKeyMap(val, cur))
+      }
+    } else {
+      map[cur] = typeof val
+    }
+  }
+  return map
+}
+
+function getValue(obj, path) {
+  const parts = []
+  const regex = /([^\.\[\]]+)|\[(\d+)\]/g
+  let match
+  let lastIndex = 0
+  
+  while ((match = regex.exec(path)) !== null) {
+    if (match[1]) {
+      parts.push(match[1])
+    } else if (match[2]) {
+      parts.push(parseInt(match[2], 10))
+    }
+    lastIndex = regex.lastIndex
+  }
+  
+  if (lastIndex < path.length) {
+    const remaining = path.substring(lastIndex).replace(/^\./, '')
+    if (remaining) parts.push(remaining)
+  }
+  
+  let cur = obj
+  for (let p of parts) {
+    if (cur === undefined || cur === null) return undefined
+    cur = cur[p]
+  }
+  return cur
+}
+
+function setValue(obj, path, value) {
+  const parts = []
+  const regex = /([^\.\[\]]+)|\[(\d+)\]/g
+  let match
+  while ((match = regex.exec(path)) !== null) {
+    if (match[1]) {
+      parts.push(match[1])
+    } else if (match[2]) {
+      parts.push(match[2])
+    }
+  }
+  
+  let cur = obj
+  for (let i = 0; i < parts.length - 1; i++) {
+    let p = parts[i]
+    if (cur[p] === undefined) {
+      const nextPart = parts[i + 1]
+      if (/^\d+$/.test(nextPart)) {
+        cur[p] = []
+      } else {
+        cur[p] = {}
+      }
+    }
+    
+    if (/^\d+$/.test(p)) {
+      cur = cur[parseInt(p, 10)]
+    } else {
+      cur = cur[p]
+    }
+  }
+  
+  if (parts.length > 0) {
+    const lastPart = parts[parts.length - 1]
+    if (/^\d+$/.test(lastPart)) {
+      cur[parseInt(lastPart, 10)] = value
+    } else {
+      cur[lastPart] = value
+    }
+  }
+}
+
+function extractItems(obj, path = '') {
+  let result = []
+  for (let k in obj) {
+    if (!obj.hasOwnProperty(k)) continue
+    let cur = path ? path + '.' + k : k
+    let val = obj[k]
+    if (val !== null && typeof val === 'object') {
+      if (Array.isArray(val)) {
+        val.forEach((item, i) => {
+          let arrPath = cur + '[' + i + ']'
+          if (typeof item === 'string') {
+            result.push({ path: arrPath, key: cur, value: item, type: 'string', isArray: true, index: i })
+          } else if (item !== null && typeof item === 'object') {
+            result = result.concat(extractItems(item, arrPath))
+          } else {
+            result.push({ path: arrPath, key: cur, value: item, type: typeof item, isArray: true, index: i })
+          }
+        })
+      } else {
+        result = result.concat(extractItems(val, cur))
+      }
+    } else {
+      result.push({ path: cur, key: cur, value: val, type: typeof val, isArray: false })
+    }
+  }
+  return result
+}
+
+// ==================== EDITOR FUNCTIONS ====================
+function loadFiles() {
+  if (!sourceData || !targetData) {
+    showError('Please load both files first')
+    return
+  }
+  
+  // Check all issues
+  checkAllIssuesAndExactMatches()
+  
+  // Build filtered target data
+  filteredTargetData = JSON.parse(JSON.stringify(sourceData))
+  
+  // Populate filtered target
+  items = extractItems(sourceData)
+  items.forEach(item => {
+    // Lock all source fields by default
+    itemLocks[item.path] = true
+    
+    let sourceVal = getValue(sourceData, item.path)
+    originalSourceValues[item.path] = sourceVal
+    lastSavedSourceValues[item.path] = sourceVal
+    
+    // Get value from target
+    let targetVal = getValue(targetData, item.path)
+    let targetMap = createKeyMap(targetData)
+    
+    if (targetVal !== undefined && typeof targetVal === keyMap[item.path]) {
+      setValue(filteredTargetData, item.path, targetVal)
+      originalTargetValues[item.path] = targetVal
+    } else {
+      if (!targetMap.hasOwnProperty(item.path)) {
+        setValue(filteredTargetData, item.path, '')
+        originalTargetValues[item.path] = ''
+      } else {
+        setValue(filteredTargetData, item.path, targetVal)
+        originalTargetValues[item.path] = targetVal
+      }
+    }
+  })
+  
+  // Add extra keys
+  extraKeys.forEach(path => {
+    let targetVal = getValue(targetData, path)
+    items.push({
+      path: path,
+      key: path,
+      value: targetVal,
+      type: typeof targetVal,
+      isArray: false,
+      isExtra: true
+    })
+    itemIssues[path] = { type: 'extra', message: 'Extra in target' }
+    originalTargetValues[path] = targetVal
+  })
+  
+  // Replace targetData with filtered version
+  targetData = filteredTargetData
+  
+  // Update warnings
+  updateWarningPanel()
+  
+  sourceChanged = false
+  targetHasUnsavedChanges = false
+  isEditorLoaded = true
+  
+  if (!initialLoadCompleted) {
+    showTempMessage('Source and target files loaded successfully!', 1500)
+    initialLoadCompleted = true
+  }
+  
+  updateMissingSegmentsSection()
+  addChangelogEntry('load', 'Editor loaded', `${Object.keys(keyMap).length} items`, `${sourceFileName} & ${targetFileName}`)
+  
+  renderEditor()
+}
+
+function checkAllIssuesAndExactMatches() {
+  missingKeys = []
+  emptyKeys = []
+  extraKeys = []
+  typeMismatches = []
+  exactMatchKeys = []
+  
+  const targetMap = createKeyMap(targetData)
+  
+  // Check all source keys
+  for (let k in keyMap) {
+    if (!targetMap.hasOwnProperty(k)) {
+      missingKeys.push(k)
+      itemIssues[k] = { type: 'missing', message: 'Missing in target' }
+    } else if (keyMap[k] !== targetMap[k]) {
+      typeMismatches.push(`"${k}": source is ${keyMap[k]}, target is ${targetMap[k]}`)
+      itemIssues[k] = { type: 'type-mismatch', message: `Type mismatch: source is ${keyMap[k]}, target is ${targetMap[k]}` }
+    } else if (keyMap[k] === 'string') {
+      let targetVal = getValue(targetData, k)
+      let sourceVal = getValue(sourceData, k)
+      
+      if (sourceVal === targetVal && sourceVal !== '' && targetVal !== '') {
+        exactMatchKeys.push(k)
+        itemIssues[k] = { type: 'exact-match', message: 'Source and target are identical' }
+      } else if (!targetVal || targetVal.trim() === '') {
+        emptyKeys.push(k)
+        itemIssues[k] = { type: 'empty', message: 'Empty in target' }
+      } else {
+        if (itemIssues[k] && (itemIssues[k].type === 'empty' || itemIssues[k].type === 'missing')) {
+          delete itemIssues[k]
+        }
+      }
+    }
+  }
+  
+  // Check for extra keys in target
+  for (let k in targetMap) {
+    if (!keyMap.hasOwnProperty(k)) {
+      extraKeys.push(k)
+      itemIssues[k] = { type: 'extra', message: 'Extra in target' }
+    }
+  }
+}
+
+function updateWarningPanel() {
+  const hasIssues = missingKeys.length > 0 || emptyKeys.length > 0 || extraKeys.length > 0 || typeMismatches.length > 0
+  
+  if (!hasIssues) {
+    document.getElementById('warning').style.display = 'none'
+    return
+  }
+  
+  let warningMsg = ''
+  
+  if (missingKeys.length > 0) {
+    warningMsg += `<div class="collapsible-section">
+      <div class="collapsible-header" onclick="toggleCollapsible('missing')">
+        <h4>Missing in target <span class="key-count">(${missingKeys.length})</span></h4>
+        <span class="collapsible-icon" id="missingIcon">▼</span>
+      </div>
+      <div class="collapsible-content" id="missingContent">
+        <ul>${missingKeys.map(k => `<li><code>${escapeHtml(k)}</code></li>`).join('')}</ul>
+      </div>
+    </div>`
+  }
+  
+  if (emptyKeys.length > 0) {
+    warningMsg += `<div class="collapsible-section">
+      <div class="collapsible-header" onclick="toggleCollapsible('empty')">
+        <h4>Empty in target <span class="key-count">(${emptyKeys.length})</span></h4>
+        <span class="collapsible-icon" id="emptyIcon">▼</span>
+      </div>
+      <div class="collapsible-content" id="emptyContent">
+        <ul>${emptyKeys.map(k => `<li><code>${escapeHtml(k)}</code></li>`).join('')}</ul>
+      </div>
+    </div>`
+  }
+  
+  if (extraKeys.length > 0) {
+    warningMsg += `<div class="collapsible-section">
+      <div class="collapsible-header" onclick="toggleCollapsible('extra')">
+        <h4>Extra in target <span class="key-count">(${extraKeys.length})</span></h4>
+        <span class="collapsible-icon" id="extraIcon">▼</span>
+      </div>
+      <div class="collapsible-content" id="extraContent">
+        <ul>${extraKeys.map(k => `<li><code>${escapeHtml(k)}</code></li>`).join('')}</ul>
+      </div>
+    </div>`
+  }
+  
+  if (typeMismatches.length > 0) {
+    warningMsg += `<div class="collapsible-section">
+      <div class="collapsible-header" onclick="toggleCollapsible('type')">
+        <h4>Type mismatches <span class="key-count">(${typeMismatches.length})</span></h4>
+        <span class="collapsible-icon" id="typeIcon">▼</span>
+      </div>
+      <div class="collapsible-content" id="typeContent">
+        <ul>${typeMismatches.map(k => `<li><code>${escapeHtml(k)}</code></li>`).join('')}</ul>
+      </div>
+    </div>`
+  }
+  
+  document.getElementById('warning').innerHTML = warningMsg
+  document.getElementById('warning').style.display = 'block'
+}
+
+function toggleCollapsible(type) {
+  const content = document.getElementById(type + 'Content')
+  const icon = document.getElementById(type + 'Icon')
+  
+  if (content.classList.contains('expanded')) {
+    content.classList.remove('expanded')
+    icon.classList.remove('expanded')
+  } else {
+    content.classList.add('expanded')
+    icon.classList.add('expanded')
+  }
+}
+
+// ==================== RENDER EDITOR ====================
+function renderEditor() {
+  let list = document.getElementById('translationList')
+  let html = ''
+  
+  let hasSourceChanges = false
+  
+  // Sort items: source items first, then extra target items
+  items.sort((a, b) => {
+    if (a.isExtra && !b.isExtra) return 1
+    if (!a.isExtra && b.isExtra) return -1
+    return 0
+  })
+  
+  items.forEach(item => {
+    let targetVal = getValue(targetData, item.path)
+    let isLocked = itemLocks[item.path] || false
+    let currentSourceValue = getValue(sourceData, item.path)
+    let lastSavedValue = lastSavedSourceValues[item.path]
+    let originalSourceValue = originalSourceValues[item.path]
+    let originalTargetValue = originalTargetValues[item.path]
+    let issue = itemIssues[item.path]
+    
+    // Check if source has changed
+    let isSourceChangedForSave = lastSavedValue !== undefined && currentSourceValue !== lastSavedValue
+    let isSourceChangedForHighlight = originalSourceValue !== undefined && currentSourceValue !== originalSourceValue
+    
+    if (isSourceChangedForSave) hasSourceChanges = true
+    
+    let isTargetChanged = originalTargetValue !== undefined && targetVal !== originalTargetValue
+    
+    // Check for placeholder consistency
+    let placeholderIssues = { missingInTarget: [], extraInTarget: [] }
+    if (item.type === 'string' && !item.isExtra) {
+      placeholderIssues = checkPlaceholderConsistency(currentSourceValue, targetVal)
+    }
+    
+    // Check for length warning
+    const hasLengthWarning = checkLengthWarning(currentSourceValue, targetVal)
+    
+    // Check for special characters
+    const specialChars = checkSpecialCharacters(targetVal)
+    
+    // Detect text direction
+    let sourceDir = detectTextDirection(currentSourceValue)
+    let targetDir = detectTextDirection(targetVal)
+    
+    if (item.type === 'string') {
+      let sourceContent, sourceClasses, sourceError = ''
+      let targetClasses, sourceExtraClasses = '', targetExtraClasses = ''
+      
+      // Apply error classes based on issue type
+      if (issue) {
+        if (issue.type === 'missing') {
+          sourceExtraClasses += ' missing'
+          targetExtraClasses += ' missing'
+          sourceError = `<div class="error-indicator missing">Missing in target</div>`
+        } else if (issue.type === 'empty') {
+          sourceExtraClasses += ' empty'
+          targetExtraClasses += ' empty'
+          sourceError = `<div class="error-indicator empty">Empty in target</div>`
+        } else if (issue.type === 'type-mismatch') {
+          sourceExtraClasses += ' type-mismatch'
+          targetExtraClasses += ' type-mismatch'
+          sourceError = `<div class="error-indicator type-mismatch">Type mismatch</div>`
+        } else if (issue.type === 'extra') {
+          sourceExtraClasses += ' extra'
+          sourceError = `<div class="error-indicator extra">Extra in target</div>`
+        } else if (issue.type === 'exact-match') {
+          if (shouldShowWarning(item.path, 'exact-match')) {
+            sourceExtraClasses += ' exact-match'
+            targetExtraClasses += ' exact-match'
+            sourceError = `<div class="error-indicator exact-match">Source and target are identical</div>`
+          }
+        }
+      }
+      
+      // Apply length warning
+      if (hasLengthWarning && shouldShowWarning(item.path, 'length')) {
+        targetExtraClasses += ' length-warning'
+      }
+      
+      if (item.isExtra) {
+        // Extra key in target
+        sourceClasses = 'source-text extra'
+        sourceContent = `<div class="${sourceClasses}" dir="ltr"><em>Key not in source</em></div>`
+        
+        targetClasses = 'translation-input'
+        if (isTargetChanged) targetClasses += ' changed'
+        targetClasses += targetExtraClasses
+        
+        // Add special character warning
+        let specialCharWarning = ''
+        if (specialChars.length > 0) {
+          specialCharWarning = `<div class="error-indicator type-mismatch">Special chars: ${escapeHtml(specialChars.join(', '))}</div>`
+        }
+        
+        html += `<div class="translation-item">
+          <div class="source-area">
+            ${sourceContent}
+            ${sourceError}
+            <div class="key-path-row">
+              <div class="key-path-text">${escapeHtml(item.path)}</div>
+            </div>
+          </div>
+          <div class="translation-input-container">
+            <textarea class="${targetClasses}" data-path="${escapeAttr(item.path)}" placeholder="Extra key in target..." oninput="updateTranslation(this,'${escapeAttr(item.path)}')" dir="${targetDir}">${targetVal !== undefined ? formatTextForDisplay(targetVal) : ''}</textarea>
+            <div class="target-info-line">
+              ${specialCharWarning}
+              <span class="word-count-inline">${targetVal ? targetVal.length + ' chars, ' + countWords(targetVal) + ' words' : ''}</span>
+            </div>
+          </div>
+        </div>`
+      } else {
+        // Normal source key
+        const highlightedSource = highlightPlaceholders(currentSourceValue)
+        let placeholderWarning = ''
+        
+        if (placeholderIssues.missingInTarget.length > 0) {
+          placeholderWarning = `<div class="error-indicator missing">Missing placeholders: ${escapeHtml(placeholderIssues.missingInTarget.join(', '))}</div>`
+        }
+        if (placeholderIssues.extraInTarget.length > 0) {
+          placeholderWarning += `<div class="error-indicator extra">Extra placeholders: ${escapeHtml(placeholderIssues.extraInTarget.join(', '))}</div>`
+        }
+        
+        // Add special character warning
+        let specialCharWarning = ''
+        if (specialChars.length > 0) {
+          specialCharWarning = `<div class="error-indicator type-mismatch">Special chars: ${escapeHtml(specialChars.join(', '))}</div>`
+        }
+        
+        // Add length warning
+        let lengthWarning = ''
+        let ignoreWarningButton = ''
+        if (hasLengthWarning && shouldShowWarning(item.path, 'length')) {
+          const percentage = Math.round((targetVal.length / currentSourceValue.length - 1) * 100)
+          lengthWarning = `<div class="error-indicator type-mismatch length-warning">Target is ${percentage}% longer than source</div>`
+          ignoreWarningButton = `<button class="ignore-warning-btn" title="Ignore length warning" onclick="ignoreWarning('${escapeAttr(item.path)}', 'length')">👁️</button>`
+        }
+        
+        // Exact match warning
+        if (issue && issue.type === 'exact-match' && shouldShowWarning(item.path, 'exact-match')) {
+          if (!ignoreWarningButton) {
+            ignoreWarningButton = `<button class="ignore-warning-btn" title="Ignore exact match warning" onclick="ignoreWarning('${escapeAttr(item.path)}', 'exact-match')">👁️</button>`
+          }
+        }
+        
+        // Determine copy/return button - FIXED: Use the escaped path and stop propagation
+        let copyReturnButton = ''
+        const escapedPath = escapeAttr(item.path);
+        if (copiedStates[item.path]) {
+          copyReturnButton = `<button class="key-path-return-btn" title="Return to previous state" onclick="event.stopPropagation(); returnToPreviousState('${escapedPath}')">↶</button>`
+        } else if (currentSourceValue !== targetVal) {
+          copyReturnButton = `<button class="key-path-copy-btn" title="Copy source to target" onclick="event.stopPropagation(); copySourceToTarget('${escapedPath}')">📋</button>`
+        }
+        // If values are equal and not in copiedStates, don't show any button
+        
+        if (isLocked) {
+          sourceClasses = 'source-text'
+          if (isSourceChangedForHighlight) sourceClasses += ' changed'
+          sourceClasses += sourceExtraClasses
+          sourceContent = `<div class="${sourceClasses}" dir="${sourceDir}">${highlightedSource}${item.isArray ? `<span class="array-indicator">[${item.index}]</span>` : ''}</div>`
+        } else {
+          sourceClasses = 'source-input'
+          if (isSourceChangedForHighlight) sourceClasses += ' changed'
+          sourceClasses += sourceExtraClasses
+          sourceContent = `<textarea class="${sourceClasses}" data-path="${escapeAttr(item.path)}" oninput="updateSource(this,'${escapeAttr(item.path)}')" dir="${sourceDir}">${formatTextForDisplay(currentSourceValue)}</textarea>`
+        }
+        
+        targetClasses = 'translation-input'
+        if (isTargetChanged) targetClasses += ' changed'
+        targetClasses += targetExtraClasses
+        
+        let placeholderText = 'Translation...'
+        if (issue) {
+          if (issue.type === 'missing') placeholderText = 'Missing in target'
+          else if (issue.type === 'empty') placeholderText = 'Empty in target'
+        }
+        
+        html += `<div class="translation-item">
+          <div class="source-area">
+            ${sourceContent}
+            <div class="target-info-line">
+              <span class="word-count-inline">${currentSourceValue ? currentSourceValue.length + ' chars, ' + countWords(currentSourceValue) + ' words' : ''}</span>
+            </div>
+            ${sourceError}
+            <div class="key-path-row">
+              <div class="key-path-text">${escapeHtml(item.path)}</div>
+              <div>
+                ${copyReturnButton}
+                <button class="key-path-lock-btn" title="${isLocked ? 'Unlock source' : 'Lock source'}" onclick="toggleSourceLock('${escapeAttr(item.path)}')">${isLocked ? '🔒' : '🔓'}</button>
+              </div>
+            </div>
+          </div>
+          <div class="translation-input-container">
+            <textarea class="${targetClasses}" data-path="${escapeAttr(item.path)}" placeholder="${placeholderText}" oninput="updateTranslation(this,'${escapeAttr(item.path)}')" dir="${targetDir}">${targetVal !== undefined ? formatTextForDisplay(targetVal) : ''}</textarea>
+            <div class="target-info-line">
+              ${lengthWarning}
+              ${placeholderWarning}
+              ${specialCharWarning}
+              <span class="word-count-inline">${targetVal ? targetVal.length + ' chars, ' + countWords(targetVal) + ' words' : ''}</span>
+              ${ignoreWarningButton}
+            </div>
+          </div>
+        </div>`
+      }
+    } else {
+      // Non-string type
+      let sourceExtraClasses = ''
+      if (issue && issue.type === 'type-mismatch') {
+        sourceExtraClasses += ' type-mismatch'
+      }
+      
+      html += `<div class="translation-item">
+        <div class="source-text ${sourceExtraClasses}" dir="ltr">${escapeHtml(String(currentSourceValue))}<div class="key-path-row">
+          <div class="key-path-text">${escapeHtml(item.path)} (${item.type})</div>
+        </div></div>
+        <div style="padding:6px;color:#666;font-style:italic;font-size:13px">Not editable - ${item.type}</div>
+      </div>`
+    }
+  })
+  
+  list.innerHTML = html
+  document.getElementById('editor').style.display = 'block'
+  document.getElementById('status').style.display = 'none'
+  
+  // Show floating buttons
+  document.getElementById('scrollButtons').style.display = 'flex'
+  document.getElementById('floatSaveTargetBtn').style.display = 'flex'
+  document.querySelector('.csv-btn').style.display = 'flex'
+  document.querySelectorAll('.scroll-btn').forEach(btn => btn.style.display = 'flex')
+  
+  // Update upload boxes
+  updateUploadBoxes()
+  
+  // Disable source file input
+  sourceFileInput.disabled = true
+  sourceBox.classList.add('disabled')
+  
+  // Update file name displays
+  updateFileNameDisplays()
+  
+  autoExpandTextareas()
+  
+  // Update save source button
+  document.getElementById('floatSaveSourceBtn').style.display = hasSourceChanges ? 'flex' : 'none'
+  sourceChanged = hasSourceChanges
+}
+
+function updateUploadBoxes() {
+  if (isEditorLoaded) {
+    sourceBox.classList.add('compact')
+    targetBox.classList.add('compact')
+    resetBox.classList.add('compact')
+    return
+  }
+  
+  sourceBox.classList.remove('active', 'inactive', 'compact')
+  targetBox.classList.remove('active', 'inactive', 'compact')
+  resetBox.classList.remove('compact')
+  
+  if (sourceData && targetData) {
+    sourceBox.classList.add('compact')
+    targetBox.classList.add('compact')
+  } else if (sourceData) {
+    sourceBox.classList.add('compact')
+    targetBox.classList.add('active')
+  } else if (targetData) {
+    targetBox.classList.add('compact')
+  }
+}
+
 function updateFileNameDisplays() {
   const sourceDisplay = document.getElementById('sourceFileNameDisplay')
   const targetDisplay = document.getElementById('targetFileNameDisplay')
@@ -576,1125 +1518,623 @@ function updateFileNameDisplays() {
   }
 }
 
-// Click handlers for upload boxes
-function handleSourceBoxClick(e) {
-  // Prevent default to avoid any potential issues
-  e.preventDefault();
-  e.stopPropagation();
+// ==================== UPDATE FUNCTIONS ====================
+function updateTranslation(textarea, path) {
+  const newValue = textarea.value
+  const sourceVal = getValue(sourceData, path)
+  const oldTargetVal = getValue(targetData, path)
   
-  // If editor is loaded, we cannot change the source
-  if(isEditorLoaded){
-    // Show error and add to changelog
-    showError('Source file cannot be changed while editing. Please reset first.')
-    addChangelogEntry('error', 'Cannot change source', 'Editor is active - reset required')
-    return
-  }
+  // Update data
+  setValue(targetData, path, newValue)
   
-  // Check for unsaved changes
-  if(sourceData && (sourceChanged || targetHasUnsavedChanges)) {
-    let message = 'You have unsaved changes:\n\n'
-    let hasChanges = false
-    
-    if(sourceChanged) {
-      message += '- Source has been modified\n'
-      hasChanges = true
-    }
-    
-    if(targetHasUnsavedChanges) {
-      message += '- Target translations have been modified\n'
-      hasChanges = true
-    }
-    
-    message += '\nLoading a new file will discard these changes. Do you want to continue?'
-    
-    if(hasChanges && !confirm(message)) {
-      return
-    }
-  }
-  
-  // Trigger file input
-  sourceFileInput.click()
-}
-
-function handleTargetBoxClick(e) {
-  // Prevent default to avoid any potential issues
-  e.preventDefault();
-  e.stopPropagation();
-  
-  // Check for unsaved changes
-  if(targetData && (targetHasUnsavedChanges || sourceChanged)) {
-    let message = 'You have unsaved changes:\n\n'
-    let hasChanges = false
-    
-    if(sourceChanged) {
-      message += '- Source has been modified\n'
-      hasChanges = true
-    }
-    
-    if(targetHasUnsavedChanges) {
-      message += '- Target translations have been modified\n'
-      hasChanges = true
-    }
-    
-    message += '\nLoading a new file will discard these changes. Do you want to continue?'
-    
-    if(hasChanges && !confirm(message)) {
-      return
-    }
-  }
-  
-  // Trigger file input
-  targetFileInput.click()
-}
-
-function handleResetBoxClick() {
-  // Trigger reset function immediately
-  resetAll();
-}
-
-function setupDragAndDrop(box,fileInput){
-  box.addEventListener('dragover',e=>{
-    e.preventDefault()
-    if(fileInput.disabled) return
-    box.classList.add('active')
-    if(box===sourceBox){
-      targetBox.classList.add('inactive')
-    }else{
-      sourceBox.classList.add('inactive')
-    }
-  })
-  
-  box.addEventListener('dragleave',e=>{
-    e.preventDefault()
-    if(!box.contains(e.relatedTarget)){
-      box.classList.remove('active')
-      sourceBox.classList.remove('inactive')
-      targetBox.classList.remove('inactive')
-    }
-  })
-  
-  box.addEventListener('drop',e=>{
-    e.preventDefault()
-    box.classList.remove('active')
-    sourceBox.classList.remove('inactive')
-    targetBox.classList.remove('inactive')
-    
-    if(fileInput.disabled) return
-    
-    // Check for unsaved changes before dropping a new file
-    if(e.dataTransfer.files.length){
-      if(box === sourceBox && sourceData && (sourceChanged || targetHasUnsavedChanges)) {
-        let message = 'You have unsaved changes:\n\n'
-        let hasChanges = false
-        
-        if(sourceChanged) {
-          message += '- Source has been modified\n'
-          hasChanges = true
-        }
-        
-        if(targetHasUnsavedChanges) {
-          message += '- Target translations have been modified\n'
-          hasChanges = true
-        }
-        
-        message += '\nLoading a new file will discard these changes. Do you want to continue?'
-        
-        if(hasChanges && !confirm(message)) {
-          return
-        }
-      }
-      
-      if(box === targetBox && targetData && (targetHasUnsavedChanges || sourceChanged)) {
-        let message = 'You have unsaved changes:\n\n'
-        let hasChanges = false
-        
-        if(sourceChanged) {
-          message += '- Source has been modified\n'
-          hasChanges = true
-        }
-        
-        if(targetHasUnsavedChanges) {
-          message += '- Target translations have been modified\n'
-          hasChanges = true
-        }
-        
-        message += '\nLoading a new file will discard these changes. Do you want to continue?'
-        
-        if(hasChanges && !confirm(message)) {
-          return
-        }
-      }
-      
-      fileInput.files=e.dataTransfer.files
-      const event=new Event('change',{bubbles:true})
-      fileInput.dispatchEvent(event)
-    }
-  })
-}
-
-function handleFile(e,type){
-  let file=e.target.files[0]
-  if(!file)return
-  
-  let reader=new FileReader()
-  reader.onload=function(event){
-    try{
-      let text=event.target.result
-      let data=JSON.parse(text)
-      if(type==='source'){
-        sourceData=data
-        keyMap=createKeyMap(sourceData)
-        sourceFileName=file.name
-        document.getElementById('sourceInfo').textContent=`${file.name} (${Object.keys(keyMap).length} items)`
-        
-        // Add to changelog
-        addChangelogEntry('load', 'Source loaded', `${file.name} (${Object.keys(keyMap).length} items)`)
-        
-        // After loading source, update upload boxes
-        updateUploadBoxes()
-        
-        // Update file name display
-        updateFileNameDisplays()
-        
-        // Show temp message if target is already loaded
-        if(targetData) {
-          showTempMessage(`Source file loaded: ${file.name}`)
-        }
-      }else{
-        const wasEditorLoaded = isEditorLoaded
-        targetData=data
-        targetFileName=file.name
-        document.getElementById('targetInfo').textContent=file.name
-        
-        // Add to changelog
-        addChangelogEntry('load', 'Target loaded', file.name)
-        
-        // After loading target, update upload boxes
-        updateUploadBoxes()
-        
-        // Update file name display
-        updateFileNameDisplays()
-        
-        // Show appropriate temp message
-        if(isEditorLoaded) {
-          // This is a reload while editor is active
-          showTempMessage(`New target file loaded: ${file.name}`)
-        } else if(sourceData) {
-          // First load of target with source already loaded
-          showTempMessage(`Target file loaded: ${file.name}`)
-        }
-      }
-      document.getElementById('error').style.display='none'
-      document.getElementById('warning').style.display='none'
-      updateUIState()
-      
-      // Automatically load editor when both files are loaded
-      if(sourceData && targetData) {
-        loadFiles()
-      }
-    }catch(err){
-      showError(`Invalid JSON in ${type}: ${err.message}`)
-    }
-  }
-  reader.readAsText(file,'UTF-8')
-}
-
-function updateUploadBoxes(){
-  // If editor is open, make ALL boxes super compact
-  if(isEditorLoaded){
-    sourceBox.classList.add('compact');
-    targetBox.classList.add('compact');
-    resetBox.classList.add('compact');
-    return;
-  }
-  
-  // Reset all classes first
-  sourceBox.classList.remove('active','inactive','compact');
-  targetBox.classList.remove('active','inactive','compact');
-  resetBox.classList.remove('compact');
-  
-  if(sourceData&&targetData){
-    // Both files loaded, make them compact
-    sourceBox.classList.add('compact');
-    targetBox.classList.add('compact');
-  }else if(sourceData){
-    // Only source loaded
-    sourceBox.classList.add('compact');
-    targetBox.classList.add('active');
-  }else if(targetData){
-    // Only target loaded
-    targetBox.classList.add('compact');
-  }
-}
-
-function updateUIState(){
-  if(sourceData&&targetData){
-    // No longer show the load button - editor loads automatically
-    resetBox.style.display='flex' // Show reset box when both files loaded
-    updateStatus()
-  }else if(sourceData){
-    resetBox.style.display='none' // Hide reset box if not both files
-    updateStatus()
-  }else if(targetData){
-    resetBox.style.display='none' // Hide reset box if not both files
-    updateStatus()
-  }else{
-    resetBox.style.display='none' // Hide reset box if no files
-    updateStatus()
-  }
-}
-
-function createKeyMap(obj,path=''){
-  let map={}
-  for(let k in obj){
-    if(!obj.hasOwnProperty(k))continue
-    let cur=path?path+'.'+k:k
-    let val=obj[k]
-    if(val!==null&&typeof val==='object'){
-      if(Array.isArray(val)){
-        val.forEach((item,i)=>{
-          let arrPath=cur+'['+i+']'
-          if(typeof item==='string'){
-            map[arrPath]='string'
-          }else if(item!==null&&typeof item==='object'){
-            Object.assign(map,createKeyMap(item,arrPath))
-          }
-        })
-      }else{
-        Object.assign(map,createKeyMap(val,cur))
-      }
-    }else{
-      map[cur]=typeof val
-    }
-  }
-  return map
-}
-
-function updateStatus(){
-  let status=document.getElementById('status')
-  if(!sourceData&&!targetData){
-    status.textContent='Load source and target JSON files to begin'
-    status.style.display='block'
-  }else if(sourceData&&!targetData){
-    status.textContent='Source loaded. Now load target JSON file.'
-    status.style.display='block'
-  }else if(!sourceData&&targetData){
-    status.textContent='Target loaded. Now load source JSON file.'
-    status.style.display='block'
-  }else{
-    status.style.display='none'
-  }
-}
-
-function loadFiles(){
-  if(!sourceData||!targetData){
-    showError('Please load both files first')
-    return
-  }
-  
-  let targetMap=createKeyMap(targetData)
-  missingKeys=[]
-  extraKeys=[]
-  typeMismatches=[]
-  itemIssues={}
-  
-  // Check for mismatches
-  for(let k in keyMap){
-    if(!targetMap.hasOwnProperty(k)){
-      missingKeys.push(k)
-      itemIssues[k]={type:'missing',message:'Missing in target'}
-    }else if(keyMap[k]!==targetMap[k]){
-      typeMismatches.push(`"${k}": source is ${keyMap[k]}, target is ${targetMap[k]}`)
-      itemIssues[k]={type:'type-mismatch',message:`Type mismatch: source is ${keyMap[k]}, target is ${targetMap[k]}`}
-    }
-  }
-  
-  // Check for extra keys in target
-  for(let k in targetMap){
-    if(!keyMap.hasOwnProperty(k)){
-      extraKeys.push(k)
-    }
-  }
-  
-  // Build filtered target data that matches source structure
-  filteredTargetData=JSON.parse(JSON.stringify(sourceData)) // Deep clone source structure
-  
-  // Populate filtered target with values from original target where keys match
-  items=extractItems(sourceData)
-  items.forEach(item=>{
-    itemLocks[item.path]=true
-    let sourceVal=getValue(sourceData,item.path)
-    originalSourceValues[item.path]=sourceVal
-    lastSavedSourceValues[item.path]=sourceVal
-    
-    // Get value from target if it exists and type matches
-    let targetVal=getValue(targetData,item.path)
-    if(targetVal!==undefined && typeof targetVal===keyMap[item.path]){
-      setValue(filteredTargetData,item.path,targetVal)
-      originalTargetValues[item.path]=targetVal
-    }else{
-      // For missing keys: Keep empty in target so user can add translation
-      // For type mismatches: Use target value (even if type is wrong) but mark as error
-      if(!targetMap.hasOwnProperty(item.path)){
-        // Missing key - keep empty in target
-        setValue(filteredTargetData,item.path,'')
-        originalTargetValues[item.path]=''
-      }else{
-        // Type mismatch - use target value but mark as error
-        setValue(filteredTargetData,item.path,targetVal)
-        originalTargetValues[item.path]=targetVal
-      }
-    }
-  })
-  
-  // For extra keys in target, create special items
-  extraKeys.forEach(path=>{
-    let targetVal=getValue(targetData,path)
-    items.push({
-      path: path,
-      key: path,
-      value: targetVal,
-      type: typeof targetVal,
-      isArray: false,
-      isExtra: true // Mark as extra key
-    })
-    itemIssues[path]={type:'extra',message:'Extra in target'}
-    originalTargetValues[path]=targetVal
-  })
-  
-  // Replace targetData with filtered version
-  targetData=filteredTargetData
-  
-  // Show warnings if there are mismatches
-  updateWarningPanel()
-  
-  sourceChanged=false
-  targetHasUnsavedChanges = false
-  
-  // Set editor as loaded
-  isEditorLoaded = true
-  
-  // Show initial load message if this is the first time loading both files
-  if(!initialLoadCompleted) {
-    showTempMessage('Source and target files loaded successfully!', 1500)
-    initialLoadCompleted = true
-  }
-  
-  // Add to changelog
-  addChangelogEntry('load', 'Editor loaded', `${sourceFileName} & ${targetFileName}`)
-  
-  renderEditor()
-}
-
-function updateWarningPanel(){
-  if(missingKeys.length===0 && extraKeys.length===0 && typeMismatches.length===0){
-    document.getElementById('warning').style.display='none';
-    return;
-  }
-  
-  let warningMsg='';
-  
-  if(missingKeys.length>0){
-    warningMsg+=`<div class="collapsible-section">
-      <div class="collapsible-header" onclick="toggleCollapsible('missing')">
-        <h4>Missing in target <span class="key-count">(${missingKeys.length})</span></h4>
-        <span class="collapsible-icon" id="missingIcon">▼</span>
-      </div>
-      <div class="collapsible-content" id="missingContent">
-        <ul>${missingKeys.map(k=>`<li><code>${k}</code></li>`).join('')}</ul>
-      </div>
-    </div>`;
-  }
-  
-  if(extraKeys.length>0){
-    warningMsg+=`<div class="collapsible-section">
-      <div class="collapsible-header" onclick="toggleCollapsible('extra')">
-        <h4>Extra in target <span class="key-count">(${extraKeys.length})</span></h4>
-        <span class="collapsible-icon" id="extraIcon">▼</span>
-      </div>
-      <div class="collapsible-content" id="extraContent">
-        <ul>${extraKeys.map(k=>`<li><code>${k}</code></li>`).join('')}</ul>
-      </div>
-    </div>`;
-  }
-  
-  if(typeMismatches.length>0){
-    warningMsg+=`<div class="collapsible-section">
-      <div class="collapsible-header" onclick="toggleCollapsible('type')">
-        <h4>Type mismatches <span class="key-count">(${typeMismatches.length})</span></h4>
-        <span class="collapsible-icon" id="typeIcon">▼</span>
-      </div>
-      <div class="collapsible-content" id="typeContent">
-        <ul>${typeMismatches.map(k=>`<li><code>${k}</code></li>`).join('')}</ul>
-      </div>
-    </div>`;
-  }
-  
-  document.getElementById('warning').innerHTML=warningMsg;
-  document.getElementById('warning').style.display='block';
-}
-
-function toggleCollapsible(type){
-  const content=document.getElementById(type+'Content')
-  const icon=document.getElementById(type+'Icon')
-  
-  if(content.classList.contains('expanded')){
-    content.classList.remove('expanded')
-    icon.classList.remove('expanded')
-  }else{
-    content.classList.add('expanded')
-    icon.classList.add('expanded')
-  }
-}
-
-function extractItems(obj,path=''){
-  let result=[]
-  for(let k in obj){
-    if(!obj.hasOwnProperty(k))continue
-    let cur=path?path+'.'+k:k
-    let val=obj[k]
-    if(val!==null&&typeof val==='object'){
-      if(Array.isArray(val)){
-        val.forEach((item,i)=>{
-          let arrPath=cur+'['+i+']'
-          if(typeof item==='string'){
-            result.push({path:arrPath,key:cur,value:item,type:'string',isArray:true,index:i})
-          }else if(item!==null&&typeof item==='object'){
-            result=result.concat(extractItems(item,arrPath))
-          }
-        })
-      }else{
-        result=result.concat(extractItems(val,cur))
-      }
-    }else{
-      result.push({path:cur,key:cur,value:val,type:typeof val,isArray:false})
-    }
-  }
-  return result
-}
-
-function getValue(obj,path){
-  let parts=path.split(/[\.\[\]]+/).filter(p=>p!=='')
-  let cur=obj
-  for(let p of parts){
-    if(cur===undefined||cur===null)return undefined
-    cur=cur[p]
-  }
-  return cur
-}
-
-function detectTextDirection(text) {
-  if (!text || typeof text !== 'string') return 'ltr';
-  
-  // Remove common punctuation and symbols
-  const cleanText = text.replace(/[^\p{L}\p{N}]/gu, '');
-  if (!cleanText) return 'ltr';
-  
-  // Check for RTL characters
-  const rtlRegex = /[\u0590-\u05FF\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\u0700-\u074F\u0780-\u07BF\u07C0-\u07FF]/;
-  
-  return rtlRegex.test(cleanText) ? 'rtl' : 'ltr';
-}
-
-function renderEditor(){
-  let list=document.getElementById('translationList')
-  let html=''
-  
-  let hasSourceChanges=false
-  
-  // Sort items: source items first, then extra target items
-  items.sort((a, b) => {
-    if (a.isExtra && !b.isExtra) return 1;
-    if (!a.isExtra && b.isExtra) return -1;
-    return 0;
-  });
-  
-  items.forEach((item,i)=>{
-    let targetVal=getValue(targetData,item.path)
-    let isLocked=itemLocks[item.path] || false
-    let currentSourceValue=getValue(sourceData,item.path)
-    let lastSavedValue=lastSavedSourceValues[item.path]
-    let originalSourceValue=originalSourceValues[item.path]
-    let originalTargetValue=originalTargetValues[item.path]
-    let issue=itemIssues[item.path]
-    
-    // Check if value has changed from last saved (for Save button)
-    let isSourceChangedForSave=lastSavedValue!==undefined && 
-                       currentSourceValue!==lastSavedValue
-    
-    // Check if value has changed from original (for highlighting)
-    let isSourceChangedForHighlight=originalSourceValue!==undefined && 
-                       currentSourceValue!==originalSourceValue
-    
-    if(isSourceChangedForSave) hasSourceChanges=true
-    
-    let isTargetChanged=originalTargetValue!==undefined && 
-                       targetVal!==originalTargetValue
-    
-    // Detect text direction
-    let sourceDir = detectTextDirection(currentSourceValue);
-    let targetDir = detectTextDirection(targetVal);
-    
-    if(item.type==='string'){
-      let sourceContent,sourceClasses,sourceError=''
-      let targetClasses,sourceExtraClasses='',targetExtraClasses=''
-      
-      // Apply error classes - but only if target is empty
-      if(issue){
-        if(issue.type==='missing'){
-          // Only show missing error if target is still empty
-          if(!targetVal || targetVal.trim() === ''){
-            targetExtraClasses+=' missing'
-            sourceError=`<div class="error-indicator missing">Missing in target</div>`
-          }
-        }else if(issue.type==='type-mismatch'){
-          sourceExtraClasses+=' type-mismatch'
-          targetExtraClasses+=' type-mismatch'
-          sourceError=`<div class="error-indicator type-mismatch">Type mismatch</div>`
-        }else if(issue.type==='extra'){
-          sourceExtraClasses+=' extra'
-          sourceError=`<div class="error-indicator extra">Extra in target</div>`
-        }
-      }
-      
-      if(item.isExtra){
-        // This is an extra key in target (not in source)
-        sourceClasses='source-text extra'
-        sourceContent=`<div class="${sourceClasses}" dir="ltr"><em>Key not in source</em><div class="key-path">${item.path}</div></div>`
-        
-        targetClasses='translation-input'
-        if(isTargetChanged) targetClasses+=' changed'
-        targetClasses+=targetExtraClasses
-        
-        html+=`<div class="translation-item">
-          <div class="source-area">
-            ${sourceContent}
-            ${sourceError}
-          </div>
-          <textarea class="${targetClasses}" data-path="${escapeHtml(item.path)}" placeholder="Extra key in target..." oninput="updateTranslation(this,'${item.path}')" dir="${targetDir}">${targetVal!==undefined?escapeHtml(targetVal):''}</textarea>
-        </div>`
-      }else{
-        // Normal source key
-        if(isLocked){
-          sourceClasses='source-text'
-          if(isSourceChangedForHighlight) sourceClasses+=' changed'
-          sourceClasses+=sourceExtraClasses
-          sourceContent=`<div class="${sourceClasses}" dir="${sourceDir}">${escapeHtml(currentSourceValue)}${item.isArray?`<span class="array-indicator">[${item.index}]</span>`:''}<div class="key-path">${item.path}</div></div>`
-        }else{
-          sourceClasses='source-input'
-          if(isSourceChangedForHighlight) sourceClasses+=' changed'
-          sourceClasses+=sourceExtraClasses
-          sourceContent=`<textarea class="${sourceClasses}" data-path="${escapeHtml(item.path)}" oninput="updateSource(this,'${item.path}')" dir="${sourceDir}">${escapeHtml(currentSourceValue)}</textarea><div class="key-path">${item.path}</div>`
-        }
-        
-        targetClasses='translation-input'
-        if(isTargetChanged) targetClasses+=' changed'
-        targetClasses+=targetExtraClasses
-        
-        // For missing keys, targetVal will be empty string
-        let displayTargetVal = targetVal!==undefined ? escapeHtml(targetVal) : '';
-        let placeholderText = 'Translation...';
-        if(issue && issue.type==='missing' && (!targetVal || targetVal.trim() === '')){
-          placeholderText = 'Missing in target';
-        }
-        
-        html+=`<div class="translation-item">
-          <div class="source-area">
-            ${sourceContent}
-            ${sourceError}
-            <button class="lock-btn" title="${isLocked?'Unlock source':'Lock source'}" onclick="toggleSourceLock('${item.path}')">${isLocked?'🔒':'🔓'}</button>
-          </div>
-          <textarea class="${targetClasses}" data-path="${escapeHtml(item.path)}" placeholder="${placeholderText}" oninput="updateTranslation(this,'${item.path}')" dir="${targetDir}">${displayTargetVal}</textarea>
-        </div>`
-      }
-    }else{
-      // Non-string type
-      let sourceExtraClasses=''
-      if(issue&&issue.type==='type-mismatch'){
-        sourceExtraClasses+=' type-mismatch'
-      }
-      
-      html+=`<div class="translation-item">
-        <div class="source-text ${sourceExtraClasses}" dir="ltr">${currentSourceValue}<div class="key-path">${item.path} (${item.type})</div></div>
-        <div style="padding:6px;color:#666;font-style:italic;font-size:13px">Not editable - ${item.type}</div>
-      </div>`
-    }
-  })
-  
-  list.innerHTML=html
-  document.getElementById('editor').style.display='block'
-  document.getElementById('status').style.display='none'
-  document.getElementById('scrollButtons').style.display='flex'
-  
-  // Make upload boxes super compact when editor is open
-  updateUploadBoxes()
-  
-  // Disable source file input and visually indicate it's disabled
-  sourceFileInput.disabled=true
-  sourceBox.classList.add('disabled')
-  
-  // Update file name displays
-  updateFileNameDisplays()
-  
-  autoExpandTextareas()
-  
-  // Update save source button visibility
-  document.getElementById('floatSaveSourceBtn').style.display=hasSourceChanges?'flex':'none'
-  sourceChanged=hasSourceChanges
-}
-
-function updateTranslation(textarea,path){
-  let value=textarea.value
-  setValue(targetData,path,value)
-  
-  // Update changed state by comparing with original
-  let originalValue=originalTargetValues[path]
-  let isChanged=originalValue!==undefined && value!==originalValue
-  
-  // Update textarea class
-  textarea.classList.remove('changed', 'missing')
-  if(isChanged){
-    textarea.classList.add('changed')
-  } else if(value === '' || value.trim() === '') {
-    // If value is empty and this was a missing key, keep it red
-    let issue = itemIssues[path]
-    if(issue && issue.type === 'missing') {
-      textarea.classList.add('missing')
-    }
-  }
-  
-  // Update text direction based on content
-  let dir = detectTextDirection(value);
-  textarea.setAttribute('dir', dir);
-  
-  // Track that there are unsaved changes
-  if(isChanged) {
+  // Track changes
+  if (oldTargetVal !== newValue) {
     targetHasUnsavedChanges = true
   }
   
+  // Clear copied state if user manually changes value
+  if (copiedStates[path] && newValue !== sourceVal) {
+    delete copiedStates[path]
+  }
+  
+  // Update UI
+  textarea.classList.remove('changed', 'exact-match', 'length-warning')
+  
+  // Check for exact match
+  if (sourceVal === newValue && sourceVal !== '') {
+    if (shouldShowWarning(path, 'exact-match')) {
+      textarea.classList.add('exact-match')
+      itemIssues[path] = { type: 'exact-match', message: 'Source and target are identical' }
+    }
+  } else {
+    if (itemIssues[path] && itemIssues[path].type === 'exact-match') {
+      delete itemIssues[path]
+    }
+  }
+  
+  // Check for length warning
+  const hasLengthWarning = checkLengthWarning(sourceVal, newValue)
+  if (hasLengthWarning && shouldShowWarning(path, 'length')) {
+    textarea.classList.add('length-warning')
+  }
+  
+  // Update text direction
+  textarea.setAttribute('dir', detectTextDirection(newValue))
+  
+  // Update word count
+  updateWordCount(textarea, newValue)
+  
+  // Update copy/return button visibility
+  const row = textarea.closest('.translation-item')
+  if (row) {
+    updateCopyReturnButtonForRow(row, path)
+  }
+  
+  // Update missing segments section
+  updateMissingSegmentsSection()
+  
   autoExpand(textarea)
 }
 
-function updateSource(textarea,path){
-  let value=textarea.value
-  setValue(sourceData,path,value)
+function updateSource(textarea, path) {
+  const newValue = textarea.value
+  const currentValue = getValue(sourceData, path)
+  const lastSavedValue = lastSavedSourceValues[path]
+  const originalValue = originalSourceValues[path]
+  const targetVal = getValue(targetData, path)
   
-  // Get current values for comparison
-  let currentValue=getValue(sourceData,path)
-  let lastSavedValue=lastSavedSourceValues[path]
-  let originalValue=originalSourceValues[path]
+  // Update data
+  setValue(sourceData, path, newValue)
   
-  // Update changed state for highlighting (compare with original)
-  let isChangedForHighlight=originalValue!==undefined && currentValue!==originalValue
+  // Update changed state
+  const isChangedForHighlight = originalValue !== undefined && newValue !== originalValue
+  const isChangedForSave = lastSavedValue !== undefined && newValue !== lastSavedValue
   
-  // Update changed state for save button (compare with last saved)
-  let isChangedForSave=lastSavedValue!==undefined && currentValue!==lastSavedValue
-  
-  // Update textarea class for highlighting
   textarea.classList.remove('changed')
-  if(isChangedForHighlight){
+  if (isChangedForHighlight) {
     textarea.classList.add('changed')
   }
   
-  // Update text direction based on content
-  let dir = detectTextDirection(value);
-  textarea.setAttribute('dir', dir);
+  // Update text direction
+  textarea.setAttribute('dir', detectTextDirection(newValue))
   
-  // Update source changed state
+  // Update word count
+  const targetInfoLine = textarea.parentElement.querySelector('.target-info-line')
+  if (targetInfoLine) {
+    const wordCountSpan = targetInfoLine.querySelector('.word-count-inline')
+    if (wordCountSpan) {
+      wordCountSpan.textContent = newValue ? newValue.length + ' chars, ' + countWords(newValue) + ' words' : ''
+    }
+  }
+  
+  // Update save button
   sourceChanged = isChangedForSave
+  document.getElementById('floatSaveSourceBtn').style.display = sourceChanged ? 'flex' : 'none'
   
-  // Update save source button visibility
-  document.getElementById('floatSaveSourceBtn').style.display=sourceChanged?'flex':'none'
+  // Update copy/return button visibility
+  const row = textarea.closest('.translation-item')
+  if (row) {
+    updateCopyReturnButtonForRow(row, path)
+  }
+  
   autoExpand(textarea)
 }
 
-function setValue(obj,path,value){
-  let parts=path.split(/[\.\[\]]+/).filter(p=>p!=='')
-  let cur=obj
-  for(let i=0;i<parts.length-1;i++){
-    let p=parts[i]
-    if(cur[p]===undefined){
-      cur[p]=/^\d+$/.test(parts[i+1])?[]:{}
-    }
-    cur=cur[p]
-  }
-  if(parts.length>0){
-    cur[parts[parts.length-1]]=value
-  }
-}
-
-function toggleSourceLock(path){
-  itemLocks[path]=!itemLocks[path]
-  renderEditor()
-}
-
-function autoExpandTextareas(){
-  document.querySelectorAll('.source-input, .translation-input').forEach(t=>autoExpand(t))
-}
-
-function autoExpand(t){
-  t.style.height='auto'
-  t.style.height=(t.scrollHeight)+'px'
-}
-
-function scrollToTop(){
-  const editor=document.getElementById('editor')
-  editor.scrollIntoView({behavior:'smooth'})
-}
-
-function scrollToBottom(){
-  const editor=document.getElementById('editor')
-  const translationList=document.getElementById('translationList')
-  const lastItem=translationList.lastElementChild
-  
-  if(lastItem){
-    lastItem.scrollIntoView({behavior:'smooth',block:'end'})
-  }else{
-    editor.scrollIntoView({behavior:'smooth',block:'end'})
-  }
-}
-
-function promptForFilename(defaultName, title) {
-  const newName = prompt(`${title}\n\nEnter filename:`, defaultName);
-  if (newName === null) {
-    return null; // User cancelled
-  }
-  // Ensure the filename ends with .json
-  if (newName.trim() && !newName.toLowerCase().endsWith('.json')) {
-    return newName.trim() + '.json';
-  }
-  return newName.trim() || defaultName;
-}
-
-function saveSource(){
-  if(!sourceData||!sourceChanged){
+// ==================== SAVE FUNCTIONS ====================
+function saveSource() {
+  if (!sourceData || !sourceChanged) {
     showError('No changes to save')
     return
   }
   
-  // Ask for filename
-  const newFilename = promptForFilename(sourceFileName, 'Save Source JSON');
-  if (newFilename === null) {
-    return; // User cancelled
-  }
+  const newFilename = prompt('Save Source JSON\n\nEnter filename:', sourceFileName)
+  if (newFilename === null) return
   
-  // Update the filename
-  sourceFileName = newFilename;
+  sourceFileName = newFilename.toLowerCase().endsWith('.json') ? newFilename : newFilename + '.json'
   
-  // Find what changed in source
-  const sourceChanges = []
+  // Lock all source fields
   items.forEach(item => {
-    if(!item.isExtra){
-      const currentValue = getValue(sourceData, item.path)
-      const lastSavedValue = lastSavedSourceValues[item.path]
-      if(lastSavedValue !== undefined && currentValue !== lastSavedValue){
-        sourceChanges.push(`${item.path}: changed`)
-      }
+    if (!item.isExtra) {
+      itemLocks[item.path] = true
     }
   })
   
-  let jsonStr=JSON.stringify(sourceData,null,2)
-  let blob=new Blob(['\uFEFF'+jsonStr],{type:'application/json;charset=utf-8'})
-  let a=document.createElement('a')
-  a.href=URL.createObjectURL(blob)
-  a.download=sourceFileName
+  // Update last saved values
+  items.forEach(item => {
+    if (!item.isExtra) {
+      lastSavedSourceValues[item.path] = getValue(sourceData, item.path)
+    }
+  })
+  
+  const jsonStr = JSON.stringify(sourceData, null, 2)
+  const blob = new Blob(['\uFEFF' + jsonStr], { type: 'application/json;charset=utf-8' })
+  const a = document.createElement('a')
+  a.href = URL.createObjectURL(blob)
+  a.download = sourceFileName
   document.body.appendChild(a)
   a.click()
   document.body.removeChild(a)
   URL.revokeObjectURL(a.href)
   
-  // Lock all source fields
-  items.forEach(item=>{
-    if(!item.isExtra){
-      itemLocks[item.path]=true
-    }
-  })
+  addChangelogEntry('export', `Saved source file`, '', sourceFileName)
   
-  // Update last saved values (for Save button logic)
-  items.forEach(item=>{
-    if(!item.isExtra){
-      lastSavedSourceValues[item.path]=getValue(sourceData,item.path)
-    }
-  })
+  sourceChanged = false
+  document.getElementById('floatSaveSourceBtn').style.display = 'none'
   
-  // Add to changelog
-  addChangelogEntry('source', `Saved to ${sourceFileName}`, `${sourceChanges.length} string${sourceChanges.length !== 1 ? 's' : ''} updated`)
-  
-  sourceChanged=false
-  document.getElementById('floatSaveSourceBtn').style.display='none'
-  
-  // Update file name display
   updateFileNameDisplays()
-  
   renderEditor()
 }
 
-// New function to check for missing translations
 function checkForMissingTranslations() {
-  const missing = [];
-  
-  // Check all source string keys to see if they have translations
-  for(let k in keyMap){
-    if(keyMap[k] === 'string'){
-      const targetVal = getValue(targetData, k);
+  const missing = []
+  for (let k in keyMap) {
+    if (keyMap[k] === 'string') {
+      const targetVal = getValue(targetData, k)
       if (!targetVal || targetVal.trim() === '') {
-        missing.push(k);
+        missing.push(k)
       }
     }
   }
-  
-  return missing;
+  return missing
 }
 
-// New function to show missing translations error
-function showMissingTranslationsError(missingKeys) {
-  let message = `Cannot save: ${missingKeys.length} translation(s) are missing or empty:\n\n`;
-  
-  // Limit to first 10 keys to avoid huge popup
-  const displayKeys = missingKeys.slice(0, 10);
-  displayKeys.forEach(key => {
-    message += `• ${key}\n`;
-  });
-  
-  if (missingKeys.length > 10) {
-    message += `\n... and ${missingKeys.length - 10} more`;
-  }
-  
-  message += `\n\nPlease fill in all missing translations before saving.`;
-  
-  alert(message);
-}
-
-// New function to remove extra keys from target data
-function removeExtraKeysFromData(data) {
-  // Create a deep copy to avoid modifying the original
-  const result = JSON.parse(JSON.stringify(data));
-  
-  // Function to recursively remove extra keys
-  function removeKeys(obj, path = '') {
-    for(let k in obj){
-      if(!obj.hasOwnProperty(k)) continue;
-      
-      let curPath = path ? path + '.' + k : k;
-      let val = obj[k];
-      
-      // Check if this is an extra key (not in source keyMap)
-      if (!keyMap.hasOwnProperty(curPath)) {
-        delete obj[k];
-        continue;
-      }
-      
-      // Recursively check nested objects and arrays
-      if(val !== null && typeof val === 'object'){
-        if(Array.isArray(val)){
-          val.forEach((item, i)=>{
-            let arrPath = curPath + '[' + i + ']';
-            if(item !== null && typeof item === 'object'){
-              removeKeys(item, arrPath);
-            }
-          });
-        } else {
-          removeKeys(val, curPath);
-        }
-      }
-    }
-  }
-  
-  removeKeys(result);
-  return result;
-}
-
-function saveTarget(){
-  if(!targetData){
+function saveTarget() {
+  if (!targetData) {
     showError('No target data to save')
     return
   }
   
   // Check for missing translations
-  const missingTranslations = checkForMissingTranslations();
+  const missingTranslations = checkForMissingTranslations()
   if (missingTranslations.length > 0) {
-    showMissingTranslationsError(missingTranslations);
-    return;
+    let message = `Cannot save: ${missingTranslations.length} translation(s) are missing or empty:\n\n`
+    const displayKeys = missingTranslations.slice(0, 10)
+    displayKeys.forEach(key => message += `• ${key}\n`)
+    if (missingTranslations.length > 10) message += `\n... and ${missingTranslations.length - 10} more`
+    message += `\n\nPlease fill in all missing translations before saving.`
+    alert(message)
+    return
   }
   
-  // Check for extra keys and warn user
-  let extraKeysRemoved = []
+  // Warn about extra keys
   if (extraKeys.length > 0) {
-    const confirmed = confirm(`Warning: The target file contains ${extraKeys.length} extra key(s) that are not in the source.\n\nThese extra keys will be removed when saving because the target structure will match the source.\n\nClick OK to continue saving, or Cancel to review.`);
-    
-    if (!confirmed) {
-      return;
-    }
-    extraKeysRemoved = [...extraKeys]
+    const confirmed = confirm(`Warning: The target file contains ${extraKeys.length} extra key(s) that are not in the source.\n\nThese extra keys will be removed when saving.\n\nClick OK to continue saving, or Cancel to review.`)
+    if (!confirmed) return
   }
   
-  // Ask for filename
-  const newFilename = promptForFilename(targetFileName, 'Save Target JSON');
-  if (newFilename === null) {
-    return; // User cancelled
-  }
+  const newFilename = prompt('Save Target JSON\n\nEnter filename:', targetFileName)
+  if (newFilename === null) return
   
-  // Update the filename
-  targetFileName = newFilename;
+  targetFileName = newFilename.toLowerCase().endsWith('.json') ? newFilename : newFilename + '.json'
   
-  // Create a copy without extra keys for saving
-  const dataToSave = removeExtraKeysFromData(targetData);
-  
-  // Find what changed in target translations
-  const targetChanges = []
+  // Create data without extra keys
+  const dataToSave = JSON.parse(JSON.stringify(sourceData))
   items.forEach(item => {
     if (!item.isExtra) {
-      const currentValue = getValue(targetData, item.path)
-      const originalValue = originalTargetValues[item.path]
-      if(originalValue !== undefined && currentValue !== originalValue){
-        targetChanges.push(`${item.path}: updated`)
-      }
+      const targetVal = getValue(targetData, item.path)
+      // Preserve exact formatting
+      setValue(dataToSave, item.path, preserveExactFormatting(targetVal))
     }
   })
   
-  let jsonStr=JSON.stringify(dataToSave,null,2)
-  let blob=new Blob(['\uFEFF'+jsonStr],{type:'application/json;charset=utf-8'})
-  let a=document.createElement('a')
-  a.href=URL.createObjectURL(blob)
-  a.download=targetFileName
+  // Update original values
+  items.forEach(item => {
+    if (!item.isExtra) {
+      const targetVal = getValue(targetData, item.path)
+      originalTargetValues[item.path] = targetVal
+    }
+  })
+  
+  const jsonStr = JSON.stringify(dataToSave, null, 2)
+  const blob = new Blob(['\uFEFF' + jsonStr], { type: 'application/json;charset=utf-8' })
+  const a = document.createElement('a')
+  a.href = URL.createObjectURL(blob)
+  a.download = targetFileName
   document.body.appendChild(a)
   a.click()
   document.body.removeChild(a)
   URL.revokeObjectURL(a.href)
   
-  // Update original values after saving (this removes orange highlights)
-  items.forEach(item=>{
-    // Only update for keys that are in the source (not extra keys)
-    if (!item.isExtra) {
-      let targetVal=getValue(targetData,item.path)
-      if(targetVal!==undefined){
-        originalTargetValues[item.path]=targetVal
-      }
-    }
-  })
-  
-  // Reset unsaved changes flag
   targetHasUnsavedChanges = false
   
-  // Add to changelog
-  const changeCount = targetChanges.length
-  const extraCount = extraKeysRemoved.length
-  let details = `${changeCount} translation${changeCount !== 1 ? 's' : ''} updated`
-  if (extraCount > 0) {
-    details += `, ${extraCount} extra key${extraCount !== 1 ? 's' : ''} removed`
-  }
+  addChangelogEntry('export', `Saved target file`, '', targetFileName)
   
-  addChangelogEntry('target', `Saved to ${targetFileName}`, details)
-  
-  // Update file name display
   updateFileNameDisplays()
-  
   renderEditor()
 }
 
-function resetAll(){
-  // Check for unsaved changes
-  if(sourceChanged || targetHasUnsavedChanges) {
-    let message = 'You have unsaved changes:\n\n'
-    let hasChanges = false
-    
-    if(sourceChanged) {
-      message += '- Source has been modified\n'
-      hasChanges = true
-    }
-    
-    if(targetHasUnsavedChanges) {
-      message += '- Target translations have been modified\n'
-      hasChanges = true
-    }
-    
-    message += '\nResetting will discard these changes. Do you want to continue?'
-    
-    if(hasChanges && !confirm(message)) {
-      return
-    }
+// ==================== RESET ====================
+function resetAll() {
+  if (sourceChanged || targetHasUnsavedChanges) {
+    const message = 'You have unsaved changes. Resetting will discard these changes. Do you want to continue?'
+    if (!confirm(message)) return
   }
   
-  // Add session summary to changelog before clearing
+  // Add session summary
   if (changelog.length > 0) {
     addChangelogEntry('load', 'Session reset', `Total events: ${changelog.length}`)
   }
   
-  // Clear changelog array
-  changelog = []
-  
-  // Reset all data
-  sourceData=null
-  targetData=null
-  filteredTargetData=null
-  items=[]
-  keyMap={}
-  sourceChanged=false
-  originalSourceValues={}
-  lastSavedSourceValues={}
-  originalTargetValues={}
-  itemLocks={}
-  missingKeys=[]
-  extraKeys=[]
-  typeMismatches=[]
-  itemIssues={}
+  // Reset all state
+  sourceData = null
+  targetData = null
+  filteredTargetData = null
+  items = []
+  keyMap = {}
+  sourceChanged = false
+  originalSourceValues = {}
+  lastSavedSourceValues = {}
+  originalTargetValues = {}
+  itemLocks = {}
+  missingKeys = []
+  emptyKeys = []
+  extraKeys = []
+  typeMismatches = []
+  exactMatchKeys = []
+  itemIssues = {}
+  copiedStates = {}
+  ignoredWarnings = {}
   targetHasUnsavedChanges = false
   initialLoadCompleted = false
   isEditorLoaded = false
   
   // Clear file inputs
-  document.getElementById('sourceFile').value=''
-  document.getElementById('targetFile').value=''
+  sourceFileInput.value = ''
+  targetFileInput.value = ''
   
   // Enable source file input
-  sourceFileInput.disabled=false
+  sourceFileInput.disabled = false
   
-  // Clear file info displays
-  document.getElementById('sourceInfo').textContent=''
-  document.getElementById('targetInfo').textContent=''
+  // Clear file info
+  document.getElementById('sourceInfo').textContent = ''
+  document.getElementById('targetInfo').textContent = ''
   
-  // Reset upload boxes to full size
-  sourceBox.classList.remove('active','inactive','compact','disabled')
-  targetBox.classList.remove('active','inactive','compact','disabled')
+  // Reset UI
+  sourceBox.classList.remove('active', 'inactive', 'compact', 'disabled')
+  targetBox.classList.remove('active', 'inactive', 'compact', 'disabled')
   resetBox.classList.remove('compact')
-  resetBox.style.display='none' // Hide reset box after reset
+  resetBox.style.display = 'none'
   
-  // Hide editor and show status
-  document.getElementById('editor').style.display='none'
-  document.getElementById('status').style.display='block'
-  document.getElementById('scrollButtons').style.display='none'
-  document.getElementById('error').style.display='none'
-  document.getElementById('warning').style.display='none'
-  document.getElementById('floatSaveSourceBtn').style.display='none'
+  document.getElementById('editor').style.display = 'none'
+  document.getElementById('status').style.display = 'block'
+  document.getElementById('scrollButtons').style.display = 'flex'
+  document.getElementById('floatSaveSourceBtn').style.display = 'none'
+  document.getElementById('floatSaveTargetBtn').style.display = 'none'
+  document.querySelector('.csv-btn').style.display = 'none'
+  document.querySelectorAll('.scroll-btn').forEach(btn => btn.style.display = 'none')
+  document.getElementById('error').style.display = 'none'
+  document.getElementById('warning').style.display = 'none'
   
-  // Collapse changelog content
+  // Hide toolbars
+  document.getElementById('importExportToolbar').style.display = 'none'
+  const toolbarContent = document.getElementById('toolbarContent')
+  const toolbarToggleBtn = document.getElementById('toolbarToggleBtn')
+  toolbarContent.classList.remove('expanded')
+  toolbarToggleBtn.textContent = 'Show'
+  importExportToolbarVisible = false
+  
+  // Collapse changelog
   document.getElementById('changelogContent').classList.remove('expanded')
   document.getElementById('changelogToggleBtn').textContent = 'Show'
   changelogVisible = false
   
-  // Update changelog display
+  // Clear changelog array
+  changelog = []
   updateChangelogDisplay()
   
-  // Update file name displays
-  updateFileNameDisplays()
-  
   // Reset file names
-  sourceFileName='source.json'
-  targetFileName='translation.json'
+  sourceFileName = 'source.json'
+  targetFileName = 'translation.json'
   
+  updateFileNameDisplays()
   updateStatus()
 }
 
-function showError(msg){
-  let e=document.getElementById('error')
-  e.innerHTML=msg
-  e.style.display='block'
-  document.getElementById('warning').style.display='none'
+// ==================== UTILITY FUNCTIONS ====================
+function autoExpandTextareas() {
+  document.querySelectorAll('.source-input, .translation-input').forEach(t => autoExpand(t))
 }
 
-function escapeHtml(t){
-  if(t===null||t===undefined)return''
-  return t.toString().replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))
+function autoExpand(t) {
+  t.style.height = 'auto'
+  t.style.height = (t.scrollHeight) + 'px'
+}
+
+function scrollToTop() {
+  document.getElementById('editor').scrollIntoView({ behavior: 'smooth' })
+}
+
+function scrollToBottom() {
+  const translationList = document.getElementById('translationList')
+  const lastItem = translationList.lastElementChild
+  if (lastItem) {
+    lastItem.scrollIntoView({ behavior: 'smooth', block: 'end' })
+  } else {
+    document.getElementById('editor').scrollIntoView({ behavior: 'smooth', block: 'end' })
+  }
+}
+
+function handleKeyboardShortcuts(e) {
+  if (e.ctrlKey && e.key === 'Enter') {
+    e.preventDefault()
+    const activeElement = document.activeElement
+    if (activeElement && activeElement.classList.contains('translation-input')) {
+      const allFields = Array.from(document.querySelectorAll('.translation-input'))
+      const currentIndex = allFields.indexOf(activeElement)
+      if (currentIndex >= 0 && currentIndex < allFields.length - 1) {
+        const nextField = allFields[currentIndex + 1]
+        nextField.focus()
+        nextField.scrollIntoView({ behavior: 'smooth', block: 'center' })
+      }
+    }
+  }
+}
+
+function updateMissingSegmentsSection() {
+  const missingTranslations = checkForMissingTranslations()
+  const toolbar = document.getElementById('importExportToolbar')
+  
+  if (missingTranslations.length > 0) {
+    toolbar.style.display = 'block'
+  } else {
+    toolbar.style.display = 'none'
+    const toolbarContent = document.getElementById('toolbarContent')
+    const toolbarToggleBtn = document.getElementById('toolbarToggleBtn')
+    toolbarContent.classList.remove('expanded')
+    toolbarToggleBtn.textContent = 'Show'
+    importExportToolbarVisible = false
+  }
+}
+
+// ==================== EXPORT/IMPORT FUNCTIONS ====================
+function exportCSV() {
+  if (!sourceData || !targetData) {
+    showError('Please load both files first')
+    return
+  }
+  
+  const allItems = extractItems(sourceData)
+  const stringItems = allItems.filter(item => item.type === 'string')
+  
+  if (stringItems.length === 0) {
+    showError('No string values found in source JSON')
+    return
+  }
+  
+  let csv = 'Key,Description,Source Value,Target Value,Max Characters,Reference URL\n'
+  
+  stringItems.forEach(item => {
+    const sourceVal = item.value
+    const targetVal = getValue(targetData, item.path) || ''
+    const maxCharacters = Math.ceil(sourceVal.length * 1.5)
+    
+    const escapeCSV = (text) => {
+      if (text === null || text === undefined) return ''
+      const stringText = String(text)
+      if (stringText.includes(',') || stringText.includes('"') || stringText.includes('\n') || stringText.includes('\r')) {
+        return '"' + stringText.replace(/"/g, '""') + '"'
+      }
+      return stringText
+    }
+    
+    csv += `${escapeCSV(item.path)},${escapeCSV('')},${escapeCSV(sourceVal)},${escapeCSV(targetVal)},${escapeCSV(maxCharacters)},\n`
+  })
+  
+  const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8' })
+  const a = document.createElement('a')
+  a.href = URL.createObjectURL(blob)
+  const sourceName = sourceFileName.replace('.json', '').replace(/[^a-zA-Z0-9_-]/g, '_')
+  const date = new Date().toISOString().split('T')[0]
+  a.download = `${sourceName}_translations_${date}.csv`
+  document.body.appendChild(a)
+  a.click()
+  document.body.removeChild(a)
+  URL.revokeObjectURL(a.href)
+  
+  addChangelogEntry('export', `Exported CSV: ${sourceName}_translations_${date}.csv`, `${stringItems.length} segments`)
+  showTempMessage(`CSV exported with ${stringItems.length} segments`)
+}
+
+function exportMissingTranslations() {
+  if (!sourceData || !targetData) {
+    showError('Please load both files first')
+    return
+  }
+  
+  const missingTranslations = checkForMissingTranslations()
+  if (missingTranslations.length === 0) {
+    showTempMessage('No missing translations to export')
+    return
+  }
+  
+  // Create JSON with missing translations structure
+  const missingJSON = JSON.parse(JSON.stringify(sourceData))
+  
+  function filterMissing(obj, path = '') {
+    for (let k in obj) {
+      if (!obj.hasOwnProperty(k)) continue
+      
+      let curPath = path ? path + '.' + k : k
+      let val = obj[k]
+      
+      if (val !== null && typeof val === 'object') {
+        if (Array.isArray(val)) {
+          for (let i = 0; i < val.length; i++) {
+            let arrPath = curPath + '[' + i + ']'
+            if (typeof val[i] === 'string') {
+              const targetVal = getValue(targetData, arrPath)
+              if (targetVal && targetVal.trim() !== '') {
+                delete obj[k][i]
+              }
+            } else {
+              delete obj[k][i]
+            }
+          }
+          obj[k] = obj[k].filter(item => item !== undefined)
+          if (obj[k].length === 0) {
+            delete obj[k]
+          }
+        } else {
+          filterMissing(val, curPath)
+          if (Object.keys(val).length === 0) {
+            delete obj[k]
+          }
+        }
+      } else if (typeof val === 'string') {
+        const targetVal = getValue(targetData, curPath)
+        if (targetVal && targetVal.trim() !== '') {
+          delete obj[k]
+        }
+      } else {
+        delete obj[k]
+      }
+    }
+  }
+  
+  filterMissing(missingJSON)
+  
+  const jsonStr = JSON.stringify(missingJSON, null, 2)
+  const blob = new Blob(['\uFEFF' + jsonStr], { type: 'application/json;charset=utf-8' })
+  const a = document.createElement('a')
+  a.href = URL.createObjectURL(blob)
+  const sourceName = sourceFileName.replace('.json', '').replace(/[^a-zA-Z0-9_-]/g, '_')
+  const date = new Date().toISOString().split('T')[0]
+  a.download = `${sourceName}_missing_translations_${date}.json`
+  document.body.appendChild(a)
+  a.click()
+  document.body.removeChild(a)
+  URL.revokeObjectURL(a.href)
+  
+  addChangelogEntry('export', `Exported missing translations`, `${missingTranslations.length} missing segments`)
+  showTempMessage(`Missing translations exported: ${missingTranslations.length} segments`)
+}
+
+function importMissingTranslations() {
+  if (!sourceData || !targetData) {
+    showError('Please load both files first')
+    return
+  }
+  
+  const confirmed = confirm('Import missing translations from a JSON file.\n\nNote: File must not contain extra keys that don\'t exist in the source.\n\nClick OK to continue and select a file.')
+  if (!confirmed) return
+  
+  const input = document.createElement('input')
+  input.type = 'file'
+  input.accept = '.json'
+  input.onchange = function(e) {
+    const file = e.target.files[0]
+    if (!file) return
+    
+    const reader = new FileReader()
+    reader.onload = function(event) {
+      try {
+        const importedData = JSON.parse(event.target.result)
+        let updatedCount = 0
+        
+        // Check for extra keys
+        function checkForExtraKeys(obj, sourceNode, path = '', extraKeys = []) {
+          for (let k in obj) {
+            if (!obj.hasOwnProperty(k)) continue
+            
+            let curPath = path ? path + '.' + k : k
+            let importedVal = obj[k]
+            let sourceVal = getValue(sourceNode, k)
+            
+            if (importedVal !== null && typeof importedVal === 'object') {
+              if (Array.isArray(importedVal)) {
+                if (!sourceVal || !Array.isArray(sourceVal)) {
+                  extraKeys.push(curPath)
+                } else {
+                  for (let i = 0; i < importedVal.length; i++) {
+                    let arrPath = curPath + '[' + i + ']'
+                    if (i < sourceVal.length) {
+                      if (importedVal[i] !== null && typeof importedVal[i] === 'object') {
+                        checkForExtraKeys(importedVal[i], sourceVal[i], arrPath, extraKeys)
+                      }
+                    } else {
+                      extraKeys.push(arrPath)
+                    }
+                  }
+                }
+              } else {
+                if (!sourceVal || typeof sourceVal !== 'object' || Array.isArray(sourceVal)) {
+                  extraKeys.push(curPath)
+                } else {
+                  checkForExtraKeys(importedVal, sourceVal, curPath, extraKeys)
+                }
+              }
+            } else if (sourceVal === undefined) {
+              extraKeys.push(curPath)
+            }
+          }
+          return extraKeys
+        }
+        
+        const extraKeysFound = checkForExtraKeys(importedData, sourceData)
+        if (extraKeysFound.length > 0) {
+          showError(`Cannot import: JSON file contains ${extraKeysFound.length} key(s) that don't exist in source:\n${extraKeysFound.slice(0, 10).join('\n')}${extraKeysFound.length > 10 ? '\n...and ' + (extraKeysFound.length - 10) + ' more' : ''}`)
+          return
+        }
+        
+        // Import values
+        function importFromJSON(obj, path = '') {
+          for (let k in obj) {
+            if (!obj.hasOwnProperty(k)) continue
+            
+            let curPath = path ? path + '.' + k : k
+            let val = obj[k]
+            
+            if (val !== null && typeof val === 'object') {
+              if (Array.isArray(val)) {
+                for (let i = 0; i < val.length; i++) {
+                  let arrPath = curPath + '[' + i + ']'
+                  if (typeof val[i] === 'string') {
+                    const targetVal = getValue(targetData, arrPath)
+                    if ((!targetVal || targetVal.trim() === '') && val[i].trim() !== '') {
+                      setValue(targetData, arrPath, val[i])
+                      originalTargetValues[arrPath] = val[i]
+                      updatedCount++
+                    }
+                  } else if (val[i] !== null && typeof val[i] === 'object') {
+                    importFromJSON(val[i], arrPath)
+                  }
+                }
+              } else {
+                importFromJSON(val, curPath)
+              }
+            } else if (typeof val === 'string') {
+              const targetVal = getValue(targetData, curPath)
+              if ((!targetVal || targetVal.trim() === '') && val.trim() !== '') {
+                setValue(targetData, curPath, val)
+                originalTargetValues[curPath] = val
+                updatedCount++
+              }
+            }
+          }
+        }
+        
+        importFromJSON(importedData)
+        
+        if (updatedCount > 0) {
+          targetHasUnsavedChanges = true
+          checkAllIssuesAndExactMatches()
+          renderEditor()
+          updateMissingSegmentsSection()
+          updateWarningPanel()
+          
+          addChangelogEntry('import', `Missing translations imported`, `${updatedCount} missing translations filled`)
+          showTempMessage(`Missing translations imported: ${updatedCount} filled`)
+        } else {
+          showTempMessage('No missing translations were updated')
+        }
+      } catch (err) {
+        showError(`Error importing file: ${err.message}`)
+        addChangelogEntry('error', 'Import failed', err.message)
+      }
+    }
+    reader.readAsText(file, 'UTF-8')
+  }
+  input.click()
 }
 </script>
 </body>
