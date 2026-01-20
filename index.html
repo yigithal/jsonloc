@@ -1253,7 +1253,13 @@ function renderEditor() {
     
     if (isSourceChangedForSave) hasSourceChanges = true
     
-    let isTargetChanged = originalTargetValue !== undefined && targetVal !== originalTargetValue
+    // FIXED: Check if target has changed
+    let isTargetChanged = false
+    if (originalTargetValue !== undefined) {
+      // Compare with current target value
+      const currentTargetValue = getValue(targetData, item.path)
+      isTargetChanged = originalTargetValue !== currentTargetValue
+    }
     
     // Check for placeholder consistency
     let placeholderIssues = { missingInTarget: [], extraInTarget: [] }
@@ -1519,10 +1525,12 @@ function updateFileNameDisplays() {
 }
 
 // ==================== UPDATE FUNCTIONS ====================
+// FIXED: Update translation function to properly highlight changed translations
 function updateTranslation(textarea, path) {
   const newValue = textarea.value
   const sourceVal = getValue(sourceData, path)
   const oldTargetVal = getValue(targetData, path)
+  const originalTargetVal = originalTargetValues[path]
   
   // Update data
   setValue(targetData, path, newValue)
@@ -1537,8 +1545,13 @@ function updateTranslation(textarea, path) {
     delete copiedStates[path]
   }
   
-  // Update UI
-  textarea.classList.remove('changed', 'exact-match', 'length-warning')
+  // Update UI - FIXED: Remove all classes first
+  textarea.classList.remove('changed', 'exact-match', 'missing', 'empty', 'extra', 'type-mismatch', 'length-warning')
+  
+  // Check if value has changed from original
+  if (originalTargetVal !== undefined && newValue !== originalTargetVal) {
+    textarea.classList.add('changed')
+  }
   
   // Check for exact match
   if (sourceVal === newValue && sourceVal !== '') {
@@ -1556,6 +1569,14 @@ function updateTranslation(textarea, path) {
   const hasLengthWarning = checkLengthWarning(sourceVal, newValue)
   if (hasLengthWarning && shouldShowWarning(path, 'length')) {
     textarea.classList.add('length-warning')
+  }
+  
+  // Check if empty
+  if (!newValue || newValue.trim() === '') {
+    if (sourceVal && sourceVal.trim() !== '') {
+      textarea.classList.add('empty')
+      itemIssues[path] = { type: 'empty', message: 'Empty in target' }
+    }
   }
   
   // Update text direction
@@ -2009,13 +2030,14 @@ function exportMissingTranslations() {
   showTempMessage(`Missing translations exported: ${missingTranslations.length} segments`)
 }
 
+// FIXED: Import function now uses a simple approach - just import values for keys that exist in source
 function importMissingTranslations() {
   if (!sourceData || !targetData) {
     showError('Please load both files first')
     return
   }
   
-  const confirmed = confirm('Import missing translations from a JSON file.\n\nNote: File must not contain extra keys that don\'t exist in the source.\n\nClick OK to continue and select a file.')
+  const confirmed = confirm('Import translations from a JSON file.\n\nNote: File should contain missing translations in the same structure as source.\n\nClick OK to continue and select a file.')
   if (!confirmed) return
   
   const input = document.createElement('input')
@@ -2030,90 +2052,99 @@ function importMissingTranslations() {
       try {
         const importedData = JSON.parse(event.target.result)
         let updatedCount = 0
+        let nonEmptyKeys = []
         
-        // Check for extra keys
-        function checkForExtraKeys(obj, sourceNode, path = '', extraKeys = []) {
-          for (let k in obj) {
-            if (!obj.hasOwnProperty(k)) continue
-            
-            let curPath = path ? path + '.' + k : k
-            let importedVal = obj[k]
-            let sourceVal = getValue(sourceNode, k)
-            
-            if (importedVal !== null && typeof importedVal === 'object') {
-              if (Array.isArray(importedVal)) {
-                if (!sourceVal || !Array.isArray(sourceVal)) {
-                  extraKeys.push(curPath)
-                } else {
-                  for (let i = 0; i < importedVal.length; i++) {
-                    let arrPath = curPath + '[' + i + ']'
-                    if (i < sourceVal.length) {
-                      if (importedVal[i] !== null && typeof importedVal[i] === 'object') {
-                        checkForExtraKeys(importedVal[i], sourceVal[i], arrPath, extraKeys)
-                      }
-                    } else {
-                      extraKeys.push(arrPath)
-                    }
-                  }
-                }
-              } else {
-                if (!sourceVal || typeof sourceVal !== 'object' || Array.isArray(sourceVal)) {
-                  extraKeys.push(curPath)
-                } else {
-                  checkForExtraKeys(importedVal, sourceVal, curPath, extraKeys)
-                }
-              }
-            } else if (sourceVal === undefined) {
-              extraKeys.push(curPath)
-            }
+        // Create a flat list of all string paths in source
+        const sourceStringPaths = []
+        for (let path in keyMap) {
+          if (keyMap[path] === 'string') {
+            sourceStringPaths.push(path)
           }
-          return extraKeys
         }
         
-        const extraKeysFound = checkForExtraKeys(importedData, sourceData)
-        if (extraKeysFound.length > 0) {
-          showError(`Cannot import: JSON file contains ${extraKeysFound.length} key(s) that don't exist in source:\n${extraKeysFound.slice(0, 10).join('\n')}${extraKeysFound.length > 10 ? '\n...and ' + (extraKeysFound.length - 10) + ' more' : ''}`)
+        // Simple recursive function to extract all string values from imported data
+        function extractStringValues(obj, currentPath = '') {
+          const results = []
+          
+          for (let key in obj) {
+            if (!obj.hasOwnProperty(key)) continue
+            
+            const value = obj[key]
+            const path = currentPath ? currentPath + '.' + key : key
+            
+            if (typeof value === 'string') {
+              results.push({ path, value })
+            } else if (value !== null && typeof value === 'object') {
+              if (Array.isArray(value)) {
+                value.forEach((item, index) => {
+                  if (typeof item === 'string') {
+                    results.push({ path: path + '[' + index + ']', value: item })
+                  } else if (item !== null && typeof item === 'object') {
+                    results.push(...extractStringValues(item, path + '[' + index + ']'))
+                  }
+                })
+              } else {
+                results.push(...extractStringValues(value, path))
+              }
+            }
+          }
+          
+          return results
+        }
+        
+        // Extract all string values from imported data
+        const importedStrings = extractStringValues(importedData)
+        
+        // Check which imported strings correspond to valid source paths
+        const validImports = []
+        for (const imported of importedStrings) {
+          // Check if this path exists in source
+          if (sourceStringPaths.includes(imported.path)) {
+            validImports.push(imported)
+          }
+        }
+        
+        if (validImports.length === 0) {
+          showError('No valid translation keys found in imported file. Make sure the JSON structure matches the source.')
           return
         }
         
-        // Import values
-        function importFromJSON(obj, path = '') {
-          for (let k in obj) {
-            if (!obj.hasOwnProperty(k)) continue
-            
-            let curPath = path ? path + '.' + k : k
-            let val = obj[k]
-            
-            if (val !== null && typeof val === 'object') {
-              if (Array.isArray(val)) {
-                for (let i = 0; i < val.length; i++) {
-                  let arrPath = curPath + '[' + i + ']'
-                  if (typeof val[i] === 'string') {
-                    const targetVal = getValue(targetData, arrPath)
-                    if ((!targetVal || targetVal.trim() === '') && val[i].trim() !== '') {
-                      setValue(targetData, arrPath, val[i])
-                      originalTargetValues[arrPath] = val[i]
-                      updatedCount++
-                    }
-                  } else if (val[i] !== null && typeof val[i] === 'object') {
-                    importFromJSON(val[i], arrPath)
-                  }
-                }
-              } else {
-                importFromJSON(val, curPath)
-              }
-            } else if (typeof val === 'string') {
-              const targetVal = getValue(targetData, curPath)
-              if ((!targetVal || targetVal.trim() === '') && val.trim() !== '') {
-                setValue(targetData, curPath, val)
-                originalTargetValues[curPath] = val
-                updatedCount++
-              }
-            }
+        // Check for non-empty existing translations
+        for (const imported of validImports) {
+          const currentTargetVal = getValue(targetData, imported.path)
+          if (currentTargetVal && currentTargetVal.trim() !== '') {
+            nonEmptyKeys.push(imported.path)
           }
         }
         
-        importFromJSON(importedData)
+        // Ask about updating non-empty translations
+        let updateNonEmpty = true
+        if (nonEmptyKeys.length > 0) {
+          let message = `The imported file contains translations for ${nonEmptyKeys.length} key(s) that already have translations.\n\n`
+          if (nonEmptyKeys.length <= 5) {
+            message += 'Affected keys:\n'
+            nonEmptyKeys.slice(0, 5).forEach(key => message += `• ${key}\n`)
+          } else {
+            message += `First 5 affected keys:\n`
+            nonEmptyKeys.slice(0, 5).forEach(key => message += `• ${key}\n`)
+            message += `\n...and ${nonEmptyKeys.length - 5} more\n`
+          }
+          message += '\nDo you want to update these existing translations?'
+          updateNonEmpty = confirm(message)
+        }
+        
+        // Apply imports
+        for (const imported of validImports) {
+          const currentTargetVal = getValue(targetData, imported.path)
+          
+          if (updateNonEmpty || !currentTargetVal || currentTargetVal.trim() === '') {
+            if (imported.value.trim() !== '') {
+              setValue(targetData, imported.path, imported.value)
+              originalTargetValues[imported.path] = imported.value
+              updatedCount++
+            }
+          }
+        }
         
         if (updatedCount > 0) {
           targetHasUnsavedChanges = true
@@ -2122,10 +2153,10 @@ function importMissingTranslations() {
           updateMissingSegmentsSection()
           updateWarningPanel()
           
-          addChangelogEntry('import', `Missing translations imported`, `${updatedCount} missing translations filled`)
-          showTempMessage(`Missing translations imported: ${updatedCount} filled`)
+          addChangelogEntry('import', `Translations imported`, `${updatedCount} translations updated (${updateNonEmpty ? 'including existing' : 'only missing'})`)
+          showTempMessage(`Translations imported: ${updatedCount} updated (${updateNonEmpty ? 'including existing' : 'only missing'})`)
         } else {
-          showTempMessage('No missing translations were updated')
+          showTempMessage('No translations were updated')
         }
       } catch (err) {
         showError(`Error importing file: ${err.message}`)
