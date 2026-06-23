@@ -3,130 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>jsonloc</title>
 <style>
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;margin:20px;transition:background-color 0.3s,color 0.3s}.container{display:flex;flex-direction:column;gap:10px}.upload-row{display:flex;gap:15px}.reset-box{width:120px;border:2px dashed #ccc;padding:15px;text-align:center;min-height:100px;display:none;flex-direction:column;justify-content:center;position:relative;transition:all 0.3s;background:#f8f9fa;border-radius:4px;cursor:pointer}.reset-box:hover{background:#e9ecef;border-color:#6c757d}.reset-box h3{margin:0 0 8px;font-size:16px;color:#495057}.upload-box{flex:1;border:2px dashed #ccc;padding:15px;text-align:center;min-height:100px;display:flex;flex-direction:column;justify-content:center;position:relative;transition:all 0.3s;cursor:pointer}.upload-box.compact{padding:8px !important;min-height:60px !important;border-width:1px !important}.upload-box.disabled{border-color:#e0e0e0;background:#f5f5f5;cursor:not-allowed}.upload-box.disabled h3,.upload-box.disabled div{color:#999}.upload-box h3{margin:0 0 8px;font-size:16px}.upload-box.compact h3{font-size:12px;margin:0 0 3px}.upload-box.compact div{font-size:11px}.upload-box.active{border-color:#0052cc;background:#f0f7ff}.upload-box.inactive{opacity:0.5;filter:grayscale(50%)}input[type="file"]{display:none}.btn{background:#0052cc;color:#fff;border:none;padding:6px 12px;border-radius:4px;cursor:pointer;margin:3px;font-size:13px}.btn:disabled{background:#ccc}.btn-secondary{background:#6c757d}.btn-success{background:#28a745}.btn-warning{background:#ffc107;color:#212529}.btn-danger{background:#dc3545}.btn-small{font-size:11px;padding:4px 8px}.error{color:#d00;background:#fee;padding:8px;border-radius:4px;display:none;margin:0 0 10px 0}.warning{color:#856404;background:#fff3cd;padding:10px;border-radius:4px;display:none;margin:0;border-left:4px solid #ffc107;max-height:400px;overflow-y:auto}.editor{display:none;border:1px solid #ddd;border-radius:4px;position:relative;margin-bottom:230px !important}.editor-header{display:grid;grid-template-columns:1fr 1fr;background:#f5f5f5;padding:8px;border-bottom:1px solid #ddd;font-size:13px;position:sticky;top:0;z-index:100;border-radius:4px 4px 0 0}.editor-header div{font-weight:bold}.translation-list{}.translation-item{display:grid;grid-template-columns:1fr 1fr;padding:10px;border-bottom:1px solid #eee;gap:10px;align-items:start}.translation-item:nth-child(even){background:#fafafa}.source-area{position:relative}.source-text{padding:6px;border-left:3px solid #0052cc;background:#f0f7ff;border-radius:4px;white-space:pre-wrap;word-break:break-word;transition:border-color 0.2s;font-size:13px;unicode-bidi:plaintext;text-align:start}.source-text.changed{border-left-color:#ff9800 !important;background:#fff8e1}.source-input{width:100%;padding:6px;border:1px solid #b3d4ff;border-radius:4px;resize:vertical;font-family:inherit;min-height:35px;box-sizing:border-box;font-size:13px;unicode-bidi:plaintext;text-align:start}.source-input.changed{border-color:#ff9800 !important;background:#fff8e1}.lock-btn{position:absolute;top:6px;right:6px;background:none;border:none;cursor:pointer;font-size:12px;opacity:0.5;z-index:10;padding:2px}.lock-btn:hover{opacity:1}.translation-input{width:100%;padding:6px;border:1px solid #ddd;border-radius:4px;resize:vertical;font-family:inherit;min-height:35px;transition:border-color 0.2s,background-color 0.2s;font-size:13px;unicode-bidi:plaintext;text-align:start}.translation-input:focus{outline:none;border-color:#0052cc;box-shadow:0 0 0 2px rgba(0,82,204,0.1)}.translation-input.changed{border-color:#ff9800 !important;background:#fff8e1}.key-path{font-family:monospace;font-size:11px;color:#666;padding:4px 0 0 0;margin-top:4px;border-top:1px dashed #ddd;unicode-bidi:plaintext;text-align:start}.array-indicator{color:#28a745;font-size:10px;margin-left:4px;background:#e8f5e9;padding:1px 4px;border-radius:8px}.action-buttons{display:flex;gap:8px;justify-content:center;margin:15px 0;padding-top:15px;border-top:1px solid #e9ecef}.status{text-align:center;padding:15px;color:#666}.file-info{font-size:11px;color:#666;margin-top:5px}.upload-box.compact .file-info{font-size:9px}.control-buttons{display:flex;gap:8px;justify-content:center;align-items:center;margin:10px 0}.scroll-buttons{position:fixed;bottom:20px;right:20px;display:flex;flex-direction:column;gap:6px;z-index:1000}.scroll-btn{width:32px;height:32px;border-radius:50%;background:#6c757d;color:white;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;box-shadow:0 1px 4px rgba(0,0,0,0.15);transition:all 0.2s;position:relative}.scroll-btn:hover{background:#5a6268;transform:scale(1.05)}.save-btn{width:32px;height:32px;border-radius:50%;background:#0052cc;color:white;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 1px 4px rgba(0,0,0,0.15);transition:all 0.2s;position:relative}.save-btn:hover{background:#0041a8;transform:scale(1.05)}.save-btn.save-source{background:#28a745}.save-btn.save-source:hover{background:#218838}.csv-btn{width:32px;height:32px;border-radius:50%;background:#6c757d;color:white;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;box-shadow:0 1px 4px rgba(0,0,0,0.15);transition:all 0.2s;position:relative}.csv-btn:hover{background:#5a6268;transform:scale(1.05)}.load-btn-row{display:flex;justify-content:center;margin-top:10px}.structure-info{padding:10px;background:#e8f4fd;border-radius:4px;margin-top:10px;font-size:12px;max-height:200px;overflow-y:auto}.structure-info h4{margin:0 0 5px 0;color:#0052cc}.structure-info ul{margin:0;padding-left:20px}.structure-info li{margin:2px 0}.toggle-list-btn{background:none;border:none;color:#0052cc;cursor:pointer;font-size:11px;padding:2px 5px;margin-left:5px;text-decoration:underline}.toggle-list-btn:hover{color:#0041a8}.key-count{font-weight:normal;font-size:11px;color:#6c757d;margin-left:5px}.collapsible-section{margin-bottom:10px}.collapsible-header{display:flex;justify-content:space-between;align-items:center;cursor:pointer;padding:5px;background:#e9ecef;border-radius:4px}.collapsible-header:hover{background:#dee2e6}.collapsible-content{max-height:0;overflow:hidden;transition:max-height 0.3s ease;background:#fff;border-radius:0 0 4px 4px}.collapsible-content.expanded{max-height:200px;overflow-y:auto !important;padding:8px}.collapsible-icon{transition:transform 0.3s}.collapsible-icon.expanded{transform:rotate(180deg)}.collapsible-content ul{margin:0;padding-left:20px;max-height:180px;overflow-y:auto}.collapsible-content li{margin:3px 0;padding:3px;font-family:monospace;font-size:11px;word-break:break-all}.collapsible-content code{background:#f1f1f1;padding:2px 4px;border-radius:3px;color:#333}.reset-box.compact{padding:8px !important;min-height:60px !important;border-width:1px !important}.source-text.missing,.source-input.missing,.translation-input.missing{border-color:#dc3545 !important;background-color:#fff5f5 !important;color:#dc3545 !important}.source-text.empty,.source-input.empty,.translation-input.empty{border-color:#fd7e14 !important;background-color:#fff3e6 !important;color:#fd7e14 !important}.source-text.extra,.source-input.extra,.translation-input.extra{border-color:#ffc107 !important;background-color:#fff9e6 !important;color:#856404 !important}.source-text.type-mismatch,.source-input.type-mismatch,.translation-input.type-mismatch{border-color:#17a2b8 !important;background-color:#e6f9ff !important;color:#17a2b8 !important}.source-text.exact-match,.source-input.exact-match,.translation-input.exact-match{border-color:#9c27b0 !important;background-color:#f3e5f5 !important}.error-indicator{font-size:10px;padding:2px 6px;border-radius:3px;margin-top:4px;display:inline-block;font-weight:bold}.error-indicator.missing{background-color:#dc3545;color:white}.error-indicator.empty{background-color:#fd7e14;color:white}.error-indicator.extra{background-color:#ffc107;color:#856404}.error-indicator.type-mismatch{background-color:#17a2b8;color:white}.error-indicator.exact-match{background-color:#9c27b0;color:white}.tooltip{position:relative;display:inline-block}.tooltip .tooltiptext{visibility:hidden;width:300px;background-color:#333;color:#fff;text-align:center;border-radius:6px;padding:8px;position:absolute;z-index:1001;bottom:125%;left:50%;transform:translateX(-50%);font-size:12px;white-space:pre-line;pointer-events:none}.tooltip .tooltiptext::after{content:"";position:absolute;top:100%;left:50%;margin-left:-5px;border-width:5px;border-style:solid;border-color:#333 transparent transparent transparent}.tooltip:hover .tooltiptext{visibility:visible}.changelog-header{display:grid;grid-template-columns:1fr auto;background:#f5f5f5;padding:8px;border:1px solid #ddd;border-radius:4px 4px 0 0;font-size:13px;cursor:pointer;margin-top:-1px}.changelog-header:hover{background:#e9ecef}.changelog-title{font-weight:bold;color:#495057;display:flex;align-items:center;gap:8px}.changelog-count{background-color:#6c757d;color:white;padding:2px 6px;border-radius:10px;font-size:11px;font-weight:normal}.changelog-toggle-btn{background:#6c757d;color:white;border:none;cursor:pointer;font-size:12px;padding:2px 10px;border-radius:4px;min-width:50px;transition:background 0.2s}.changelog-toggle-btn:hover{background:#5a6268}.changelog-content{max-height:0;overflow:hidden;transition:max-height 0.3s ease;background-color:white;border:1px solid #ddd;border-top:none;border-radius:0 0 4px 4px}.changelog-content.expanded{max-height:200px;overflow-y:auto}.changelog-list{margin:0;padding:8px;font-size:12px}.changelog-item{margin:3px 0;padding:3px 0;border-bottom:1px dotted #dee2e6;color:#495057}.changelog-item:last-child{border-bottom:none}.changelog-time{color:#6c757d;font-size:11px;margin-right:8px;display:inline-block;min-width:45px}.changelog-text{color:#212529}.changelog-source{color:#6c757d;font-weight:500}.changelog-target{color:#6c757d;font-weight:500}.changelog-load{color:#6c757d}.changelog-error{color:#6c757d;font-weight:500}.temp-message{position:fixed;top:20px;left:50%;transform:translateX(-50%) translateY(-20px);background:#6c757d;color:white;padding:10px 20px;border-radius:4px;box-shadow:0 2px 8px rgba(0,0,0,0.2);z-index:10000;opacity:0;transition:all 0.3s ease;pointer-events:none;max-width:400px;text-align:center;font-size:14px;font-weight:500}.temp-message.show{opacity:1;transform:translateX(-50%) translateY(0)}.temp-message.info,.temp-message.success,.temp-message.warning{background:#6c757d;color:white}.file-info-display{font-weight:normal;font-size:12px;color:#666;margin-left:8px}.file-info-display.source{color:#6c757d}.file-info-display.target{color:#6c757d}.import-export-toolbar{display:none;margin-bottom:0}.toolbar-header{display:grid;grid-template-columns:1fr auto;background:#f5f5f5;padding:8px;border:1px solid #ddd;border-radius:4px 4px 0 0;font-size:13px;cursor:pointer}.toolbar-header:hover{background:#e9ecef}.toolbar-title{font-weight:bold;color:#495057;display:flex;align-items:center;gap:8px}.toolbar-toggle-btn{background:#6c757d;color:white;border:none;cursor:pointer;font-size:12px;padding:2px 10px;border-radius:4px;min-width:50px;transition:background 0.2s}.toolbar-toggle-btn:hover{background:#5a6268}.toolbar-content{max-height:0;overflow:hidden;transition:max-height 0.3s ease;background-color:white;border:1px solid #ddd;border-top:none;border-radius:0 0 4px 4px}.toolbar-content.expanded{max-height:200px;overflow-y:auto;padding:10px}.toolbar-buttons{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px}.toolbar-section{margin-top:8px;padding-top:8px;border-top:1px dashed #dee2e6}.toolbar-section h4{margin:0 0 6px 0;font-size:12px;color:#6c757d}.toolbar-btn{background:#6c757d;color:white;border:none;padding:6px 10px;border-radius:4px;cursor:pointer;font-size:12px;transition:background 0.2s}.toolbar-btn:hover{background:#5a6268}.toolbar-btn-warning{background:#6c757d;color:white}.format-selection{margin:10px 0;padding:8px;background:#f8f9fa;border-radius:4px;border:1px solid #dee2e6}.format-options{display:flex;flex-direction:column;gap:6px;margin-bottom:10px}.format-option{display:flex;align-items:center;gap:6px}.format-option input[type="radio"]{margin:0}.format-option label{font-size:12px;color:#495057;cursor:pointer}.format-note{font-size:11px;color:#6c757d;margin-top:4px;font-style:italic}.theme-toggle-btn{width:32px;height:32px;border-radius:50%;background:#6c757d;color:white;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;box-shadow:0 1px 4px rgba(0,0,0,0.15);transition:all 0.2s;position:relative}.theme-toggle-btn:hover{background:#5a6268;transform:scale(1.05)}.placeholder{background-color:#e6f7ff;border:1px solid #91d5ff;border-radius:2px;padding:0 2px;color:#0050b3;font-family:monospace;font-size:11px}.placeholder.missing{background-color:#fff2f0;border-color:#ffccc7;color:#cf1322}.length-warning{background-color:#fffbe6 !important;border-left-color:#ffc107 !important}.word-count{position:absolute;bottom:-18px;right:0;font-size:10px;color:#6c757d;background:white;padding:1px 4px;border-radius:2px;border:1px solid #dee2e6}.source-area,.translation-input-container{position:relative}.key-path-row{display:flex;justify-content:space-between;align-items:center;margin-top:4px;padding-top:4px;border-top:1px dashed #ddd}.key-path-text{font-family:monospace;font-size:11px;color:#666;unicode-bidi:plaintext;text-align:start}.key-path-lock-btn{background:none;border:none;cursor:pointer;font-size:11px;opacity:0.5;padding:2px 4px;border-radius:3px}.key-path-lock-btn:hover{opacity:1;background:#e9ecef}.key-path-copy-btn{background:none;border:none;cursor:pointer;font-size:11px;opacity:0.5;padding:2px 4px;border-radius:3px;margin-right:4px}.key-path-copy-btn:hover{opacity:1;background:#e9ecef}.key-path-return-btn{background:none;border:none;cursor:pointer;font-size:11px;opacity:0.5;padding:2px 4px;border-radius:3px;margin-right:4px}.key-path-return-btn:hover{opacity:1;background:#e9ecef}.ignore-warning-btn{background:none;border:none;cursor:pointer;font-size:11px;opacity:0.5;padding:2px 4px;border-radius:3px;margin-left:8px}.ignore-warning-btn:hover{opacity:1;background:#e9ecef}.error-indicator.type-mismatch,.translation-input.length-warning,.error-indicator.type-mismatch.length-warning{border-color:#ffc107 !important;background-color:#fff9e6 !important;color:#856404 !important}
-
-/* FIXED TOOLTIP STYLES - APPEAR ON LEFT WITH !IMPORTANT */
-.scroll-btn:hover::after,
-.save-btn:hover::after,
-.csv-btn:hover::after,
-.theme-toggle-btn:hover::after {
-    content: attr(title) !important;
-    position: absolute !important;
-    background: #333 !important;
-    color: white !important;
-    padding: 8px 12px !important;
-    border-radius: 6px !important;
-    font-size: 12px !important;
-    white-space: nowrap !important;
-    z-index: 1001 !important;
-    pointer-events: none !important;
-    
-    /* Position to the LEFT of the button */
-    right: calc(100% + 15px) !important;
-    left: auto !important;
-    top: 50% !important;
-    transform: translateY(-50%) !important;
-    width: auto !important;
-    min-width: 120px !important;
-    max-width: 200px !important;
-    text-align: center !important;
-}
-
-/* Arrow pointing RIGHT (to the button) */
-.scroll-btn:hover::before,
-.save-btn:hover::before,
-.csv-btn:hover::before,
-.theme-toggle-btn:hover::before {
-    content: '' !important;
-    position: absolute !important;
-    border: 6px solid transparent !important;
-    border-left-color: #333 !important;
-    z-index: 1001 !important;
-    pointer-events: none !important;
-    
-    /* Position arrow on left side of tooltip */
-    right: -12px !important;
-    left: auto !important;
-    top: 50% !important;
-    transform: translateY(-50%) !important;
-}
-
-/* Dark theme tooltips */
-body.dark-theme .scroll-btn:hover::after,
-body.dark-theme .save-btn:hover::after,
-body.dark-theme .csv-btn:hover::after,
-body.dark-theme .theme-toggle-btn:hover::after {
-    background: #222 !important;
-    color: #fff !important;
-}
-
-body.dark-theme .scroll-btn:hover::before,
-body.dark-theme .save-btn:hover::before,
-body.dark-theme .csv-btn:hover::before,
-body.dark-theme .theme-toggle-btn:hover::before {
-    border-left-color: #222 !important;
-}
-
-/* Mobile responsiveness */
-@media (max-width: 768px) {
-    .scroll-buttons {
-        bottom: 15px !important;
-        right: 15px !important;
-    }
-    
-    .scroll-btn:hover::after,
-    .save-btn:hover::after,
-    .csv-btn:hover::after,
-    .theme-toggle-btn:hover::after {
-        right: calc(100% + 10px) !important;
-        font-size: 11px !important;
-        padding: 6px 8px !important;
-        min-width: 100px !important;
-        max-width: 150px !important;
-    }
-    
-    .scroll-btn:hover::before,
-    .save-btn:hover::before,
-    .csv-btn:hover::before,
-    .theme-toggle-btn:hover::before {
-        right: -10px !important;
-        border-width: 5px !important;
-    }
-}
-
-/* Add to fix copy button styling */
-.key-path-copy-btn, .key-path-return-btn {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 11px;
-  opacity: 0.7;
-  padding: 2px 4px;
-  border-radius: 3px;
-  margin-right: 4px;
-  display: inline-block;
-  vertical-align: middle;
-}
-
-.key-path-copy-btn:hover, .key-path-return-btn:hover {
-  opacity: 1;
-  background: rgba(0, 0, 0, 0.1);
-}
-
-body.dark-theme .key-path-copy-btn:hover,
-body.dark-theme .key-path-return-btn:hover {
-  background: rgba(255, 255, 255, 0.1);
-}
-
-/* Fix button container alignment */
-.key-path-row > div:last-child {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-body.dark-theme{background-color:#1a1a1a;color:#e0e0e0}body.dark-theme .upload-box{background:#2d2d2d;border-color:#444;color:#e0e0e0}body.dark-theme .upload-box:hover{background:#3d3d3d;border-color:#666}body.dark-theme .upload-box.active{border-color:#4d8be8;background:#2a4365}body.dark-theme .upload-box.disabled{background:#2a2a2a;border-color:#444;color:#777}body.dark-theme .reset-box{background:#2d2d2d;border-color:#444;color:#e0e0e0}body.dark-theme .reset-box:hover{background:#3d3d3d;border-color:#666}body.dark-theme .editor{border-color:#444;background:#2d2d2d}body.dark-theme .editor-header{background:#333;border-color:#444;color:#e0e0e0}body.dark-theme .translation-item{border-color:#444}body.dark-theme .translation-item:nth-child(even){background:#252525}body.dark-theme .source-text{background:#2a4365;border-left-color:#4d8be8;color:#e0e0e0}body.dark-theme .source-text.changed{border-left-color:#e6a700 !important;background:#332b00}body.dark-theme .source-text.exact-match{border-left-color:#9c27b0 !important;background:#4a1a5a !important}body.dark-theme .source-input,body.dark-theme .translation-input{background:#333;border-color:#555;color:#e0e0e0}body.dark-theme .source-input:focus,body.dark-theme .translation-input:focus{border-color:#4d8be8;box-shadow:0 0 0 2px rgba(77,139,232,0.2)}body.dark-theme .source-input.changed,body.dark-theme .translation-input.changed{border-color:#e6a700 !important;background:#332b00}body.dark-theme .source-input.exact-match,body.dark-theme .translation-input.exact-match{border-color:#9c27b0 !important;background:#4a1a5a !important}body.dark-theme .key-path-text{color:#999}body.dark-theme .key-path-row{border-color:#444}body.dark-theme .key-path-lock-btn:hover{background:#333}body.dark-theme .key-path-copy-btn:hover{background:#333}body.dark-theme .key-path-return-btn:hover{background:#333}body.dark-theme .ignore-warning-btn:hover{background:#333}body.dark-theme .import-export-toolbar .toolbar-header{background:#333;border-color:#444;color:#e0e0e0}body.dark-theme .import-export-toolbar .toolbar-content{background:#2d2d2d;border-color:#444}body.dark-theme .changelog-header{background:#333;border-color:#444;color:#e0e0e0}body.dark-theme .changelog-content{background:#2d2d2d;border-color:#444}body.dark-theme .changelog-text{color:#e0e0e0}body.dark-theme .changelog-list{background:#2d2d2d}body.dark-theme .changelog-item{color:#e0e0e0;border-color:#444}body.dark-theme .changelog-time{color:#999}body.dark-theme .temp-message{background:#444;color:#fff}body.dark-theme .warning{background:#332b00;border-color:#665800;color:#ffd54f}body.dark-theme .warning h4{color:#ffd54f}body.dark-theme .warning .collapsible-header{background:#2a2300;color:#ffd54f}body.dark-theme .warning .collapsible-header:hover{background:#332b00}body.dark-theme .warning .collapsible-content{background:#1a1a1a;color:#e0e0e0}body.dark-theme .warning .collapsible-content code{background:#2d2d2d;color:#ffd54f;border:1px solid #444}body.dark-theme .warning .key-count{color:#ffd54f}body.dark-theme .error{background:#331a1a;color:#ff6b6b;border-color:#dc3545}body.dark-theme .placeholder{background-color:#003a6d;border-color:#005c99;color:#91d5ff}body.dark-theme .placeholder.missing{background-color:#331a1a;border-color:#662a2a;color:#ff6b6b}body.dark-theme .word-count{background:#333;border-color:#444;color:#999}body.dark-theme .format-selection{background:#2d2d2d;border-color:#444}body.dark-theme .format-option label{color:#e0e0e0}body.dark-theme .format-note{color:#999}body.dark-theme .collapsible-section .collapsible-header{background:#333;color:#e0e0e0}body.dark-theme .collapsible-section .collapsible-header:hover{background:#3d3d3d}body.dark-theme .collapsible-section .collapsible-content{background:#2d2d2d;color:#e0e0e0}body.dark-theme .collapsible-section .collapsible-content ul{background:#2d2d2d}body.dark-theme .collapsible-section .collapsible-content code{background:#1a1a1a;color:#e0e0e0;border:1px solid #444}body.dark-theme .key-count{color:#999}body.dark-theme .csv-btn{background:#5a6268;color:white}body.dark-theme .csv-btn:hover{background:#495057}body.dark-theme .array-indicator{background:#1a331a;color:#28a745;border:1px solid #28a745}body.dark-theme .error-indicator.missing{background-color:#dc3545;color:white}body.dark-theme .error-indicator.empty{background-color:#fd7e14;color:#212529}body.dark-theme .error-indicator.extra{background-color:#ffc107;color:#212529}body.dark-theme .error-indicator.type-mismatch{background-color:#17a2b8;color:white}body.dark-theme .error-indicator.exact-match{background-color:#9c27b0;color:white}body.dark-theme .translation-input.length-warning{background-color:#332b00 !important;border-color:#e6a700 !important;color:#ffd54f !important}body.dark-theme .error-indicator.type-mismatch.length-warning{background-color:#e6a700 !important;color:#212529 !important;border:1px solid #e6a700}body.dark-theme .source-text.missing,body.dark-theme .source-input.missing,body.dark-theme .translation-input.missing{border-color:#dc3545 !important;background-color:#331a1a !important;color:#ff6b6b !important}body.dark-theme .source-text.empty,body.dark-theme .source-input.empty,body.dark-theme .translation-input.empty{border-color:#fd7e14 !important;background-color:#332b00 !important;color:#ffc107 !important}body.dark-theme .source-text.extra,body.dark-theme .source-input.extra,body.dark-theme .translation-input.extra{border-color:#ffc107 !important;background-color:#332b00 !important;color:#ffd54f !important}body.dark-theme .source-text.type-mismatch,body.dark-theme .source-input.type-mismatch,body.dark-theme .translation-input.type-mismatch{border-color:#17a2b8 !important;background-color:#00323d !important;color:#6edff6 !important}body.dark-theme .source-text.exact-match,body.dark-theme .source-input.exact-match,body.dark-theme .translation-input.exact-match{border-color:#9c27b0 !important;background-color:#4a1a5a !important}body.dark-theme .status{color:#999}body.dark-theme .file-info{color:#999}body.dark-theme .file-info-display{color:#999}body.dark-theme .file-info-display.source{color:#4d8be8}body.dark-theme .file-info-display.target{color:#4d8be8}body.dark-theme .translation-item div[style*="color:#666"]{color:#999 !important}body.dark-theme .translation-item div[style*="font-style:italic"]{color:#999 !important}body.dark-theme .key-path-lock-btn{color:#999}body.dark-theme .key-path-lock-btn:hover{background:#444}body.dark-theme .toolbar-btn{background:#5a6268;color:white}body.dark-theme .toolbar-btn:hover{background:#495057}body.dark-theme .toolbar-toggle-btn{background:#5a6268;color:white}body.dark-theme .toolbar-toggle-btn:hover{background:#495057}body.dark-theme .toolbar-section{border-color:#444}body.dark-theme .toolbar-section h4{color:#999}body.dark-theme .changelog-toggle-btn{background:#5a6268;color:white}body.dark-theme .changelog-toggle-btn:hover{background:#495057}.target-info-line{display:flex;gap:8px;align-items:center;margin-top:4px;flex-wrap:wrap}.word-count-inline{font-size:10px;color:#6c757d;background:#f8f9fa;padding:2px 6px;border-radius:3px;border:1px solid #dee2e6}body.dark-theme .word-count-inline{background:#333;border-color:#444;color:#999}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;margin:20px;transition:background-color 0.3s,color 0.3s}.container{display:flex;flex-direction:column;gap:10px}.upload-row{display:flex;gap:15px}.reset-box{width:120px;border:2px dashed #ccc;padding:15px;text-align:center;min-height:100px;display:none;flex-direction:column;justify-content:center;position:relative;transition:all 0.3s;background:#f8f9fa;border-radius:4px;cursor:pointer}.reset-box:hover{background:#e9ecef;border-color:#6c757d}.reset-box h3{margin:0 0 8px;font-size:16px;color:#495057}.upload-box{flex:1;border:2px dashed #ccc;padding:15px;text-align:center;min-height:100px;display:flex;flex-direction:column;justify-content:center;position:relative;transition:all 0.3s;cursor:pointer}.upload-box.compact{padding:8px !important;min-height:60px !important;border-width:1px !important}.upload-box.disabled{border-color:#e0e0e0;background:#f5f5f5;cursor:not-allowed}.upload-box.disabled h3,.upload-box.disabled div{color:#999}.upload-box h3{margin:0 0 8px;font-size:16px}.upload-box.compact h3{font-size:12px;margin:0 0 3px}.upload-box.compact div{font-size:11px}.upload-box.active{border-color:#0052cc;background:#f0f7ff}.upload-box.inactive{opacity:0.5;filter:grayscale(50%)}input[type="file"]{display:none}.btn{background:#0052cc;color:#fff;border:none;padding:6px 12px;border-radius:4px;cursor:pointer;margin:3px;font-size:13px}.btn:disabled{background:#ccc}.btn-secondary{background:#6c757d}.btn-success{background:#28a745}.btn-warning{background:#ffc107;color:#212529}.btn-danger{background:#dc3545}.btn-small{font-size:11px;padding:4px 8px}.error{color:#d00;background:#fee;padding:8px;border-radius:4px;display:none;margin:0 0 10px 0}.warning{color:#856404;background:#fff3cd;padding:10px;border-radius:4px;display:none;margin:0;border-left:4px solid #ffc107;max-height:400px;overflow-y:auto}.editor{display:none;border:1px solid #ddd;border-radius:4px;position:relative;margin-bottom:230px !important}.editor-header{display:grid;grid-template-columns:1fr 1fr;background:#f5f5f5;padding:8px;border-bottom:1px solid #ddd;font-size:13px;position:sticky;top:0;z-index:100;border-radius:4px 4px 0 0}.editor-header div{font-weight:bold}.translation-list{}.translation-item{display:grid;grid-template-columns:1fr 1fr;padding:10px;border-bottom:1px solid #eee;gap:10px;align-items:start}.translation-item:nth-child(even){background:#fafafa}.source-area{position:relative}.source-text{padding:6px;border-left:3px solid #0052cc;background:#f0f7ff;border-radius:4px;white-space:pre-wrap;word-break:break-word;transition:border-color 0.2s;font-size:13px;unicode-bidi:plaintext;text-align:start}.source-text.changed{border-left-color:#ff9800 !important;background:#fff8e1}.source-input{width:100%;padding:6px;border:1px solid #b3d4ff;border-radius:4px;resize:vertical;font-family:inherit;min-height:35px;box-sizing:border-box;font-size:13px;unicode-bidi:plaintext;text-align:start}.source-input.changed{border-color:#ff9800 !important;background:#fff8e1}.lock-btn{position:absolute;top:6px;right:6px;background:none;border:none;cursor:pointer;font-size:12px;opacity:0.5;z-index:10;padding:2px}.lock-btn:hover{opacity:1}.translation-input{width:100%;padding:6px;border:1px solid #ddd;border-radius:4px;resize:vertical;font-family:inherit;min-height:35px;transition:border-color 0.2s,background-color 0.2s;font-size:13px;unicode-bidi:plaintext;text-align:start}.translation-input:focus{outline:none;border-color:#0052cc;box-shadow:0 0 0 2px rgba(0,82,204,0.1)}.translation-input.changed{border-color:#ff9800 !important;background:#fff8e1}.key-path{font-family:monospace;font-size:11px;color:#666;padding:4px 0 0 0;margin-top:4px;border-top:1px dashed #ddd;unicode-bidi:plaintext;text-align:start}.array-indicator{color:#28a745;font-size:10px;margin-left:4px;background:#e8f5e9;padding:1px 4px;border-radius:8px}.action-buttons{display:flex;gap:8px;justify-content:center;margin:15px 0;padding-top:15px;border-top:1px solid #e9ecef}.status{text-align:center;padding:15px;color:#666}.file-info{font-size:11px;color:#666;margin-top:5px}.upload-box.compact .file-info{font-size:9px}.control-buttons{display:flex;gap:8px;justify-content:center;align-items:center;margin:10px 0}.scroll-buttons{position:fixed;bottom:20px;right:20px;display:flex;flex-direction:column;gap:6px;z-index:1000}.scroll-btn{width:32px;height:32px;border-radius:50%;background:#6c757d;color:white;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;box-shadow:0 1px 4px rgba(0,0,0,0.15);transition:all 0.2s;position:relative}.scroll-btn:hover{background:#5a6268;transform:scale(1.05)}.save-btn{width:32px;height:32px;border-radius:50%;background:#0052cc;color:white;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 1px 4px rgba(0,0,0,0.15);transition:all 0.2s;position:relative}.save-btn:hover{background:#0041a8;transform:scale(1.05)}.save-btn.save-source{background:#28a745}.save-btn.save-source:hover{background:#218838}.csv-btn{width:32px;height:32px;border-radius:50%;background:#6c757d;color:white;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;box-shadow:0 1px 4px rgba(0,0,0,0.15);transition:all 0.2s;position:relative}.csv-btn:hover{background:#5a6268;transform:scale(1.05)}.load-btn-row{display:flex;justify-content:center;margin-top:10px}.structure-info{padding:10px;background:#e8f4fd;border-radius:4px;margin-top:10px;font-size:12px;max-height:200px;overflow-y:auto}.structure-info h4{margin:0 0 5px 0;color:#0052cc}.structure-info ul{margin:0;padding-left:20px}.structure-info li{margin:2px 0}.toggle-list-btn{background:none;border:none;color:#0052cc;cursor:pointer;font-size:11px;padding:2px 5px;margin-left:5px;text-decoration:underline}.toggle-list-btn:hover{color:#0041a8}.key-count{font-weight:normal;font-size:11px;color:#6c757d;margin-left:5px}.collapsible-section{margin-bottom:10px}.collapsible-header{display:flex;justify-content:space-between;align-items:center;cursor:pointer;padding:5px;background:#e9ecef;border-radius:4px}.collapsible-header:hover{background:#dee2e6}.collapsible-content{max-height:0;overflow:hidden;transition:max-height 0.3s ease;background:#fff;border-radius:0 0 4px 4px}.collapsible-content.expanded{max-height:200px;overflow-y:auto !important;padding:8px}.collapsible-icon{transition:transform 0.3s}.collapsible-icon.expanded{transform:rotate(180deg)}.collapsible-content ul{margin:0;padding-left:20px;max-height:180px;overflow-y:auto}.collapsible-content li{margin:3px 0;padding:3px;font-family:monospace;font-size:11px;word-break:break-all}.collapsible-content code{background:#f1f1f1;padding:2px 4px;border-radius:3px;color:#333}.reset-box.compact{padding:8px !important;min-height:60px !important;border-width:1px !important}.source-text.missing,.source-input.missing,.translation-input.missing{border-color:#dc3545 !important;background-color:#fff5f5 !important;color:#dc3545 !important}.source-text.empty,.source-input.empty,.translation-input.empty{border-color:#fd7e14 !important;background-color:#fff3e6 !important;color:#fd7e14 !important}.source-text.extra,.source-input.extra,.translation-input.extra{border-color:#ffc107 !important;background-color:#fff9e6 !important;color:#856404 !important}.source-text.type-mismatch,.source-input.type-mismatch,.translation-input.type-mismatch{border-color:#17a2b8 !important;background-color:#e6f9ff !important;color:#17a2b8 !important}.source-text.exact-match,.source-input.exact-match,.translation-input.exact-match{border-color:#9c27b0 !important;background-color:#f3e5f5 !important}.error-indicator{font-size:10px;padding:2px 6px;border-radius:3px;margin-top:4px;display:inline-block;font-weight:bold}.error-indicator.missing{background-color:#dc3545;color:white}.error-indicator.empty{background-color:#fd7e14;color:white}.error-indicator.extra{background-color:#ffc107;color:#856404}.error-indicator.type-mismatch{background-color:#17a2b8;color:white}.error-indicator.exact-match{background-color:#9c27b0;color:white}.tooltip{position:relative;display:inline-block}.tooltip .tooltiptext{visibility:hidden;width:300px;background-color:#333;color:#fff;text-align:center;border-radius:6px;padding:8px;position:absolute;z-index:1001;bottom:125%;left:50%;transform:translateX(-50%);font-size:12px;white-space:pre-line;pointer-events:none}.tooltip .tooltiptext::after{content:"";position:absolute;top:100%;left:50%;margin-left:-5px;border-width:5px;border-style:solid;border-color:#333 transparent transparent transparent}.tooltip:hover .tooltiptext{visibility:visible}.changelog-header{display:grid;grid-template-columns:1fr auto;background:#f5f5f5;padding:8px;border:1px solid #ddd;border-radius:4px 4px 0 0;font-size:13px;cursor:pointer;margin-top:-1px}.changelog-header:hover{background:#e9ecef}.changelog-title{font-weight:bold;color:#495057;display:flex;align-items:center;gap:8px}.changelog-count{background-color:#6c757d;color:white;padding:2px 6px;border-radius:10px;font-size:11px;font-weight:normal}.changelog-toggle-btn{background:#6c757d;color:white;border:none;cursor:pointer;font-size:12px;padding:2px 10px;border-radius:4px;min-width:50px;transition:background 0.2s}.changelog-toggle-btn:hover{background:#5a6268}.changelog-content{max-height:0;overflow:hidden;transition:max-height 0.3s ease;background-color:white;border:1px solid #ddd;border-top:none;border-radius:0 0 4px 4px}.changelog-content.expanded{max-height:200px;overflow-y:auto}.changelog-list{margin:0;padding:8px;font-size:12px}.changelog-item{margin:3px 0;padding:3px 0;border-bottom:1px dotted #dee2e6;color:#495057}.changelog-item:last-child{border-bottom:none}.changelog-time{color:#6c757d;font-size:11px;margin-right:8px;display:inline-block;min-width:45px}.changelog-text{color:#212529}.changelog-source{color:#6c757d;font-weight:500}.changelog-target{color:#6c757d;font-weight:500}.changelog-load{color:#6c757d}.changelog-error{color:#6c757d;font-weight:500}.temp-message{position:fixed;top:20px;left:50%;transform:translateX(-50%) translateY(-20px);background:#6c757d;color:white;padding:10px 20px;border-radius:4px;box-shadow:0 2px 8px rgba(0,0,0,0.2);z-index:10000;opacity:0;transition:all 0.3s ease;pointer-events:none;max-width:400px;text-align:center;font-size:14px;font-weight:500}.temp-message.show{opacity:1;transform:translateX(-50%) translateY(0)}.temp-message.info,.temp-message.success,.temp-message.warning{background:#6c757d;color:white}.file-info-display{font-weight:normal;font-size:12px;color:#666;margin-left:8px}.file-info-display.source{color:#6c757d}.file-info-display.target{color:#6c757d}.import-export-toolbar{display:none;margin-bottom:0}.toolbar-header{display:grid;grid-template-columns:1fr auto;background:#f5f5f5;padding:8px;border:1px solid #ddd;border-radius:4px 4px 0 0;font-size:13px;cursor:pointer}.toolbar-header:hover{background:#e9ecef}.toolbar-title{font-weight:bold;color:#495057;display:flex;align-items:center;gap:8px}.toolbar-toggle-btn{background:#6c757d;color:white;border:none;cursor:pointer;font-size:12px;padding:2px 10px;border-radius:4px;min-width:50px;transition:background 0.2s}.toolbar-toggle-btn:hover{background:#5a6268}.toolbar-content{max-height:0;overflow:hidden;transition:max-height 0.3s ease;background-color:white;border:1px solid #ddd;border-top:none;border-radius:0 0 4px 4px}.toolbar-content.expanded{max-height:200px;overflow-y:auto;padding:10px}.toolbar-buttons{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px}.toolbar-section{margin-top:8px;padding-top:8px;border-top:1px dashed #dee2e6}.toolbar-section h4{margin:0 0 6px 0;font-size:12px;color:#6c757d}.toolbar-btn{background:#6c757d;color:white;border:none;padding:6px 10px;border-radius:4px;cursor:pointer;font-size:12px;transition:background 0.2s}.toolbar-btn:hover{background:#5a6268}.toolbar-btn-warning{background:#6c757d;color:white}.format-selection{margin:10px 0;padding:8px;background:#f8f9fa;border-radius:4px;border:1px solid #dee2e6}.format-options{display:flex;flex-direction:column;gap:6px;margin-bottom:10px}.format-option{display:flex;align-items:center;gap:6px}.format-option input[type="radio"]{margin:0}.format-option label{font-size:12px;color:#495057;cursor:pointer}.format-note{font-size:11px;color:#6c757d;margin-top:4px;font-style:italic}.theme-toggle-btn{width:32px;height:32px;border-radius:50%;background:#6c757d;color:white;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;box-shadow:0 1px 4px rgba(0,0,0,0.15);transition:all 0.2s;position:relative}.theme-toggle-btn:hover{background:#5a6268;transform:scale(1.05)}.placeholder{background-color:#e6f7ff;border:1px solid #91d5ff;border-radius:2px;padding:0 2px;color:#0050b3;font-family:monospace;font-size:11px}.placeholder.missing{background-color:#fff2f0;border-color:#ffccc7;color:#cf1322}.length-warning{background-color:#fffbe6 !important;border-left-color:#ffc107 !important}.word-count{position:absolute;bottom:-18px;right:0;font-size:10px;color:#6c757d;background:white;padding:1px 4px;border-radius:2px;border:1px solid #dee2e6}.source-area,.translation-input-container{position:relative}.key-path-row{display:flex;justify-content:space-between;align-items:center;margin-top:4px;padding-top:4px;border-top:1px dashed #ddd}.key-path-text{font-family:monospace;font-size:11px;color:#666;unicode-bidi:plaintext;text-align:start}.key-path-lock-btn{background:none;border:none;cursor:pointer;font-size:11px;opacity:0.5;padding:2px 4px;border-radius:3px}.key-path-lock-btn:hover{opacity:1;background:#e9ecef}.key-path-copy-btn{background:none;border:none;cursor:pointer;font-size:11px;opacity:0.5;padding:2px 4px;border-radius:3px;margin-right:4px}.key-path-copy-btn:hover{opacity:1;background:#e9ecef}.key-path-return-btn{background:none;border:none;cursor:pointer;font-size:11px;opacity:0.5;padding:2px 4px;border-radius:3px;margin-right:4px}.key-path-return-btn:hover{opacity:1;background:#e9ecef}.ignore-warning-btn{background:none;border:none;cursor:pointer;font-size:11px;opacity:0.5;padding:2px 4px;border-radius:3px;margin-left:8px}.ignore-warning-btn:hover{opacity:1;background:#e9ecef}.error-indicator.type-mismatch,.translation-input.length-warning,.error-indicator.type-mismatch.length-warning{border-color:#ffc107 !important;background-color:#fff9e6 !important;color:#856404 !important}.scroll-btn:hover::after,.save-btn:hover::after,.csv-btn:hover::after,.theme-toggle-btn:hover::after{content:attr(title) !important;position:absolute !important;background:#333 !important;color:white !important;padding:8px 12px !important;border-radius:6px !important;font-size:12px !important;white-space:nowrap !important;z-index:1001 !important;pointer-events:none !important;right:calc(100% + 15px) !important;left:auto !important;top:50% !important;transform:translateY(-50%) !important;width:auto !important;min-width:120px !important;max-width:200px !important;text-align:center !important}.scroll-btn:hover::before,.save-btn:hover::before,.csv-btn:hover::before,.theme-toggle-btn:hover::before{content:'' !important;position:absolute !important;border:6px solid transparent !important;border-left-color:#333 !important;z-index:1001 !important;pointer-events:none !important;right:-12px !important;left:auto !important;top:50% !important;transform:translateY(-50%) !important}body.dark-theme .scroll-btn:hover::after,body.dark-theme .save-btn:hover::after,body.dark-theme .csv-btn:hover::after,body.dark-theme .theme-toggle-btn:hover::after{background:#222 !important;color:#fff !important}body.dark-theme .scroll-btn:hover::before,body.dark-theme .save-btn:hover::before,body.dark-theme .csv-btn:hover::before,body.dark-theme .theme-toggle-btn:hover::before{border-left-color:#222 !important}@media (max-width:768px){.scroll-buttons{bottom:15px !important;right:15px !important}.scroll-btn:hover::after,.save-btn:hover::after,.csv-btn:hover::after,.theme-toggle-btn:hover::after{right:calc(100% + 10px) !important;font-size:11px !important;padding:6px 8px !important;min-width:100px !important;max-width:150px !important}.scroll-btn:hover::before,.save-btn:hover::before,.csv-btn:hover::before,.theme-toggle-btn:hover::before{right:-10px !important;border-width:5px !important}}.key-path-copy-btn,.key-path-return-btn{background:none;border:none;cursor:pointer;font-size:11px;opacity:0.7;padding:2px 4px;border-radius:3px;margin-right:4px;display:inline-block;vertical-align:middle}.key-path-copy-btn:hover,.key-path-return-btn:hover{opacity:1;background:rgba(0,0,0,0.1)}body.dark-theme .key-path-copy-btn:hover,body.dark-theme .key-path-return-btn:hover{background:rgba(255,255,255,0.1)}.key-path-row > div:last-child{display:flex;align-items:center;gap:4px}body.dark-theme{background-color:#1a1a1a;color:#e0e0e0}body.dark-theme .upload-box{background:#2d2d2d;border-color:#444;color:#e0e0e0}body.dark-theme .upload-box:hover{background:#3d3d3d;border-color:#666}body.dark-theme .upload-box.active{border-color:#4d8be8;background:#2a4365}body.dark-theme .upload-box.disabled{background:#2a2a2a;border-color:#444;color:#777}body.dark-theme .reset-box{background:#2d2d2d;border-color:#444;color:#e0e0e0}body.dark-theme .reset-box:hover{background:#3d3d3d;border-color:#666}body.dark-theme .editor{border-color:#444;background:#2d2d2d}body.dark-theme .editor-header{background:#333;border-color:#444;color:#e0e0e0}body.dark-theme .translation-item{border-color:#444}body.dark-theme .translation-item:nth-child(even){background:#252525}body.dark-theme .source-text{background:#2a4365;border-left-color:#4d8be8;color:#e0e0e0}body.dark-theme .source-text.changed{border-left-color:#e6a700 !important;background:#332b00}body.dark-theme .source-text.exact-match{border-left-color:#9c27b0 !important;background:#4a1a5a !important}body.dark-theme .source-input,body.dark-theme .translation-input{background:#333;border-color:#555;color:#e0e0e0}body.dark-theme .source-input:focus,body.dark-theme .translation-input:focus{border-color:#4d8be8;box-shadow:0 0 0 2px rgba(77,139,232,0.2)}body.dark-theme .source-input.changed,body.dark-theme .translation-input.changed{border-color:#e6a700 !important;background:#332b00}body.dark-theme .source-input.exact-match,body.dark-theme .translation-input.exact-match{border-color:#9c27b0 !important;background:#4a1a5a !important}body.dark-theme .key-path-text{color:#999}body.dark-theme .key-path-row{border-color:#444}body.dark-theme .key-path-lock-btn:hover{background:#333}body.dark-theme .key-path-copy-btn:hover{background:#333}body.dark-theme .key-path-return-btn:hover{background:#333}body.dark-theme .ignore-warning-btn:hover{background:#333}body.dark-theme .import-export-toolbar .toolbar-header{background:#333;border-color:#444;color:#e0e0e0}body.dark-theme .import-export-toolbar .toolbar-content{background:#2d2d2d;border-color:#444}body.dark-theme .changelog-header{background:#333;border-color:#444;color:#e0e0e0}body.dark-theme .changelog-content{background:#2d2d2d;border-color:#444}body.dark-theme .changelog-text{color:#e0e0e0}body.dark-theme .changelog-list{background:#2d2d2d}body.dark-theme .changelog-item{color:#e0e0e0;border-color:#444}body.dark-theme .changelog-time{color:#999}body.dark-theme .temp-message{background:#444;color:#fff}body.dark-theme .warning{background:#332b00;border-color:#665800;color:#ffd54f}body.dark-theme .warning h4{color:#ffd54f}body.dark-theme .warning .collapsible-header{background:#2a2300;color:#ffd54f}body.dark-theme .warning .collapsible-header:hover{background:#332b00}body.dark-theme .warning .collapsible-content{background:#1a1a1a;color:#e0e0e0}body.dark-theme .warning .collapsible-content code{background:#2d2d2d;color:#ffd54f;border:1px solid #444}body.dark-theme .warning .key-count{color:#ffd54f}body.dark-theme .error{background:#331a1a;color:#ff6b6b;border-color:#dc3545}body.dark-theme .placeholder{background-color:#003a6d;border-color:#005c99;color:#91d5ff}body.dark-theme .placeholder.missing{background-color:#331a1a;border-color:#662a2a;color:#ff6b6b}body.dark-theme .word-count{background:#333;border-color:#444;color:#999}body.dark-theme .format-selection{background:#2d2d2d;border-color:#444}body.dark-theme .format-option label{color:#e0e0e0}body.dark-theme .format-note{color:#999}body.dark-theme .collapsible-section .collapsible-header{background:#333;color:#e0e0e0}body.dark-theme .collapsible-section .collapsible-header:hover{background:#3d3d3d}body.dark-theme .collapsible-section .collapsible-content{background:#2d2d2d;color:#e0e0e0}body.dark-theme .collapsible-section .collapsible-content ul{background:#2d2d2d}body.dark-theme .collapsible-section .collapsible-content code{background:#1a1a1a;color:#e0e0e0;border:1px solid #444}body.dark-theme .key-count{color:#999}body.dark-theme .csv-btn{background:#5a6268;color:white}body.dark-theme .csv-btn:hover{background:#495057}body.dark-theme .array-indicator{background:#1a331a;color:#28a745;border:1px solid #28a745}body.dark-theme .error-indicator.missing{background-color:#dc3545;color:white}body.dark-theme .error-indicator.empty{background-color:#fd7e14;color:#212529}body.dark-theme .error-indicator.extra{background-color:#ffc107;color:#212529}body.dark-theme .error-indicator.type-mismatch{background-color:#17a2b8;color:white}body.dark-theme .error-indicator.exact-match{background-color:#9c27b0;color:white}body.dark-theme .translation-input.length-warning{background-color:#332b00 !important;border-color:#e6a700 !important;color:#ffd54f !important}body.dark-theme .error-indicator.type-mismatch.length-warning{background-color:#e6a700 !important;color:#212529 !important;border:1px solid #e6a700}body.dark-theme .source-text.missing,body.dark-theme .source-input.missing,body.dark-theme .translation-input.missing{border-color:#dc3545 !important;background-color:#331a1a !important;color:#ff6b6b !important}body.dark-theme .source-text.empty,body.dark-theme .source-input.empty,body.dark-theme .translation-input.empty{border-color:#fd7e14 !important;background-color:#332b00 !important;color:#ffc107 !important}body.dark-theme .source-text.extra,body.dark-theme .source-input.extra,body.dark-theme .translation-input.extra{border-color:#ffc107 !important;background-color:#332b00 !important;color:#ffd54f !important}body.dark-theme .source-text.type-mismatch,body.dark-theme .source-input.type-mismatch,body.dark-theme .translation-input.type-mismatch{border-color:#17a2b8 !important;background-color:#00323d !important;color:#6edff6 !important}body.dark-theme .source-text.exact-match,body.dark-theme .source-input.exact-match,body.dark-theme .translation-input.exact-match{border-color:#9c27b0 !important;background-color:#4a1a5a !important}body.dark-theme .status{color:#999}body.dark-theme .file-info{color:#999}body.dark-theme .file-info-display{color:#999}body.dark-theme .file-info-display.source{color:#4d8be8}body.dark-theme .file-info-display.target{color:#4d8be8}body.dark-theme .translation-item div[style*="color:#666"]{color:#999 !important}body.dark-theme .translation-item div[style*="font-style:italic"]{color:#999 !important}body.dark-theme .key-path-lock-btn{color:#999}body.dark-theme .key-path-lock-btn:hover{background:#444}body.dark-theme .toolbar-btn{background:#5a6268;color:white}body.dark-theme .toolbar-btn:hover{background:#495057}body.dark-theme .toolbar-toggle-btn{background:#5a6268;color:white}body.dark-theme .toolbar-toggle-btn:hover{background:#495057}body.dark-theme .toolbar-section{border-color:#444}body.dark-theme .toolbar-section h4{color:#999}body.dark-theme .changelog-toggle-btn{background:#5a6268;color:white}body.dark-theme .changelog-toggle-btn:hover{background:#495057}.target-info-line{display:flex;gap:8px;align-items:center;margin-top:4px;flex-wrap:wrap}.word-count-inline{font-size:10px;color:#6c757d;background:#f8f9fa;padding:2px 6px;border-radius:3px;border:1px solid #dee2e6}body.dark-theme .word-count-inline{background:#333;border-color:#444;color:#999}.progress-bar-container{position:relative;height:24px;background:#e9ecef;border-bottom:1px solid #ddd;overflow:hidden}.progress-bar-fill{height:100%;background:#28a745;transition:width 0.3s}.progress-text{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:12px;font-weight:bold;color:#212529}body.dark-theme .progress-bar-container{background:#333;border-color:#444}body.dark-theme .progress-text{color:#e0e0e0}.filter-bar{display:flex;gap:10px;align-items:center;padding:8px;background:#f8f9fa;border-bottom:1px solid #ddd;flex-wrap:wrap}.filter-input{flex:1;min-width:180px;padding:5px 8px;border:1px solid #ddd;border-radius:4px;font-size:13px;font-family:inherit}.filter-input:focus{outline:none;border-color:#0052cc;box-shadow:0 0 0 2px rgba(0,82,204,0.1)}.filter-buttons{display:flex;gap:4px;flex-wrap:wrap}.filter-btn{background:#e9ecef;color:#495057;border:1px solid #ddd;padding:4px 10px;border-radius:4px;cursor:pointer;font-size:12px;transition:all 0.2s}.filter-btn:hover{background:#dee2e6}.filter-btn.active{background:#0052cc;color:white;border-color:#0052cc}body.dark-theme .filter-bar{background:#2d2d2d;border-color:#444}body.dark-theme .filter-input{background:#333;border-color:#555;color:#e0e0e0}body.dark-theme .filter-btn{background:#444;color:#e0e0e0;border-color:#555}body.dark-theme .filter-btn:hover{background:#555}body.dark-theme .filter-btn.active{background:#4d8be8;border-color:#4d8be8}.footer{text-align:center;padding:20px;margin-top:20px;font-size:12px;color:#adb5bd;border-top:1px solid #e9ecef}.footer a{color:#adb5bd;text-decoration:none}.footer a:hover{color:#6c757d;text-decoration:underline}body.dark-theme .footer{color:#555;border-color:#333}body.dark-theme .footer a{color:#555}body.dark-theme .footer a:hover{color:#999}.help-modal hr{border:none;border-top:1px solid #dee2e6;margin:16px 0}.help-copyright{font-size:11px;color:#adb5bd;text-align:center;margin-top:4px}.help-copyright a{color:#adb5bd;text-decoration:none}.help-copyright a:hover{text-decoration:underline}body.dark-theme .help-modal hr{border-color:#444}body.dark-theme .help-copyright{color:#555}body.dark-theme .help-copyright a{color:#555}.help-btn{width:32px;height:32px;border-radius:50%;background:#6c757d;color:white;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:bold;box-shadow:0 1px 4px rgba(0,0,0,0.15);transition:all 0.2s;position:relative}.help-btn:hover{background:#5a6268;transform:scale(1.05)}.help-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:2000;justify-content:center;align-items:flex-start;padding:40px 20px;overflow-y:auto}.help-overlay.open{display:flex}.help-modal{background:#fff;border-radius:8px;padding:24px;max-width:620px;width:100%;box-shadow:0 8px 32px rgba(0,0,0,0.2);position:relative;margin:auto}.help-modal h2{margin:0 0 16px;font-size:17px;color:#212529;border-bottom:2px solid #0052cc;padding-bottom:8px}.help-modal h3{margin:16px 0 6px;font-size:13px;font-weight:bold;color:#0052cc;text-transform:uppercase;letter-spacing:0.5px}.help-modal p,.help-modal li{font-size:13px;color:#495057;line-height:1.5;margin:3px 0}.help-modal ul{margin:4px 0;padding-left:18px}.help-modal kbd{background:#e9ecef;border:1px solid #ced4da;border-radius:3px;padding:1px 5px;font-size:11px;font-family:monospace;color:#212529}.help-modal .badge{display:inline-block;padding:1px 6px;border-radius:3px;font-size:11px;font-weight:bold;margin-right:4px;vertical-align:middle}.help-modal .badge-red{background:#dc3545;color:white}.help-modal .badge-orange{background:#fd7e14;color:white}.help-modal .badge-yellow{background:#ffc107;color:#856404}.help-modal .badge-teal{background:#17a2b8;color:white}.help-modal .badge-purple{background:#9c27b0;color:white}.help-close{position:absolute;top:12px;right:14px;background:none;border:none;font-size:20px;cursor:pointer;color:#6c757d;line-height:1}.help-close:hover{color:#212529}body.dark-theme .help-modal{background:#2d2d2d;color:#e0e0e0}body.dark-theme .help-modal h2{color:#e0e0e0;border-color:#4d8be8}body.dark-theme .help-modal h3{color:#4d8be8}body.dark-theme .help-modal p,body.dark-theme .help-modal li{color:#ccc}body.dark-theme .help-modal kbd{background:#444;border-color:#555;color:#e0e0e0}body.dark-theme .help-close{color:#999}body.dark-theme .help-close:hover{color:#e0e0e0}
 </style>
 </head>
 <body>
@@ -191,6 +70,20 @@ body.dark-theme{background-color:#1a1a1a;color:#e0e0e0}body.dark-theme .upload-b
 <div>Source: <span id="sourceFileNameDisplay" class="file-info-display source">No file loaded</span></div>
 <div>Target: <span id="targetFileNameDisplay" class="file-info-display target">No file loaded</span></div>
 </div>
+<div class="filter-bar" id="filterBar" style="display:none">
+  <input type="text" class="filter-input" id="filterInput" placeholder="Search or /regex/flags..." oninput="applyFilter()">
+  <div class="filter-buttons">
+    <button class="filter-btn active" data-filter="all" onclick="setStatusFilter('all')">All</button>
+    <button class="filter-btn" data-filter="missing" onclick="setStatusFilter('missing')">Missing</button>
+    <button class="filter-btn" data-filter="empty" onclick="setStatusFilter('empty')">Empty</button>
+    <button class="filter-btn" data-filter="exact-match" onclick="setStatusFilter('exact-match')">Exact Match</button>
+    <button class="filter-btn" data-filter="changed" onclick="setStatusFilter('changed')">Changed</button>
+  </div>
+</div>
+<div class="progress-bar-container" id="progressContainer" style="display:none">
+  <div class="progress-bar-fill" id="progressFill"></div>
+  <span class="progress-text" id="progressText"></span>
+</div>
 <div class="translation-list" id="translationList"></div>
 </div>
 <div class="scroll-buttons" id="scrollButtons" style="display:none">
@@ -200,7 +93,85 @@ body.dark-theme{background-color:#1a1a1a;color:#e0e0e0}body.dark-theme .upload-b
 <button class="scroll-btn" onclick="scrollToBottom()" title="Scroll to bottom" style="display:none">↓</button>
 <button class="csv-btn" onclick="exportCSV()" title="Export CSV" style="display:none">📊</button>
 <button class="theme-toggle-btn" onclick="toggleTheme()" title="Toggle Dark/Light Theme">🌓</button>
+<button class="help-btn" onclick="toggleHelp()" title="Help">?</button>
 </div>
+</div>
+
+<footer class="footer">© 2026 Hal Yigit &mdash; <a href="mailto:yigithal@gmail.com">yigithal@gmail.com</a></footer>
+
+<div class="help-overlay" id="helpOverlay" onclick="handleHelpOverlayClick(event)">
+  <div class="help-modal" id="helpModal">
+    <button class="help-close" onclick="toggleHelp()" title="Close">✕</button>
+    <h2>jsonloc</h2>
+
+    <h3>Getting Started</h3>
+    <ul>
+      <li>Drop or click <strong>Source JSON</strong> to load the reference file.</li>
+      <li>Drop or click <strong>Target JSON</strong> to load the file you are translating into.</li>
+      <li>The editor opens automatically once both files are loaded.</li>
+      <li>Click <strong>Reset</strong> to start a new session. You will be prompted if there are unsaved changes.</li>
+    </ul>
+
+    <h3>Editor</h3>
+    <ul>
+      <li>Source text is on the left (read-only by default). Type your translation in the right column.</li>
+      <li><strong>🔒 / 🔓</strong> unlocks a source field if you need to correct the reference text.</li>
+      <li><strong>📋</strong> copies the source value into the target field. Appears when the two values differ.</li>
+      <li><strong>↶</strong> undoes the last copy and restores the previous target value.</li>
+      <li><strong>👁️</strong> dismisses an exact-match or length warning for that item without changing the value.</li>
+      <li>A character and word count is shown below each field as you type.</li>
+      <li>A length warning is shown when the target exceeds 1.5× the source character count — a common guideline for UI strings. Use <strong>👁️</strong> to dismiss if the longer translation is intentional.</li>
+      <li>Placeholders like <code>{{name}}</code>, <code>%s</code>, <code>{key}</code>, and <code>%1$s</code> are highlighted in the source. Missing or extra ones in the target are flagged so interpolation does not break at runtime.</li>
+      <li>Special characters (<code>&lt; &gt; " &amp; `</code>) trigger a warning because they can break HTML rendering or JSON parsing depending on how the app consumes the strings.</li>
+      <li>An orange border marks fields whose current value differs from what was loaded at the start of the session, making it easy to see what you have changed.</li>
+      <li>Right-to-left text direction (Arabic, Hebrew, Persian, etc.) is detected automatically per field based on Unicode character ranges and applied without any manual setup.</li>
+      <li>Nested keys are shown as dot-separated paths. Array items use <code>[0]</code>, <code>[1]</code> index notation. The original structure and key order are preserved when you save.</li>
+    </ul>
+
+    <h3>Item Status Colours</h3>
+    <ul>
+      <li><span class="badge badge-red">Missing</span> Key exists in source but is absent from the target file entirely.</li>
+      <li><span class="badge badge-orange">Empty</span> Key exists in target but its value is an empty string.</li>
+      <li><span class="badge badge-yellow">Extra</span> Key is present in target but has no corresponding source key — may be obsolete.</li>
+      <li><span class="badge badge-teal">Type mismatch</span> Same key but the value type differs (e.g. string vs. array).</li>
+      <li><span class="badge badge-purple">Exact match</span> Target value is identical to the source, which usually means it has not been translated yet.</li>
+    </ul>
+
+    <h3>Filter Bar</h3>
+    <ul>
+      <li>Type to filter by key path, source text, or target text.</li>
+      <li>Use a regex by wrapping it in slashes: <code>/pattern/flags</code> (e.g. <code>/^auth\./i</code> to show only auth-related keys).</li>
+      <li>Status buttons narrow the list: <strong>Missing</strong> and <strong>Empty</strong> are the most useful when working through outstanding items. <strong>Changed</strong> shows only items whose target differs from the originally loaded value — useful for reviewing your edits before saving.</li>
+    </ul>
+
+    <h3>Progress Bar</h3>
+    <p>Shows how many items are translated out of total. An item counts as done when the target is non-empty and differs from the source.</p>
+
+    <h3>Floating Buttons (bottom right)</h3>
+    <ul>
+      <li><strong>💾 green</strong> saves the source JSON as a download.</li>
+      <li><strong>💾 blue</strong> saves the target JSON as a download. Will not save if any translations are still missing.</li>
+      <li><strong>↑ / ↓</strong> scroll to top or bottom of the list.</li>
+      <li><strong>📊</strong> exports a CSV with key, source, target, and max-characters columns. The max-characters value is <code>ceil(source length × 1.5)</code> — the same threshold as the in-editor length warning — so you can pass character limits directly to designers or developers.</li>
+      <li><strong>🌓</strong> toggles dark and light theme. Your preference is saved across sessions.</li>
+    </ul>
+
+    <h3>Missing Translations Toolbar</h3>
+    <p>Appears when there are empty or missing keys. Export just those segments as a JSON snippet to send to a translator, then import the completed file back. Useful for handing off partial work without sharing the full target file.</p>
+
+    <h3>Session History</h3>
+    <p>Logs every load, edit, save, import, and export during the session. Collapsed by default.</p>
+
+    <h3>Keyboard Shortcuts</h3>
+    <ul>
+      <li><kbd>Ctrl</kbd>+<kbd>S</kbd> saves the target file.</li>
+      <li><kbd>Ctrl</kbd>+<kbd>Enter</kbd> moves focus to the next translation field.</li>
+      <li><kbd>F8</kbd> jumps to the next empty or untranslated item, based on the active filter.</li>
+    </ul>
+
+    <hr>
+    <p class="help-copyright">Free for personal use. For commercial use contact <a href="mailto:yigithal@gmail.com">yigithal@gmail.com</a><br>© 2026 Hal Yigit</p>
+  </div>
 </div>
 <script>
 // ==================== STATE MANAGEMENT ====================
@@ -235,6 +206,9 @@ let copiedStates = {} // path -> { previousValue: string, timestamp: number }
 let changelog = []
 let changelogVisible = false
 let importExportToolbarVisible = false
+
+let activeStatusFilter = 'all'
+let activeTextFilter = ''
 
 // ==================== DOM REFERENCES ====================
 const sourceBox = document.getElementById('sourceBox')
@@ -272,26 +246,6 @@ function escapeHtml(text) {
     .replace(/'/g, '&#039;')
 }
 
-function formatTextForDisplay(text) {
-  if (text === null || text === undefined) return ''
-  return text.toString()
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#039;')
-}
-
-function escapeAttr(text) {
-  if (text === null || text === undefined) return ''
-  return text.toString()
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#039;')
-}
-
 function showTempMessage(message, duration = 1000) {
   const tempMsg = document.getElementById('tempMessage')
   tempMsg.textContent = message
@@ -310,17 +264,11 @@ function showError(msg) {
 
 // ==================== THEME FUNCTIONS ====================
 function toggleTheme() {
-  if (currentTheme === 'light') {
-    document.body.classList.add('dark-theme')
-    currentTheme = 'dark'
-    localStorage.setItem('theme', 'dark')
-    showTempMessage('Switched to dark theme')
-  } else {
-    document.body.classList.remove('dark-theme')
-    currentTheme = 'light'
-    localStorage.setItem('theme', 'light')
-    showTempMessage('Switched to light theme')
-  }
+  const isDark = currentTheme === 'light'
+  currentTheme = isDark ? 'dark' : 'light'
+  document.body.classList.toggle('dark-theme', isDark)
+  localStorage.setItem('theme', currentTheme)
+  showTempMessage(`Switched to ${currentTheme} theme`)
 }
 
 function loadThemePreference() {
@@ -331,15 +279,24 @@ function loadThemePreference() {
   }
 }
 
+// ==================== HELP ====================
+function toggleHelp() {
+  document.getElementById('helpOverlay').classList.toggle('open')
+}
+
+function handleHelpOverlayClick(e) {
+  if (e.target === document.getElementById('helpOverlay')) toggleHelp()
+}
+
 // ==================== CHANGELOG FUNCTIONS ====================
 function addChangelogEntry(type, title, details, filename = null) {
   const entry = {
     id: Date.now(),
     timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-    type: type,
-    title: title,
-    details: details,
-    filename: filename
+    type,
+    title,
+    details,
+    filename
   }
   
   changelog.push(entry)
@@ -363,7 +320,7 @@ function updateChangelogDisplay() {
   sortedLog.forEach(entry => {
     let typeClass = ''
     let prefix = ''
-    let fileIndicator = entry.filename ? ` (${entry.filename})` : ''
+    const fileIndicator = entry.filename ? ` (${entry.filename})` : ''
     
     switch(entry.type) {
       case 'source': typeClass = 'changelog-source'; prefix = 'Source'; break
@@ -427,7 +384,7 @@ function toggleSourceLock(path) {
   itemLocks[path] = !itemLocks[path]
   
   // Find the row for this path
-  const row = document.querySelector(`.translation-item [data-path="${escapeAttr(path)}"]`)?.closest('.translation-item')
+  const row = document.querySelector(`.translation-item [data-path="${escapeHtml(path)}"]`)?.closest('.translation-item')
   if (!row) return
   
   const sourceArea = row.querySelector('.source-area')
@@ -449,7 +406,7 @@ function toggleSourceLock(path) {
     if (displayDiv) {
       const textarea = document.createElement('textarea')
       textarea.className = 'source-input'
-      textarea.setAttribute('data-path', escapeAttr(path))
+      textarea.setAttribute('data-path', escapeHtml(path))
       textarea.setAttribute('dir', detectTextDirection(sourceVal))
       textarea.value = sourceVal
       textarea.oninput = () => updateSource(textarea, path)
@@ -488,12 +445,12 @@ function copySourceToTarget(path) {
   setValue(targetData, path, sourceVal)
   
   // Find and update the target textarea
-  const row = document.querySelector(`.translation-item textarea[data-path="${escapeAttr(path)}"]`)?.closest('.translation-item')
+  const row = document.querySelector(`.translation-item textarea[data-path="${escapeHtml(path)}"]`)?.closest('.translation-item')
   if (row) {
     const targetTextarea = row.querySelector('.translation-input')
     if (targetTextarea) {
-      targetTextarea.value = formatTextForDisplay(sourceVal)
-      
+      targetTextarea.value = sourceVal ?? ''
+
       // Remove error classes
       targetTextarea.classList.remove('changed', 'missing', 'empty')
       
@@ -529,12 +486,12 @@ function returnToPreviousState(path) {
   setValue(targetData, path, previousState.previousValue)
   
   // Find and update the target textarea
-  const row = document.querySelector(`.translation-item textarea[data-path="${escapeAttr(path)}"]`)?.closest('.translation-item')
+  const row = document.querySelector(`.translation-item textarea[data-path="${escapeHtml(path)}"]`)?.closest('.translation-item')
   if (row) {
     const targetTextarea = row.querySelector('.translation-input')
     if (targetTextarea) {
-      targetTextarea.value = formatTextForDisplay(previousState.previousValue)
-      
+      targetTextarea.value = previousState.previousValue ?? ''
+
       // Clear all styling
       targetTextarea.classList.remove('changed', 'missing', 'empty', 'exact-match')
       
@@ -571,7 +528,6 @@ function returnToPreviousState(path) {
   addChangelogEntry('target', 'Returned to previous state', path, targetFileName)
 }
 
-// FIXED: Update copy/return button function
 function updateCopyReturnButtonForRow(row, path) {
   const sourceVal = getValue(sourceData, path);
   const targetVal = getValue(targetData, path);
@@ -636,7 +592,7 @@ function ignoreWarning(path, type) {
   ignoredWarnings[path][type] = true
   
   // Update UI immediately
-  const row = document.querySelector(`.translation-item textarea[data-path="${escapeAttr(path)}"]`)?.closest('.translation-item')
+  const row = document.querySelector(`.translation-item textarea[data-path="${escapeHtml(path)}"]`)?.closest('.translation-item')
   if (row) {
     if (type === 'exact-match') {
       // Remove exact-match styling
@@ -685,9 +641,9 @@ function detectTextDirection(text) {
 }
 
 function highlightPlaceholders(text) {
-  if (!text || typeof text !== 'string') return formatTextForDisplay(text)
+  if (!text || typeof text !== 'string') return escapeHtml(text)
   const placeholderRegex = /(\{\{[^}]+\}\}|\{[^}]+\}|%[sdfic]|%\d+\$[sdfic]|\$[a-zA-Z_][a-zA-Z0-9_]*)/g
-  const result = text.replace(placeholderRegex, match => `<span class="placeholder">${formatTextForDisplay(match)}</span>`)
+  const result = text.replace(placeholderRegex, match => `<span class="placeholder">${escapeHtml(match)}</span>`)
   return result
 }
 
@@ -703,10 +659,6 @@ function convertBrToNewlines(text) {
   return text.replace(/<br\s*\/?>/gi, '\n')
 }
 
-function preserveExactFormatting(text) {
-  if (text === null || text === undefined) return text
-  return text.toString()
-}
 
 function checkPlaceholderConsistency(sourceText, targetText) {
   const sourcePlaceholders = extractPlaceholders(sourceText)
@@ -874,16 +826,8 @@ function handleFile(e, type) {
 }
 
 function updateUIState() {
-  if (sourceData && targetData) {
-    resetBox.style.display = 'flex'
-    updateStatus()
-  } else if (sourceData || targetData) {
-    resetBox.style.display = 'none'
-    updateStatus()
-  } else {
-    resetBox.style.display = 'none'
-    updateStatus()
-  }
+  resetBox.style.display = (sourceData && targetData) ? 'flex' : 'none'
+  updateStatus()
 }
 
 function updateStatus() {
@@ -904,15 +848,14 @@ function updateStatus() {
 
 // ==================== JSON DATA FUNCTIONS ====================
 function createKeyMap(obj, path = '') {
-  let map = {}
-  for (let k in obj) {
-    if (!obj.hasOwnProperty(k)) continue
-    let cur = path ? path + '.' + k : k
-    let val = obj[k]
+  const map = {}
+  for (const k of Object.keys(obj)) {
+    const cur = path ? path + '.' + k : k
+    const val = obj[k]
     if (val !== null && typeof val === 'object') {
       if (Array.isArray(val)) {
         val.forEach((item, i) => {
-          let arrPath = cur + '[' + i + ']'
+          const arrPath = cur + '[' + i + ']'
           if (typeof item === 'string') {
             map[arrPath] = 'string'
           } else if (item !== null && typeof item === 'object') {
@@ -1002,14 +945,13 @@ function setValue(obj, path, value) {
 
 function extractItems(obj, path = '') {
   let result = []
-  for (let k in obj) {
-    if (!obj.hasOwnProperty(k)) continue
-    let cur = path ? path + '.' + k : k
-    let val = obj[k]
+  for (const k of Object.keys(obj)) {
+    const cur = path ? path + '.' + k : k
+    const val = obj[k]
     if (val !== null && typeof val === 'object') {
       if (Array.isArray(val)) {
         val.forEach((item, i) => {
-          let arrPath = cur + '[' + i + ']'
+          const arrPath = cur + '[' + i + ']'
           if (typeof item === 'string') {
             result.push({ path: arrPath, key: cur, value: item, type: 'string', isArray: true, index: i })
           } else if (item !== null && typeof item === 'object') {
@@ -1043,23 +985,23 @@ function loadFiles() {
   
   // Populate filtered target
   items = extractItems(sourceData)
+  let targetMap = createKeyMap(targetData)
   items.forEach(item => {
     // Lock all source fields by default
     itemLocks[item.path] = true
-    
+
     let sourceVal = getValue(sourceData, item.path)
     originalSourceValues[item.path] = sourceVal
     lastSavedSourceValues[item.path] = sourceVal
-    
+
     // Get value from target
     let targetVal = getValue(targetData, item.path)
-    let targetMap = createKeyMap(targetData)
     
     if (targetVal !== undefined && typeof targetVal === keyMap[item.path]) {
       setValue(filteredTargetData, item.path, targetVal)
       originalTargetValues[item.path] = targetVal
     } else {
-      if (!targetMap.hasOwnProperty(item.path)) {
+      if (!(item.path in targetMap)) {
         setValue(filteredTargetData, item.path, '')
         originalTargetValues[item.path] = ''
       } else {
@@ -1115,16 +1057,16 @@ function checkAllIssuesAndExactMatches() {
   const targetMap = createKeyMap(targetData)
   
   // Check all source keys
-  for (let k in keyMap) {
-    if (!targetMap.hasOwnProperty(k)) {
+  for (const k of Object.keys(keyMap)) {
+    if (!(k in targetMap)) {
       missingKeys.push(k)
       itemIssues[k] = { type: 'missing', message: 'Missing in target' }
     } else if (keyMap[k] !== targetMap[k]) {
       typeMismatches.push(`"${k}": source is ${keyMap[k]}, target is ${targetMap[k]}`)
       itemIssues[k] = { type: 'type-mismatch', message: `Type mismatch: source is ${keyMap[k]}, target is ${targetMap[k]}` }
     } else if (keyMap[k] === 'string') {
-      let targetVal = getValue(targetData, k)
-      let sourceVal = getValue(sourceData, k)
+      const targetVal = getValue(targetData, k)
+      const sourceVal = getValue(sourceData, k)
       
       if (sourceVal === targetVal && sourceVal !== '' && targetVal !== '') {
         exactMatchKeys.push(k)
@@ -1141,8 +1083,8 @@ function checkAllIssuesAndExactMatches() {
   }
   
   // Check for extra keys in target
-  for (let k in targetMap) {
-    if (!keyMap.hasOwnProperty(k)) {
+  for (const k of Object.keys(targetMap)) {
+    if (!(k in keyMap)) {
       extraKeys.push(k)
       itemIssues[k] = { type: 'extra', message: 'Extra in target' }
     }
@@ -1224,6 +1166,73 @@ function toggleCollapsible(type) {
   }
 }
 
+// ==================== PROGRESS BAR ====================
+function updateProgressBar() {
+  const stringItems = items.filter(i => i.type === 'string' && !i.isExtra)
+  const total = stringItems.length
+  if (total === 0) {
+    document.getElementById('progressContainer').style.display = 'none'
+    return
+  }
+  const done = stringItems.filter(i => {
+    const v = getValue(targetData, i.path)
+    return v && v.trim() !== '' && v !== getValue(sourceData, i.path)
+  }).length
+  const pct = Math.round((done / total) * 100)
+  document.getElementById('progressContainer').style.display = 'block'
+  document.getElementById('progressFill').style.width = pct + '%'
+  document.getElementById('progressText').textContent = `${done} / ${total} translated (${pct}%)`
+}
+
+// ==================== FILTER BAR ====================
+function setStatusFilter(filter) {
+  activeStatusFilter = filter
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.filter === filter)
+  })
+  applyFilter()
+}
+
+function applyFilter() {
+  const rawInput = document.getElementById('filterInput')?.value ?? ''
+  activeTextFilter = rawInput.toLowerCase()
+
+  let regex = null
+  if (rawInput.startsWith('/') && rawInput.lastIndexOf('/') > 0) {
+    const lastSlash = rawInput.lastIndexOf('/')
+    try {
+      regex = new RegExp(rawInput.slice(1, lastSlash), rawInput.slice(lastSlash + 1) || 'i')
+    } catch (_) {
+      regex = null
+    }
+  }
+
+  const rows = document.querySelectorAll('.translation-item')
+  rows.forEach((row, i) => {
+    const item = items[i]
+    if (!item) return
+    const issue = itemIssues[item.path]
+    const issueType = issue ? issue.type : null
+    const targetVal = getValue(targetData, item.path) ?? ''
+    const sourceVal = getValue(sourceData, item.path) ?? ''
+    const isChanged = originalTargetValues[item.path] !== targetVal
+
+    let statusMatch = true
+    if (activeStatusFilter === 'missing') statusMatch = issueType === 'missing'
+    else if (activeStatusFilter === 'empty') statusMatch = issueType === 'empty'
+    else if (activeStatusFilter === 'exact-match') statusMatch = issueType === 'exact-match'
+    else if (activeStatusFilter === 'changed') statusMatch = isChanged
+
+    let textMatch = true
+    if (rawInput) {
+      const haystack = item.path + ' ' + String(sourceVal) + ' ' + String(targetVal)
+      textMatch = regex ? regex.test(haystack) : haystack.toLowerCase().includes(activeTextFilter)
+    }
+
+    row.style.display = (statusMatch && textMatch) ? '' : 'none'
+  })
+}
+
 // ==================== RENDER EDITOR ====================
 function renderEditor() {
   let list = document.getElementById('translationList')
@@ -1253,7 +1262,6 @@ function renderEditor() {
     
     if (isSourceChangedForSave) hasSourceChanges = true
     
-    // FIXED: Check if target has changed
     let isTargetChanged = false
     if (originalTargetValue !== undefined) {
       // Compare with current target value
@@ -1336,7 +1344,7 @@ function renderEditor() {
             </div>
           </div>
           <div class="translation-input-container">
-            <textarea class="${targetClasses}" data-path="${escapeAttr(item.path)}" placeholder="Extra key in target..." oninput="updateTranslation(this,'${escapeAttr(item.path)}')" dir="${targetDir}">${targetVal !== undefined ? formatTextForDisplay(targetVal) : ''}</textarea>
+            <textarea class="${targetClasses}" data-path="${escapeHtml(item.path)}" placeholder="Extra key in target..." oninput="updateTranslation(this,'${escapeHtml(item.path)}')" dir="${targetDir}">${targetVal !== undefined ? escapeHtml(targetVal) : ''}</textarea>
             <div class="target-info-line">
               ${specialCharWarning}
               <span class="word-count-inline">${targetVal ? targetVal.length + ' chars, ' + countWords(targetVal) + ' words' : ''}</span>
@@ -1367,19 +1375,19 @@ function renderEditor() {
         if (hasLengthWarning && shouldShowWarning(item.path, 'length')) {
           const percentage = Math.round((targetVal.length / currentSourceValue.length - 1) * 100)
           lengthWarning = `<div class="error-indicator type-mismatch length-warning">Target is ${percentage}% longer than source</div>`
-          ignoreWarningButton = `<button class="ignore-warning-btn" title="Ignore length warning" onclick="ignoreWarning('${escapeAttr(item.path)}', 'length')">👁️</button>`
+          ignoreWarningButton = `<button class="ignore-warning-btn" title="Ignore length warning" onclick="ignoreWarning('${escapeHtml(item.path)}', 'length')">👁️</button>`
         }
         
         // Exact match warning
         if (issue && issue.type === 'exact-match' && shouldShowWarning(item.path, 'exact-match')) {
           if (!ignoreWarningButton) {
-            ignoreWarningButton = `<button class="ignore-warning-btn" title="Ignore exact match warning" onclick="ignoreWarning('${escapeAttr(item.path)}', 'exact-match')">👁️</button>`
+            ignoreWarningButton = `<button class="ignore-warning-btn" title="Ignore exact match warning" onclick="ignoreWarning('${escapeHtml(item.path)}', 'exact-match')">👁️</button>`
           }
         }
         
-        // Determine copy/return button - FIXED: Use the escaped path and stop propagation
+        // Determine copy/return button
         let copyReturnButton = ''
-        const escapedPath = escapeAttr(item.path);
+        const escapedPath = escapeHtml(item.path);
         if (copiedStates[item.path]) {
           copyReturnButton = `<button class="key-path-return-btn" title="Return to previous state" onclick="event.stopPropagation(); returnToPreviousState('${escapedPath}')">↶</button>`
         } else if (currentSourceValue !== targetVal) {
@@ -1396,7 +1404,7 @@ function renderEditor() {
           sourceClasses = 'source-input'
           if (isSourceChangedForHighlight) sourceClasses += ' changed'
           sourceClasses += sourceExtraClasses
-          sourceContent = `<textarea class="${sourceClasses}" data-path="${escapeAttr(item.path)}" oninput="updateSource(this,'${escapeAttr(item.path)}')" dir="${sourceDir}">${formatTextForDisplay(currentSourceValue)}</textarea>`
+          sourceContent = `<textarea class="${sourceClasses}" data-path="${escapeHtml(item.path)}" oninput="updateSource(this,'${escapeHtml(item.path)}')" dir="${sourceDir}">${escapeHtml(currentSourceValue)}</textarea>`
         }
         
         targetClasses = 'translation-input'
@@ -1420,12 +1428,12 @@ function renderEditor() {
               <div class="key-path-text">${escapeHtml(item.path)}</div>
               <div>
                 ${copyReturnButton}
-                <button class="key-path-lock-btn" title="${isLocked ? 'Unlock source' : 'Lock source'}" onclick="toggleSourceLock('${escapeAttr(item.path)}')">${isLocked ? '🔒' : '🔓'}</button>
+                <button class="key-path-lock-btn" title="${isLocked ? 'Unlock source' : 'Lock source'}" onclick="toggleSourceLock('${escapeHtml(item.path)}')">${isLocked ? '🔒' : '🔓'}</button>
               </div>
             </div>
           </div>
           <div class="translation-input-container">
-            <textarea class="${targetClasses}" data-path="${escapeAttr(item.path)}" placeholder="${placeholderText}" oninput="updateTranslation(this,'${escapeAttr(item.path)}')" dir="${targetDir}">${targetVal !== undefined ? formatTextForDisplay(targetVal) : ''}</textarea>
+            <textarea class="${targetClasses}" data-path="${escapeHtml(item.path)}" placeholder="${placeholderText}" oninput="updateTranslation(this,'${escapeHtml(item.path)}')" dir="${targetDir}">${targetVal !== undefined ? escapeHtml(targetVal) : ''}</textarea>
             <div class="target-info-line">
               ${lengthWarning}
               ${placeholderWarning}
@@ -1473,10 +1481,14 @@ function renderEditor() {
   updateFileNameDisplays()
   
   autoExpandTextareas()
-  
+
   // Update save source button
   document.getElementById('floatSaveSourceBtn').style.display = hasSourceChanges ? 'flex' : 'none'
   sourceChanged = hasSourceChanges
+
+  document.getElementById('filterBar').style.display = 'flex'
+  updateProgressBar()
+  applyFilter()
 }
 
 function updateUploadBoxes() {
@@ -1525,7 +1537,6 @@ function updateFileNameDisplays() {
 }
 
 // ==================== UPDATE FUNCTIONS ====================
-// FIXED: Update translation function to properly highlight changed translations
 function updateTranslation(textarea, path) {
   const newValue = textarea.value
   const sourceVal = getValue(sourceData, path)
@@ -1545,7 +1556,7 @@ function updateTranslation(textarea, path) {
     delete copiedStates[path]
   }
   
-  // Update UI - FIXED: Remove all classes first
+  // Update UI
   textarea.classList.remove('changed', 'exact-match', 'missing', 'empty', 'extra', 'type-mismatch', 'length-warning')
   
   // Check if value has changed from original
@@ -1593,7 +1604,9 @@ function updateTranslation(textarea, path) {
   
   // Update missing segments section
   updateMissingSegmentsSection()
-  
+
+  updateProgressBar()
+
   autoExpand(textarea)
 }
 
@@ -1688,7 +1701,7 @@ function saveSource() {
 
 function checkForMissingTranslations() {
   const missing = []
-  for (let k in keyMap) {
+  for (const k of Object.keys(keyMap)) {
     if (keyMap[k] === 'string') {
       const targetVal = getValue(targetData, k)
       if (!targetVal || targetVal.trim() === '') {
@@ -1734,7 +1747,7 @@ function saveTarget() {
     if (!item.isExtra) {
       const targetVal = getValue(targetData, item.path)
       // Preserve exact formatting
-      setValue(dataToSave, item.path, preserveExactFormatting(targetVal))
+      setValue(dataToSave, item.path, targetVal)
     }
   })
   
@@ -1826,6 +1839,16 @@ function resetAll() {
   document.getElementById('error').style.display = 'none'
   document.getElementById('warning').style.display = 'none'
   
+  // Hide filter and progress bars
+  document.getElementById('filterBar').style.display = 'none'
+  document.getElementById('progressContainer').style.display = 'none'
+  document.getElementById('filterInput').value = ''
+  activeStatusFilter = 'all'
+  activeTextFilter = ''
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.filter === 'all')
+  })
+
   // Hide toolbars
   document.getElementById('importExportToolbar').style.display = 'none'
   const toolbarContent = document.getElementById('toolbarContent')
@@ -1833,7 +1856,7 @@ function resetAll() {
   toolbarContent.classList.remove('expanded')
   toolbarToggleBtn.textContent = 'Show'
   importExportToolbarVisible = false
-  
+
   // Collapse changelog
   document.getElementById('changelogContent').classList.remove('expanded')
   document.getElementById('changelogToggleBtn').textContent = 'Show'
@@ -1876,6 +1899,22 @@ function scrollToBottom() {
 }
 
 function handleKeyboardShortcuts(e) {
+  if (e.key === 'Escape') {
+    const overlay = document.getElementById('helpOverlay')
+    if (overlay.classList.contains('open')) { overlay.classList.remove('open'); return }
+  }
+  if (e.ctrlKey && e.key === 's') {
+    e.preventDefault()
+    if (targetData && isEditorLoaded) saveTarget()
+    return
+  }
+
+  if (e.key === 'F8') {
+    e.preventDefault()
+    jumpToNextUntranslated()
+    return
+  }
+
   if (e.ctrlKey && e.key === 'Enter') {
     e.preventDefault()
     const activeElement = document.activeElement
@@ -1889,6 +1928,30 @@ function handleKeyboardShortcuts(e) {
       }
     }
   }
+}
+
+function jumpToNextUntranslated() {
+  const rows = Array.from(document.querySelectorAll('.translation-item'))
+  const visibleRows = rows.filter(r => r.style.display !== 'none')
+  let startIndex = 0
+  const active = document.activeElement
+  if (active) {
+    const currentRow = active.closest('.translation-item')
+    if (currentRow) {
+      const idx = visibleRows.indexOf(currentRow)
+      if (idx >= 0) startIndex = idx + 1
+    }
+  }
+  for (let i = startIndex; i < visibleRows.length; i++) {
+    const row = visibleRows[i]
+    const textarea = row.querySelector('.translation-input')
+    if (textarea && (!textarea.value || textarea.value.trim() === '')) {
+      textarea.focus()
+      textarea.scrollIntoView({ behavior: 'smooth', block: 'center' })
+      return
+    }
+  }
+  showTempMessage('No more untranslated items')
 }
 
 function updateMissingSegmentsSection() {
@@ -1972,16 +2035,14 @@ function exportMissingTranslations() {
   const missingJSON = JSON.parse(JSON.stringify(sourceData))
   
   function filterMissing(obj, path = '') {
-    for (let k in obj) {
-      if (!obj.hasOwnProperty(k)) continue
-      
-      let curPath = path ? path + '.' + k : k
-      let val = obj[k]
-      
+    for (const k of Object.keys(obj)) {
+      const curPath = path ? path + '.' + k : k
+      const val = obj[k]
+
       if (val !== null && typeof val === 'object') {
         if (Array.isArray(val)) {
           for (let i = 0; i < val.length; i++) {
-            let arrPath = curPath + '[' + i + ']'
+            const arrPath = curPath + '[' + i + ']'
             if (typeof val[i] === 'string') {
               const targetVal = getValue(targetData, arrPath)
               if (targetVal && targetVal.trim() !== '') {
@@ -2030,7 +2091,6 @@ function exportMissingTranslations() {
   showTempMessage(`Missing translations exported: ${missingTranslations.length} segments`)
 }
 
-// FIXED: Import function now uses a simple approach - just import values for keys that exist in source
 function importMissingTranslations() {
   if (!sourceData || !targetData) {
     showError('Please load both files first')
@@ -2065,10 +2125,7 @@ function importMissingTranslations() {
         // Simple recursive function to extract all string values from imported data
         function extractStringValues(obj, currentPath = '') {
           const results = []
-          
-          for (let key in obj) {
-            if (!obj.hasOwnProperty(key)) continue
-            
+          for (const key of Object.keys(obj)) {
             const value = obj[key]
             const path = currentPath ? currentPath + '.' + key : key
             
