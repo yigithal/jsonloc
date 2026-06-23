@@ -1,6 +1,6 @@
 # jsonloc
 
-Browser-based JSON localization editor. Load a source and target JSON file side by side, edit translations, and save when done. No server, no install — open the HTML file and go.
+Browser-based JSON localization editor. Load a source and target JSON file side by side, edit translations, and save when done. No server, no install — open the HTML file and go. Everything runs in the browser; no files are uploaded anywhere and no data leaves your machine.
 
 **[yigithal.github.io/jsonloc](https://yigithal.github.io/jsonloc/)**
 
