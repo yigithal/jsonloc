@@ -1,6 +1,6 @@
 # jsonloc
 
-Browser-based JSON localization editor. Load a source and target JSON file side by side, edit translations, and save when done. No server, no install — open the HTML file and go. Everything runs in the browser; no files are uploaded anywhere and no data leaves your machine.
+Browser-based JSON localization editor. Load a source and target JSON file side by side, edit translations, and save when done. No server, no install. Open the HTML file and go. Everything runs in the browser; no files are uploaded anywhere and no data leaves your machine.
 
 **[yigithal.github.io/jsonloc](https://yigithal.github.io/jsonloc/)**
 
@@ -17,7 +17,7 @@ Browser-based JSON localization editor. Load a source and target JSON file side 
 - Side-by-side editor with key path, source, and target columns
 - Status badges: missing keys, empty values, extra keys, type mismatches, exact matches
 - Length warning when a translation exceeds 1.5× the source character count
-- Placeholder detection — highlights `{{name}}`, `%s`, `{key}` and flags missing or extra ones
+- Placeholder detection: highlights `{{name}}`, `%s`, `{key}` and flags missing or extra ones
 - Special character warnings for `< > " & \``
 - Regex support in the filter bar (`/pattern/flags`)
 - CSV export with key, source, target, and max-characters columns
@@ -30,4 +30,4 @@ Browser-based JSON localization editor. Load a source and target JSON file side 
 
 Free for personal use. For commercial use, contact [yigithal@gmail.com](mailto:yigithal@gmail.com).
 
-© 2026 Hal Yigit — [linkedin.com/in/yigithal](https://www.linkedin.com/in/yigithal/)
+© 2026 Hal Yigit | [linkedin.com/in/yigithal](https://www.linkedin.com/in/yigithal/)
