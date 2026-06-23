@@ -6,7 +6,7 @@ Browser-based JSON localization editor. Load a source and target JSON file side 
 
 ## Usage
 
-1. Open `index.html` in a browser
+1. Open `index.html` in a browser or visit [yigithal.github.io/jsonloc](https://yigithal.github.io/jsonloc/)
 2. Drop or click **Source JSON** to load the reference file
 3. Drop or click **Target JSON** to load the file you are translating into
 4. Edit translations in the right column
