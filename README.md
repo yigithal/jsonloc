@@ -15,16 +15,17 @@ Browser-based JSON localization editor. Load a source and target JSON file side 
 ## Features
 
 - Side-by-side editor with key path, source, and target columns
-- Status badges: missing keys, empty values, extra keys, type mismatches, exact matches
-- Length warning when a translation exceeds 1.5× the source character count
-- Placeholder detection: highlights `{{name}}`, `%s`, `{key}` and flags missing or extra ones
-- Special character warnings for `< > " & \``
-- Regex support in the filter bar (`/pattern/flags`)
-- CSV export with key, source, target, and max-characters columns
-- Export/import missing translations as a JSON snippet for external translators
-- Dark and light theme, saved to localStorage
-- Session history log
-- Keyboard shortcuts: `Ctrl+S` to save, `Ctrl+Enter` to move to next field, `F8` to jump to next untranslated item
+- Status badges for missing keys, empty values, extra keys, type mismatches, and exact matches
+- Length warning when target exceeds a configurable threshold (default 1.5x)
+- Placeholder detection for `{{name}}`, `%s`, `{key}` — flags missing or extra ones
+- ICU plural/select support: edit each case in its own field, validate coverage and variables, add extra cases (e.g. `few`, `many`)
+- Filter with regex, with status filters, search and replace with undo
+- CSV export with max-characters column; export/import missing keys as JSON
+- Correctly handles dotted key names (e.g. `"error.code"` vs nested `error → code`)
+- Preserves indentation, line endings, and BOM on export
+- Dark/light theme, session history, keyboard shortcuts
+
+## License
 
 ## License
 
