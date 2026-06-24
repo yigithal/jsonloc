@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>jsonloc</title>
 <style>
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;margin:20px;transition:background-color 0.3s,color 0.3s}.container{display:flex;flex-direction:column;gap:10px}.upload-row{display:flex;gap:15px}.reset-box{width:120px;border:2px dashed #ccc;padding:15px;text-align:center;min-height:100px;display:none;flex-direction:column;justify-content:center;position:relative;transition:all 0.3s;background:#f8f9fa;border-radius:4px;cursor:pointer}.reset-box:hover{background:#e9ecef;border-color:#6c757d}.reset-box h3{margin:0 0 8px;font-size:16px;color:#495057}.upload-box{flex:1;border:2px dashed #ccc;padding:15px;text-align:center;min-height:100px;display:flex;flex-direction:column;justify-content:center;position:relative;transition:all 0.3s;cursor:pointer}.upload-box.compact{padding:8px !important;min-height:60px !important;border-width:1px !important}.upload-box.disabled{border-color:#e0e0e0;background:#f5f5f5;cursor:not-allowed}.upload-box.disabled h3,.upload-box.disabled div{color:#999}.upload-box h3{margin:0 0 8px;font-size:16px}.upload-box.compact h3{font-size:12px;margin:0 0 3px}.upload-box.compact div{font-size:11px}.upload-box.active{border-color:#0052cc;background:#f0f7ff}.upload-box.inactive{opacity:0.5;filter:grayscale(50%)}input[type="file"]{display:none}.btn{background:#0052cc;color:#fff;border:none;padding:6px 12px;border-radius:4px;cursor:pointer;margin:3px;font-size:13px}.btn:disabled{background:#ccc}.btn-secondary{background:#6c757d}.btn-success{background:#28a745}.btn-warning{background:#ffc107;color:#212529}.btn-danger{background:#dc3545}.btn-small{font-size:11px;padding:4px 8px}.error{color:#d00;background:#fee;padding:8px;border-radius:4px;display:none;margin:0 0 10px 0}.warning{color:#856404;background:#fff3cd;padding:10px;border-radius:4px;display:none;margin:0;border-left:4px solid #ffc107;max-height:400px;overflow-y:auto}.editor{display:none;border:1px solid #ddd;border-radius:4px;position:relative;margin-bottom:230px !important}.editor-header{display:grid;grid-template-columns:1fr 1fr;background:#f5f5f5;padding:8px;border-bottom:1px solid #ddd;font-size:13px;position:sticky;top:0;z-index:100;border-radius:4px 4px 0 0}.editor-header div{font-weight:bold}.translation-list{}.translation-item{display:grid;grid-template-columns:1fr 1fr;padding:10px;border-bottom:1px solid #eee;gap:10px;align-items:start}.translation-item:nth-child(even){background:#fafafa}.source-area{position:relative}.source-text{padding:6px;border-left:3px solid #0052cc;background:#f0f7ff;border-radius:4px;white-space:pre-wrap;word-break:break-word;transition:border-color 0.2s;font-size:13px;unicode-bidi:plaintext;text-align:start}.source-text.changed{border-left-color:#ff9800 !important;background:#fff8e1}.source-input{width:100%;padding:6px;border:1px solid #b3d4ff;border-radius:4px;resize:vertical;font-family:inherit;min-height:35px;box-sizing:border-box;font-size:13px;unicode-bidi:plaintext;text-align:start}.source-input.changed{border-color:#ff9800 !important;background:#fff8e1}.lock-btn{position:absolute;top:6px;right:6px;background:none;border:none;cursor:pointer;font-size:12px;opacity:0.5;z-index:10;padding:2px}.lock-btn:hover{opacity:1}.translation-input{width:100%;padding:6px;border:1px solid #ddd;border-radius:4px;resize:vertical;font-family:inherit;min-height:35px;transition:border-color 0.2s,background-color 0.2s;font-size:13px;unicode-bidi:plaintext;text-align:start}.translation-input:focus{outline:none;border-color:#0052cc;box-shadow:0 0 0 2px rgba(0,82,204,0.1)}.translation-input.changed{border-color:#ff9800 !important;background:#fff8e1}.key-path{font-family:monospace;font-size:11px;color:#666;padding:4px 0 0 0;margin-top:4px;border-top:1px dashed #ddd;unicode-bidi:plaintext;text-align:start}.array-indicator{color:#28a745;font-size:10px;margin-left:4px;background:#e8f5e9;padding:1px 4px;border-radius:8px}.action-buttons{display:flex;gap:8px;justify-content:center;margin:15px 0;padding-top:15px;border-top:1px solid #e9ecef}.status{text-align:center;padding:15px;color:#666}.file-info{font-size:11px;color:#666;margin-top:5px}.upload-box.compact .file-info{font-size:9px}.control-buttons{display:flex;gap:8px;justify-content:center;align-items:center;margin:10px 0}.scroll-buttons{position:fixed;bottom:20px;right:20px;display:flex;flex-direction:column;gap:6px;z-index:1000}.scroll-btn{width:32px;height:32px;border-radius:50%;background:#6c757d;color:white;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;box-shadow:0 1px 4px rgba(0,0,0,0.15);transition:all 0.2s;position:relative}.scroll-btn:hover{background:#5a6268;transform:scale(1.05)}.save-btn{width:32px;height:32px;border-radius:50%;background:#0052cc;color:white;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 1px 4px rgba(0,0,0,0.15);transition:all 0.2s;position:relative}.save-btn:hover{background:#0041a8;transform:scale(1.05)}.save-btn.save-source{background:#28a745}.save-btn.save-source:hover{background:#218838}.csv-btn{width:32px;height:32px;border-radius:50%;background:#6c757d;color:white;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;box-shadow:0 1px 4px rgba(0,0,0,0.15);transition:all 0.2s;position:relative}.csv-btn:hover{background:#5a6268;transform:scale(1.05)}.load-btn-row{display:flex;justify-content:center;margin-top:10px}.structure-info{padding:10px;background:#e8f4fd;border-radius:4px;margin-top:10px;font-size:12px;max-height:200px;overflow-y:auto}.structure-info h4{margin:0 0 5px 0;color:#0052cc}.structure-info ul{margin:0;padding-left:20px}.structure-info li{margin:2px 0}.toggle-list-btn{background:none;border:none;color:#0052cc;cursor:pointer;font-size:11px;padding:2px 5px;margin-left:5px;text-decoration:underline}.toggle-list-btn:hover{color:#0041a8}.key-count{font-weight:normal;font-size:11px;color:#6c757d;margin-left:5px}.collapsible-section{margin-bottom:10px}.collapsible-header{display:flex;justify-content:space-between;align-items:center;cursor:pointer;padding:5px;background:#e9ecef;border-radius:4px}.collapsible-header:hover{background:#dee2e6}.collapsible-content{max-height:0;overflow:hidden;transition:max-height 0.3s ease;background:#fff;border-radius:0 0 4px 4px}.collapsible-content.expanded{max-height:200px;overflow-y:auto !important;padding:8px}.collapsible-icon{transition:transform 0.3s}.collapsible-icon.expanded{transform:rotate(180deg)}.collapsible-content ul{margin:0;padding-left:20px;max-height:180px;overflow-y:auto}.collapsible-content li{margin:3px 0;padding:3px;font-family:monospace;font-size:11px;word-break:break-all}.collapsible-content code{background:#f1f1f1;padding:2px 4px;border-radius:3px;color:#333}.reset-box.compact{padding:8px !important;min-height:60px !important;border-width:1px !important}.source-text.missing,.source-input.missing,.translation-input.missing{border-color:#dc3545 !important;background-color:#fff5f5 !important;color:#dc3545 !important}.source-text.empty,.source-input.empty,.translation-input.empty{border-color:#fd7e14 !important;background-color:#fff3e6 !important;color:#fd7e14 !important}.source-text.extra,.source-input.extra,.translation-input.extra{border-color:#ffc107 !important;background-color:#fff9e6 !important;color:#856404 !important}.source-text.type-mismatch,.source-input.type-mismatch,.translation-input.type-mismatch{border-color:#17a2b8 !important;background-color:#e6f9ff !important;color:#17a2b8 !important}.source-text.exact-match,.source-input.exact-match,.translation-input.exact-match{border-color:#9c27b0 !important;background-color:#f3e5f5 !important}.error-indicator{font-size:10px;padding:2px 6px;border-radius:3px;margin-top:4px;display:inline-block;font-weight:bold}.error-indicator.missing{background-color:#dc3545;color:white}.error-indicator.empty{background-color:#fd7e14;color:white}.error-indicator.extra{background-color:#ffc107;color:#856404}.error-indicator.type-mismatch{background-color:#17a2b8;color:white}.error-indicator.exact-match{background-color:#9c27b0;color:white}.tooltip{position:relative;display:inline-block}.tooltip .tooltiptext{visibility:hidden;width:300px;background-color:#333;color:#fff;text-align:center;border-radius:6px;padding:8px;position:absolute;z-index:1001;bottom:125%;left:50%;transform:translateX(-50%);font-size:12px;white-space:pre-line;pointer-events:none}.tooltip .tooltiptext::after{content:"";position:absolute;top:100%;left:50%;margin-left:-5px;border-width:5px;border-style:solid;border-color:#333 transparent transparent transparent}.tooltip:hover .tooltiptext{visibility:visible}.changelog-header{display:grid;grid-template-columns:1fr auto;background:#f5f5f5;padding:8px;border:1px solid #ddd;border-radius:4px 4px 0 0;font-size:13px;cursor:pointer;margin-top:-1px}.changelog-header:hover{background:#e9ecef}.changelog-title{font-weight:bold;color:#495057;display:flex;align-items:center;gap:8px}.changelog-count{background-color:#6c757d;color:white;padding:2px 6px;border-radius:10px;font-size:11px;font-weight:normal}.changelog-toggle-btn{background:#6c757d;color:white;border:none;cursor:pointer;font-size:12px;padding:2px 10px;border-radius:4px;min-width:50px;transition:background 0.2s}.changelog-toggle-btn:hover{background:#5a6268}.changelog-content{max-height:0;overflow:hidden;transition:max-height 0.3s ease;background-color:white;border:1px solid #ddd;border-top:none;border-radius:0 0 4px 4px}.changelog-content.expanded{max-height:200px;overflow-y:auto}.changelog-list{margin:0;padding:8px;font-size:12px}.changelog-item{margin:3px 0;padding:3px 0;border-bottom:1px dotted #dee2e6;color:#495057}.changelog-item:last-child{border-bottom:none}.changelog-time{color:#6c757d;font-size:11px;margin-right:8px;display:inline-block;min-width:45px}.changelog-text{color:#212529}.changelog-source{color:#6c757d;font-weight:500}.changelog-target{color:#6c757d;font-weight:500}.changelog-load{color:#6c757d}.changelog-error{color:#6c757d;font-weight:500}.temp-message{position:fixed;top:20px;left:50%;transform:translateX(-50%) translateY(-20px);background:#6c757d;color:white;padding:10px 20px;border-radius:4px;box-shadow:0 2px 8px rgba(0,0,0,0.2);z-index:10000;opacity:0;transition:all 0.3s ease;pointer-events:none;max-width:400px;text-align:center;font-size:14px;font-weight:500}.temp-message.show{opacity:1;transform:translateX(-50%) translateY(0)}.temp-message.info,.temp-message.success,.temp-message.warning{background:#6c757d;color:white}.file-info-display{font-weight:normal;font-size:12px;color:#666;margin-left:8px}.file-info-display.source{color:#6c757d}.file-info-display.target{color:#6c757d}.import-export-toolbar{display:none;margin-bottom:0}.toolbar-header{display:grid;grid-template-columns:1fr auto;background:#f5f5f5;padding:8px;border:1px solid #ddd;border-radius:4px 4px 0 0;font-size:13px;cursor:pointer}.toolbar-header:hover{background:#e9ecef}.toolbar-title{font-weight:bold;color:#495057;display:flex;align-items:center;gap:8px}.toolbar-toggle-btn{background:#6c757d;color:white;border:none;cursor:pointer;font-size:12px;padding:2px 10px;border-radius:4px;min-width:50px;transition:background 0.2s}.toolbar-toggle-btn:hover{background:#5a6268}.toolbar-content{max-height:0;overflow:hidden;transition:max-height 0.3s ease;background-color:white;border:1px solid #ddd;border-top:none;border-radius:0 0 4px 4px}.toolbar-content.expanded{max-height:200px;overflow-y:auto;padding:10px}.toolbar-buttons{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px}.toolbar-section{margin-top:8px;padding-top:8px;border-top:1px dashed #dee2e6}.toolbar-section h4{margin:0 0 6px 0;font-size:12px;color:#6c757d}.toolbar-btn{background:#6c757d;color:white;border:none;padding:6px 10px;border-radius:4px;cursor:pointer;font-size:12px;transition:background 0.2s}.toolbar-btn:hover{background:#5a6268}.toolbar-btn-warning{background:#6c757d;color:white}.format-selection{margin:10px 0;padding:8px;background:#f8f9fa;border-radius:4px;border:1px solid #dee2e6}.format-options{display:flex;flex-direction:column;gap:6px;margin-bottom:10px}.format-option{display:flex;align-items:center;gap:6px}.format-option input[type="radio"]{margin:0}.format-option label{font-size:12px;color:#495057;cursor:pointer}.format-note{font-size:11px;color:#6c757d;margin-top:4px;font-style:italic}.theme-toggle-btn{width:32px;height:32px;border-radius:50%;background:#6c757d;color:white;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;box-shadow:0 1px 4px rgba(0,0,0,0.15);transition:all 0.2s;position:relative}.theme-toggle-btn:hover{background:#5a6268;transform:scale(1.05)}.placeholder{background-color:#e6f7ff;border:1px solid #91d5ff;border-radius:2px;padding:0 2px;color:#0050b3;font-family:monospace;font-size:11px}.placeholder.missing{background-color:#fff2f0;border-color:#ffccc7;color:#cf1322}.length-warning{background-color:#fffbe6 !important;border-left-color:#ffc107 !important}.word-count{position:absolute;bottom:-18px;right:0;font-size:10px;color:#6c757d;background:white;padding:1px 4px;border-radius:2px;border:1px solid #dee2e6}.source-area,.translation-input-container{position:relative}.key-path-row{display:flex;justify-content:space-between;align-items:center;margin-top:4px;padding-top:4px;border-top:1px dashed #ddd}.key-path-text{font-family:monospace;font-size:11px;color:#666;unicode-bidi:plaintext;text-align:start}.key-path-lock-btn{background:none;border:none;cursor:pointer;font-size:11px;opacity:0.5;padding:2px 4px;border-radius:3px}.key-path-lock-btn:hover{opacity:1;background:#e9ecef}.key-path-copy-btn{background:none;border:none;cursor:pointer;font-size:11px;opacity:0.5;padding:2px 4px;border-radius:3px;margin-right:4px}.key-path-copy-btn:hover{opacity:1;background:#e9ecef}.key-path-return-btn{background:none;border:none;cursor:pointer;font-size:11px;opacity:0.5;padding:2px 4px;border-radius:3px;margin-right:4px}.key-path-return-btn:hover{opacity:1;background:#e9ecef}.ignore-warning-btn{background:none;border:none;cursor:pointer;font-size:11px;opacity:0.5;padding:2px 4px;border-radius:3px;margin-left:8px}.ignore-warning-btn:hover{opacity:1;background:#e9ecef}.error-indicator.type-mismatch,.translation-input.length-warning,.error-indicator.type-mismatch.length-warning{border-color:#ffc107 !important;background-color:#fff9e6 !important;color:#856404 !important}.scroll-btn:hover::after,.save-btn:hover::after,.csv-btn:hover::after,.theme-toggle-btn:hover::after{content:attr(title) !important;position:absolute !important;background:#333 !important;color:white !important;padding:8px 12px !important;border-radius:6px !important;font-size:12px !important;white-space:nowrap !important;z-index:1001 !important;pointer-events:none !important;right:calc(100% + 15px) !important;left:auto !important;top:50% !important;transform:translateY(-50%) !important;width:auto !important;min-width:120px !important;max-width:200px !important;text-align:center !important}.scroll-btn:hover::before,.save-btn:hover::before,.csv-btn:hover::before,.theme-toggle-btn:hover::before{content:'' !important;position:absolute !important;border:6px solid transparent !important;border-left-color:#333 !important;z-index:1001 !important;pointer-events:none !important;right:-12px !important;left:auto !important;top:50% !important;transform:translateY(-50%) !important}body.dark-theme .scroll-btn:hover::after,body.dark-theme .save-btn:hover::after,body.dark-theme .csv-btn:hover::after,body.dark-theme .theme-toggle-btn:hover::after{background:#222 !important;color:#fff !important}body.dark-theme .scroll-btn:hover::before,body.dark-theme .save-btn:hover::before,body.dark-theme .csv-btn:hover::before,body.dark-theme .theme-toggle-btn:hover::before{border-left-color:#222 !important}@media (max-width:768px){.scroll-buttons{bottom:15px !important;right:15px !important}.scroll-btn:hover::after,.save-btn:hover::after,.csv-btn:hover::after,.theme-toggle-btn:hover::after{right:calc(100% + 10px) !important;font-size:11px !important;padding:6px 8px !important;min-width:100px !important;max-width:150px !important}.scroll-btn:hover::before,.save-btn:hover::before,.csv-btn:hover::before,.theme-toggle-btn:hover::before{right:-10px !important;border-width:5px !important}}.key-path-copy-btn,.key-path-return-btn{background:none;border:none;cursor:pointer;font-size:11px;opacity:0.7;padding:2px 4px;border-radius:3px;margin-right:4px;display:inline-block;vertical-align:middle}.key-path-copy-btn:hover,.key-path-return-btn:hover{opacity:1;background:rgba(0,0,0,0.1)}body.dark-theme .key-path-copy-btn:hover,body.dark-theme .key-path-return-btn:hover{background:rgba(255,255,255,0.1)}.key-path-row > div:last-child{display:flex;align-items:center;gap:4px}body.dark-theme{background-color:#1a1a1a;color:#e0e0e0}body.dark-theme .upload-box{background:#2d2d2d;border-color:#444;color:#e0e0e0}body.dark-theme .upload-box:hover{background:#3d3d3d;border-color:#666}body.dark-theme .upload-box.active{border-color:#4d8be8;background:#2a4365}body.dark-theme .upload-box.disabled{background:#2a2a2a;border-color:#444;color:#777}body.dark-theme .reset-box{background:#2d2d2d;border-color:#444;color:#e0e0e0}body.dark-theme .reset-box:hover{background:#3d3d3d;border-color:#666}body.dark-theme .editor{border-color:#444;background:#2d2d2d}body.dark-theme .editor-header{background:#333;border-color:#444;color:#e0e0e0}body.dark-theme .translation-item{border-color:#444}body.dark-theme .translation-item:nth-child(even){background:#252525}body.dark-theme .source-text{background:#2a4365;border-left-color:#4d8be8;color:#e0e0e0}body.dark-theme .source-text.changed{border-left-color:#e6a700 !important;background:#332b00}body.dark-theme .source-text.exact-match{border-left-color:#9c27b0 !important;background:#4a1a5a !important}body.dark-theme .source-input,body.dark-theme .translation-input{background:#333;border-color:#555;color:#e0e0e0}body.dark-theme .source-input:focus,body.dark-theme .translation-input:focus{border-color:#4d8be8;box-shadow:0 0 0 2px rgba(77,139,232,0.2)}body.dark-theme .source-input.changed,body.dark-theme .translation-input.changed{border-color:#e6a700 !important;background:#332b00}body.dark-theme .source-input.exact-match,body.dark-theme .translation-input.exact-match{border-color:#9c27b0 !important;background:#4a1a5a !important}body.dark-theme .key-path-text{color:#999}body.dark-theme .key-path-row{border-color:#444}body.dark-theme .key-path-lock-btn:hover{background:#333}body.dark-theme .key-path-copy-btn:hover{background:#333}body.dark-theme .key-path-return-btn:hover{background:#333}body.dark-theme .ignore-warning-btn:hover{background:#333}body.dark-theme .import-export-toolbar .toolbar-header{background:#333;border-color:#444;color:#e0e0e0}body.dark-theme .import-export-toolbar .toolbar-content{background:#2d2d2d;border-color:#444}body.dark-theme .changelog-header{background:#333;border-color:#444;color:#e0e0e0}body.dark-theme .changelog-content{background:#2d2d2d;border-color:#444}body.dark-theme .changelog-text{color:#e0e0e0}body.dark-theme .changelog-list{background:#2d2d2d}body.dark-theme .changelog-item{color:#e0e0e0;border-color:#444}body.dark-theme .changelog-time{color:#999}body.dark-theme .temp-message{background:#444;color:#fff}body.dark-theme .warning{background:#332b00;border-color:#665800;color:#ffd54f}body.dark-theme .warning h4{color:#ffd54f}body.dark-theme .warning .collapsible-header{background:#2a2300;color:#ffd54f}body.dark-theme .warning .collapsible-header:hover{background:#332b00}body.dark-theme .warning .collapsible-content{background:#1a1a1a;color:#e0e0e0}body.dark-theme .warning .collapsible-content code{background:#2d2d2d;color:#ffd54f;border:1px solid #444}body.dark-theme .warning .key-count{color:#ffd54f}body.dark-theme .error{background:#331a1a;color:#ff6b6b;border-color:#dc3545}body.dark-theme .placeholder{background-color:#003a6d;border-color:#005c99;color:#91d5ff}body.dark-theme .placeholder.missing{background-color:#331a1a;border-color:#662a2a;color:#ff6b6b}body.dark-theme .word-count{background:#333;border-color:#444;color:#999}body.dark-theme .format-selection{background:#2d2d2d;border-color:#444}body.dark-theme .format-option label{color:#e0e0e0}body.dark-theme .format-note{color:#999}body.dark-theme .collapsible-section .collapsible-header{background:#333;color:#e0e0e0}body.dark-theme .collapsible-section .collapsible-header:hover{background:#3d3d3d}body.dark-theme .collapsible-section .collapsible-content{background:#2d2d2d;color:#e0e0e0}body.dark-theme .collapsible-section .collapsible-content ul{background:#2d2d2d}body.dark-theme .collapsible-section .collapsible-content code{background:#1a1a1a;color:#e0e0e0;border:1px solid #444}body.dark-theme .key-count{color:#999}body.dark-theme .csv-btn{background:#5a6268;color:white}body.dark-theme .csv-btn:hover{background:#495057}body.dark-theme .array-indicator{background:#1a331a;color:#28a745;border:1px solid #28a745}body.dark-theme .error-indicator.missing{background-color:#dc3545;color:white}body.dark-theme .error-indicator.empty{background-color:#fd7e14;color:#212529}body.dark-theme .error-indicator.extra{background-color:#ffc107;color:#212529}body.dark-theme .error-indicator.type-mismatch{background-color:#17a2b8;color:white}body.dark-theme .error-indicator.exact-match{background-color:#9c27b0;color:white}body.dark-theme .translation-input.length-warning{background-color:#332b00 !important;border-color:#e6a700 !important;color:#ffd54f !important}body.dark-theme .error-indicator.type-mismatch.length-warning{background-color:#e6a700 !important;color:#212529 !important;border:1px solid #e6a700}body.dark-theme .source-text.missing,body.dark-theme .source-input.missing,body.dark-theme .translation-input.missing{border-color:#dc3545 !important;background-color:#331a1a !important;color:#ff6b6b !important}body.dark-theme .source-text.empty,body.dark-theme .source-input.empty,body.dark-theme .translation-input.empty{border-color:#fd7e14 !important;background-color:#332b00 !important;color:#ffc107 !important}body.dark-theme .source-text.extra,body.dark-theme .source-input.extra,body.dark-theme .translation-input.extra{border-color:#ffc107 !important;background-color:#332b00 !important;color:#ffd54f !important}body.dark-theme .source-text.type-mismatch,body.dark-theme .source-input.type-mismatch,body.dark-theme .translation-input.type-mismatch{border-color:#17a2b8 !important;background-color:#00323d !important;color:#6edff6 !important}body.dark-theme .source-text.exact-match,body.dark-theme .source-input.exact-match,body.dark-theme .translation-input.exact-match{border-color:#9c27b0 !important;background-color:#4a1a5a !important}body.dark-theme .status{color:#999}body.dark-theme .file-info{color:#999}body.dark-theme .file-info-display{color:#999}body.dark-theme .file-info-display.source{color:#4d8be8}body.dark-theme .file-info-display.target{color:#4d8be8}body.dark-theme .translation-item div[style*="color:#666"]{color:#999 !important}body.dark-theme .translation-item div[style*="font-style:italic"]{color:#999 !important}body.dark-theme .key-path-lock-btn{color:#999}body.dark-theme .key-path-lock-btn:hover{background:#444}body.dark-theme .toolbar-btn{background:#5a6268;color:white}body.dark-theme .toolbar-btn:hover{background:#495057}body.dark-theme .toolbar-toggle-btn{background:#5a6268;color:white}body.dark-theme .toolbar-toggle-btn:hover{background:#495057}body.dark-theme .toolbar-section{border-color:#444}body.dark-theme .toolbar-section h4{color:#999}body.dark-theme .changelog-toggle-btn{background:#5a6268;color:white}body.dark-theme .changelog-toggle-btn:hover{background:#495057}.target-info-line{display:flex;gap:8px;align-items:center;margin-top:4px;flex-wrap:wrap}.word-count-inline{font-size:10px;color:#6c757d;background:#f8f9fa;padding:2px 6px;border-radius:3px;border:1px solid #dee2e6}body.dark-theme .word-count-inline{background:#333;border-color:#444;color:#999}.progress-bar-container{position:relative;height:24px;background:#e9ecef;border-bottom:1px solid #ddd;overflow:hidden}.progress-bar-fill{height:100%;background:#28a745;transition:width 0.3s}.progress-text{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:12px;font-weight:bold;color:#212529}body.dark-theme .progress-bar-container{background:#333;border-color:#444}body.dark-theme .progress-text{color:#e0e0e0}.filter-bar{display:flex;gap:10px;align-items:center;padding:8px;background:#f8f9fa;border-bottom:1px solid #ddd;flex-wrap:wrap}.filter-input{flex:1;min-width:180px;padding:5px 8px;border:1px solid #ddd;border-radius:4px;font-size:13px;font-family:inherit}.filter-input:focus{outline:none;border-color:#0052cc;box-shadow:0 0 0 2px rgba(0,82,204,0.1)}.filter-buttons{display:flex;gap:4px;flex-wrap:wrap}.filter-btn{background:#e9ecef;color:#495057;border:1px solid #ddd;padding:4px 10px;border-radius:4px;cursor:pointer;font-size:12px;transition:all 0.2s}.filter-btn:hover{background:#dee2e6}.filter-btn.active{background:#0052cc;color:white;border-color:#0052cc}body.dark-theme .filter-bar{background:#2d2d2d;border-color:#444}body.dark-theme .filter-input{background:#333;border-color:#555;color:#e0e0e0}body.dark-theme .filter-btn{background:#444;color:#e0e0e0;border-color:#555}body.dark-theme .filter-btn:hover{background:#555}body.dark-theme .filter-btn.active{background:#4d8be8;border-color:#4d8be8}.footer{text-align:center;padding:20px;margin-top:20px;font-size:12px;color:#adb5bd;border-top:1px solid #e9ecef}.footer a{color:#adb5bd;text-decoration:none}.footer a:hover{color:#6c757d;text-decoration:underline}body.dark-theme .footer{color:#555;border-color:#333}body.dark-theme .footer a{color:#555}body.dark-theme .footer a:hover{color:#999}.help-modal hr{border:none;border-top:1px solid #dee2e6;margin:16px 0}.help-copyright{font-size:11px;color:#adb5bd;text-align:center;margin-top:4px}.help-copyright a{color:#adb5bd;text-decoration:none}.help-copyright a:hover{text-decoration:underline}body.dark-theme .help-modal hr{border-color:#444}body.dark-theme .help-copyright{color:#555}body.dark-theme .help-copyright a{color:#555}.help-btn{width:32px;height:32px;border-radius:50%;background:#6c757d;color:white;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:bold;box-shadow:0 1px 4px rgba(0,0,0,0.15);transition:all 0.2s;position:relative}.help-btn:hover{background:#5a6268;transform:scale(1.05)}.help-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:2000;justify-content:center;align-items:flex-start;padding:40px 20px;overflow-y:auto}.help-overlay.open{display:flex}.help-modal{background:#fff;border-radius:8px;padding:24px;max-width:620px;width:100%;box-shadow:0 8px 32px rgba(0,0,0,0.2);position:relative;margin:auto}.help-modal h2{margin:0 0 16px;font-size:17px;color:#212529;border-bottom:2px solid #0052cc;padding-bottom:8px}.help-modal h3{margin:16px 0 6px;font-size:13px;font-weight:bold;color:#0052cc;text-transform:uppercase;letter-spacing:0.5px}.help-modal p,.help-modal li{font-size:13px;color:#495057;line-height:1.5;margin:3px 0}.help-modal ul{margin:4px 0;padding-left:18px}.help-modal kbd{background:#e9ecef;border:1px solid #ced4da;border-radius:3px;padding:1px 5px;font-size:11px;font-family:monospace;color:#212529}.help-modal .badge{display:inline-block;padding:1px 6px;border-radius:3px;font-size:11px;font-weight:bold;margin-right:4px;vertical-align:middle}.help-modal .badge-red{background:#dc3545;color:white}.help-modal .badge-orange{background:#fd7e14;color:white}.help-modal .badge-yellow{background:#ffc107;color:#856404}.help-modal .badge-teal{background:#17a2b8;color:white}.help-modal .badge-purple{background:#9c27b0;color:white}.help-close{position:absolute;top:12px;right:14px;background:none;border:none;font-size:20px;cursor:pointer;color:#6c757d;line-height:1}.help-close:hover{color:#212529}body.dark-theme .help-modal{background:#2d2d2d;color:#e0e0e0}body.dark-theme .help-modal h2{color:#e0e0e0;border-color:#4d8be8}body.dark-theme .help-modal h3{color:#4d8be8}body.dark-theme .help-modal p,body.dark-theme .help-modal li{color:#ccc}body.dark-theme .help-modal kbd{background:#444;border-color:#555;color:#e0e0e0}body.dark-theme .help-close{color:#999}body.dark-theme .help-close:hover{color:#e0e0e0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;margin:20px;transition:background-color 0.3s,color 0.3s}.container{display:flex;flex-direction:column;gap:10px}.upload-row{display:flex;gap:15px}.reset-box{width:120px;border:2px dashed #ccc;padding:15px;text-align:center;min-height:100px;display:none;flex-direction:column;justify-content:center;position:relative;transition:all 0.3s;background:#f8f9fa;border-radius:4px;cursor:pointer}.reset-box:hover{background:#e9ecef;border-color:#6c757d}.reset-box h3{margin:0 0 8px;font-size:16px;color:#495057}.upload-box{flex:1;border:2px dashed #ccc;padding:15px;text-align:center;min-height:100px;display:flex;flex-direction:column;justify-content:center;position:relative;transition:all 0.3s;cursor:pointer}.upload-box.compact{padding:8px !important;min-height:60px !important;border-width:1px !important}.upload-box.disabled{border-color:#e0e0e0;background:#f5f5f5;cursor:not-allowed}.upload-box.disabled h3,.upload-box.disabled div{color:#999}.upload-box h3{margin:0 0 8px;font-size:16px}.upload-box.compact h3{font-size:12px;margin:0 0 3px}.upload-box.compact div{font-size:11px}.upload-box.active{border-color:#0052cc;background:#f0f7ff}.upload-box.inactive{opacity:0.5;filter:grayscale(50%)}input[type="file"]{display:none}.btn{background:#0052cc;color:#fff;border:none;padding:6px 12px;border-radius:4px;cursor:pointer;margin:3px;font-size:13px}.btn:disabled{background:#ccc}.btn-secondary{background:#6c757d}.btn-success{background:#28a745}.btn-warning{background:#ffc107;color:#212529}.btn-danger{background:#dc3545}.btn-small{font-size:11px;padding:4px 8px}.error{color:#d00;background:#fee;padding:8px;border-radius:4px;display:none;margin:0 0 10px 0;align-items:flex-start;gap:8px}.warning{color:#856404;background:#fff3cd;padding:10px;border-radius:4px;display:none;margin:0;border-left:4px solid #ffc107;max-height:400px;overflow-y:auto}.editor{display:none;border:1px solid #ddd;border-radius:4px;position:relative;margin-bottom:230px !important}.editor-sticky-header{position:sticky;top:0;z-index:100;border-radius:4px 4px 0 0;overflow:hidden}.editor-header{display:grid;grid-template-columns:1fr 1fr;background:#f5f5f5;padding:6px 8px;border-bottom:1px solid #ddd;font-size:12px}.editor-header div{font-weight:bold}.translation-list{}.translation-item{display:grid;grid-template-columns:1fr 1fr;padding:10px;border-bottom:1px solid #eee;gap:10px;align-items:start}.translation-item:nth-child(even){background:#fafafa}.source-area{position:relative}.source-text{padding:6px;border-left:3px solid #0052cc;background:#f0f7ff;border-radius:4px;white-space:pre-wrap;word-break:break-word;transition:border-color 0.2s;font-size:13px;unicode-bidi:plaintext;text-align:start}.source-text.changed{border-left-color:#3d85c8 !important;background:#eef4fb}.source-input{width:100%;padding:6px;border:1px solid #b3d4ff;border-radius:4px;resize:vertical;font-family:inherit;min-height:35px;box-sizing:border-box;font-size:13px;unicode-bidi:plaintext;text-align:start}.source-input.changed{border-color:#3d85c8 !important;background:#eef4fb}.lock-btn{position:absolute;top:6px;right:6px;background:none;border:none;cursor:pointer;font-size:12px;opacity:0.5;z-index:10;padding:2px}.lock-btn:hover{opacity:1}.translation-input{width:100%;padding:6px;border:1px solid #ddd;border-radius:4px;resize:vertical;font-family:inherit;min-height:35px;transition:border-color 0.2s,background-color 0.2s;font-size:13px;unicode-bidi:plaintext;text-align:start}.translation-input:focus{outline:none;border-color:#0052cc;box-shadow:0 0 0 2px rgba(0,82,204,0.1)}.translation-input.changed{border-color:#3d85c8 !important;background:#eef4fb}.key-path{font-family:monospace;font-size:11px;color:#666;padding:4px 0 0 0;margin-top:4px;border-top:1px dashed #ddd;unicode-bidi:plaintext;text-align:start}.array-indicator{color:#28a745;font-size:10px;margin-left:4px;background:#e8f5e9;padding:1px 4px;border-radius:8px}.action-buttons{display:flex;gap:8px;justify-content:center;margin:15px 0;padding-top:15px;border-top:1px solid #e9ecef}.status{text-align:center;padding:15px;color:#666}.file-info{font-size:11px;color:#666;margin-top:5px}.upload-box.compact .file-info{font-size:9px}.control-buttons{display:flex;gap:8px;justify-content:center;align-items:center;margin:10px 0}.scroll-buttons{position:fixed;bottom:20px;right:20px;display:flex;flex-direction:column;gap:6px;z-index:1000}.scroll-btn{width:32px;height:32px;border-radius:50%;background:#6c757d;color:white;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;box-shadow:0 1px 4px rgba(0,0,0,0.15);transition:all 0.2s;position:relative}.scroll-btn:hover{background:#5a6268;transform:scale(1.05)}.save-btn{width:32px;height:32px;border-radius:50%;background:#0052cc;color:white;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 1px 4px rgba(0,0,0,0.15);transition:all 0.2s;position:relative}.save-btn:hover{background:#0041a8;transform:scale(1.05)}.save-btn.save-source{background:#28a745}.save-btn.save-source:hover{background:#218838}.csv-btn{width:32px;height:32px;border-radius:50%;background:#6c757d;color:white;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;box-shadow:0 1px 4px rgba(0,0,0,0.15);transition:all 0.2s;position:relative}.csv-btn:hover{background:#5a6268;transform:scale(1.05)}.load-btn-row{display:flex;justify-content:center;margin-top:10px}.structure-info{padding:10px;background:#e8f4fd;border-radius:4px;margin-top:10px;font-size:12px;max-height:200px;overflow-y:auto}.structure-info h4{margin:0 0 5px 0;color:#0052cc}.structure-info ul{margin:0;padding-left:20px}.structure-info li{margin:2px 0}.toggle-list-btn{background:none;border:none;color:#0052cc;cursor:pointer;font-size:11px;padding:2px 5px;margin-left:5px;text-decoration:underline}.toggle-list-btn:hover{color:#0041a8}.key-count{font-weight:normal;font-size:11px;color:#6c757d;margin-left:5px}.collapsible-section{margin-bottom:10px}.collapsible-header{display:flex;justify-content:space-between;align-items:center;cursor:pointer;padding:5px;background:#e9ecef;border-radius:4px}.collapsible-header:hover{background:#dee2e6}.collapsible-content{max-height:0;overflow:hidden;transition:max-height 0.3s ease;background:#fff;border-radius:0 0 4px 4px}.collapsible-content.expanded{max-height:200px;overflow-y:auto !important;padding:8px}.collapsible-icon{transition:transform 0.3s}.collapsible-icon.expanded{transform:rotate(180deg)}.collapsible-content ul{margin:0;padding-left:20px;max-height:180px;overflow-y:auto}.collapsible-content li{margin:3px 0;padding:3px;font-family:monospace;font-size:11px;word-break:break-all}.collapsible-content code{background:#f1f1f1;padding:2px 4px;border-radius:3px;color:#333}.reset-box.compact{padding:8px !important;min-height:60px !important;border-width:1px !important}.source-text.missing,.source-input.missing,.translation-input.missing{border-color:#dc3545 !important;background-color:#fff5f5 !important;color:#dc3545 !important}.source-text.empty,.source-input.empty,.translation-input.empty{border-color:#fd7e14 !important;background-color:#fff3e6 !important;color:#fd7e14 !important}.source-text.extra,.source-input.extra,.translation-input.extra{border-color:#ffc107 !important;background-color:#fff9e6 !important;color:#856404 !important}.source-text.type-mismatch,.source-input.type-mismatch,.translation-input.type-mismatch{border-color:#17a2b8 !important;background-color:#e6f9ff !important;color:#17a2b8 !important}.source-text.exact-match,.source-input.exact-match,.translation-input.exact-match{border-color:#9c27b0 !important;background-color:#f3e5f5 !important}.error-indicator{font-size:10px;padding:2px 6px;border-radius:3px;margin-top:4px;display:inline-block;font-weight:bold}.error-indicator.missing{background-color:#dc3545;color:white}.error-indicator.empty{background-color:#fd7e14;color:white}.error-indicator.extra{background-color:#ffc107;color:#856404}.error-indicator.type-mismatch{background-color:#17a2b8;color:white}.error-indicator.exact-match{background-color:#9c27b0;color:white}.tooltip{position:relative;display:inline-block}.tooltip .tooltiptext{visibility:hidden;width:300px;background-color:#333;color:#fff;text-align:center;border-radius:6px;padding:8px;position:absolute;z-index:1001;bottom:125%;left:50%;transform:translateX(-50%);font-size:12px;white-space:pre-line;pointer-events:none}.tooltip .tooltiptext::after{content:"";position:absolute;top:100%;left:50%;margin-left:-5px;border-width:5px;border-style:solid;border-color:#333 transparent transparent transparent}.tooltip:hover .tooltiptext{visibility:visible}.changelog-header{display:grid;grid-template-columns:1fr auto;background:#f5f5f5;padding:8px;border:1px solid #ddd;border-radius:4px 4px 0 0;font-size:13px;cursor:pointer;margin-top:-1px}.changelog-header:hover{background:#e9ecef}.changelog-title{font-weight:bold;color:#495057;display:flex;align-items:center;gap:8px}.changelog-count{background-color:#6c757d;color:white;padding:2px 6px;border-radius:10px;font-size:11px;font-weight:normal}.changelog-toggle-btn{background:#6c757d;color:white;border:none;cursor:pointer;font-size:12px;padding:2px 10px;border-radius:4px;min-width:50px;transition:background 0.2s}.changelog-toggle-btn:hover{background:#5a6268}.changelog-content{max-height:0;overflow:hidden;transition:max-height 0.3s ease;background-color:white;border:1px solid #ddd;border-top:none;border-radius:0 0 4px 4px}.changelog-content.expanded{max-height:200px;overflow-y:auto}.changelog-list{margin:0;padding:8px;font-size:12px}.changelog-item{margin:3px 0;padding:3px 0;border-bottom:1px dotted #dee2e6;color:#495057}.changelog-item:last-child{border-bottom:none}.changelog-time{color:#6c757d;font-size:11px;margin-right:8px;display:inline-block;min-width:45px}.changelog-text{color:#212529}.changelog-source{color:#6c757d;font-weight:500}.changelog-target{color:#6c757d;font-weight:500}.changelog-load{color:#6c757d}.changelog-error{color:#6c757d;font-weight:500}.temp-message{position:fixed;top:20px;left:50%;transform:translateX(-50%) translateY(-20px);background:#6c757d;color:white;padding:10px 20px;border-radius:4px;box-shadow:0 2px 8px rgba(0,0,0,0.2);z-index:10000;opacity:0;transition:all 0.3s ease;pointer-events:none;max-width:400px;text-align:center;font-size:14px;font-weight:500}.temp-message.show{opacity:1;transform:translateX(-50%) translateY(0)}.temp-message.info,.temp-message.success,.temp-message.warning{background:#6c757d;color:white}.file-info-display{font-weight:normal;font-size:12px;color:#666;margin-left:8px}.file-info-display.source{color:#6c757d}.file-info-display.target{color:#6c757d}.import-export-toolbar{display:none;margin-bottom:0}.toolbar-header{display:grid;grid-template-columns:1fr auto;background:#f5f5f5;padding:8px;border:1px solid #ddd;border-radius:4px 4px 0 0;font-size:13px;cursor:pointer}.toolbar-header:hover{background:#e9ecef}.toolbar-title{font-weight:bold;color:#495057;display:flex;align-items:center;gap:8px}.toolbar-toggle-btn{background:#6c757d;color:white;border:none;cursor:pointer;font-size:12px;padding:2px 10px;border-radius:4px;min-width:50px;transition:background 0.2s}.toolbar-toggle-btn:hover{background:#5a6268}.toolbar-content{max-height:0;overflow:hidden;transition:max-height 0.3s ease;background-color:white;border:1px solid #ddd;border-top:none;border-radius:0 0 4px 4px}.toolbar-content.expanded{max-height:200px;overflow-y:auto;padding:10px}.toolbar-buttons{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px}.toolbar-section{margin-top:8px;padding-top:8px;border-top:1px dashed #dee2e6}.toolbar-section h4{margin:0 0 6px 0;font-size:12px;color:#6c757d}.toolbar-btn{background:#6c757d;color:white;border:none;padding:6px 10px;border-radius:4px;cursor:pointer;font-size:12px;transition:background 0.2s}.toolbar-btn:hover{background:#5a6268}.toolbar-btn-warning{background:#6c757d;color:white}.format-selection{margin:10px 0;padding:8px;background:#f8f9fa;border-radius:4px;border:1px solid #dee2e6}.format-options{display:flex;flex-direction:column;gap:6px;margin-bottom:10px}.format-option{display:flex;align-items:center;gap:6px}.format-option input[type="radio"]{margin:0}.format-option label{font-size:12px;color:#495057;cursor:pointer}.format-note{font-size:11px;color:#6c757d;margin-top:4px;font-style:italic}.theme-toggle-btn{width:32px;height:32px;border-radius:50%;background:#6c757d;color:white;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;box-shadow:0 1px 4px rgba(0,0,0,0.15);transition:all 0.2s;position:relative}.theme-toggle-btn:hover{background:#5a6268;transform:scale(1.05)}.placeholder{background-color:#e6f7ff;border:1px solid #91d5ff;border-radius:2px;padding:0 2px;color:#0050b3;font-family:monospace;font-size:11px}.placeholder.missing{background-color:#fff2f0;border-color:#ffccc7;color:#cf1322}.length-warning{background-color:#fffbe6 !important;border-left-color:#ffc107 !important}.word-count{position:absolute;bottom:-18px;right:0;font-size:10px;color:#6c757d;background:white;padding:1px 4px;border-radius:2px;border:1px solid #dee2e6}.source-area,.translation-input-container{position:relative}.key-path-row{display:flex;justify-content:space-between;align-items:center;margin-top:4px;padding-top:4px;border-top:1px dashed #ddd}.key-path-text{font-family:monospace;font-size:11px;color:#666;unicode-bidi:plaintext;text-align:start}.key-path-lock-btn{background:none;border:none;cursor:pointer;font-size:11px;opacity:0.5;padding:2px 4px;border-radius:3px}.key-path-lock-btn:hover{opacity:1;background:#e9ecef}.key-path-copy-btn{background:none;border:none;cursor:pointer;font-size:11px;opacity:0.5;padding:2px 4px;border-radius:3px;margin-right:4px}.key-path-copy-btn:hover{opacity:1;background:#e9ecef}.key-path-return-btn{background:none;border:none;cursor:pointer;font-size:11px;opacity:0.5;padding:2px 4px;border-radius:3px;margin-right:4px}.key-path-return-btn:hover{opacity:1;background:#e9ecef}.ignore-warning-btn{background:none;border:none;cursor:pointer;font-size:11px;opacity:0.5;padding:2px 4px;border-radius:3px;margin-left:8px}.ignore-warning-btn:hover{opacity:1;background:#e9ecef}.copy-source-btn{background:none;border:none;cursor:pointer;font-size:11px;opacity:0.5;padding:2px 4px;border-radius:3px}.copy-source-btn:hover{opacity:1;background:#e9ecef}.error-indicator.type-mismatch,.translation-input.length-warning,.error-indicator.type-mismatch.length-warning{border-color:#ffc107 !important;background-color:#fff9e6 !important;color:#856404 !important}.scroll-btn:hover::after,.save-btn:hover::after,.csv-btn:hover::after,.theme-toggle-btn:hover::after,.help-btn:hover::after{content:attr(title) !important;position:absolute !important;background:#333 !important;color:white !important;padding:8px 12px !important;border-radius:6px !important;font-size:12px !important;white-space:nowrap !important;z-index:1001 !important;pointer-events:none !important;right:calc(100% + 15px) !important;left:auto !important;top:50% !important;transform:translateY(-50%) !important;width:auto !important;min-width:120px !important;max-width:200px !important;text-align:center !important}.scroll-btn:hover::before,.save-btn:hover::before,.csv-btn:hover::before,.theme-toggle-btn:hover::before,.help-btn:hover::before{content:'' !important;position:absolute !important;border:6px solid transparent !important;border-left-color:#333 !important;z-index:1001 !important;pointer-events:none !important;right:-12px !important;left:auto !important;top:50% !important;transform:translateY(-50%) !important}body.dark-theme .scroll-btn:hover::after,body.dark-theme .save-btn:hover::after,body.dark-theme .csv-btn:hover::after,body.dark-theme .theme-toggle-btn:hover::after,body.dark-theme .help-btn:hover::after{background:#222 !important;color:#fff !important}body.dark-theme .scroll-btn:hover::before,body.dark-theme .save-btn:hover::before,body.dark-theme .csv-btn:hover::before,body.dark-theme .theme-toggle-btn:hover::before,body.dark-theme .help-btn:hover::before{border-left-color:#222 !important}@media (max-width:768px){.scroll-buttons{bottom:15px !important;right:15px !important}.scroll-btn:hover::after,.save-btn:hover::after,.csv-btn:hover::after,.theme-toggle-btn:hover::after,.help-btn:hover::after{right:calc(100% + 10px) !important;font-size:11px !important;padding:6px 8px !important;min-width:100px !important;max-width:150px !important}.scroll-btn:hover::before,.save-btn:hover::before,.csv-btn:hover::before,.theme-toggle-btn:hover::before,.help-btn:hover::before{right:-10px !important;border-width:5px !important}}.key-path-copy-btn,.key-path-return-btn{background:none;border:none;cursor:pointer;font-size:11px;opacity:0.7;padding:2px 4px;border-radius:3px;margin-right:4px;display:inline-block;vertical-align:middle}.key-path-copy-btn:hover,.key-path-return-btn:hover{opacity:1;background:rgba(0,0,0,0.1)}body.dark-theme .key-path-copy-btn:hover,body.dark-theme .key-path-return-btn:hover{background:rgba(255,255,255,0.1)}.key-path-row > div:last-child{display:flex;align-items:center;gap:4px}body.dark-theme{background-color:#1a1a1a;color:#e0e0e0}body.dark-theme .upload-box{background:#2d2d2d;border-color:#444;color:#e0e0e0}body.dark-theme .upload-box:hover{background:#3d3d3d;border-color:#666}body.dark-theme .upload-box.active{border-color:#4d8be8;background:#2a4365}body.dark-theme .upload-box.disabled{background:#2a2a2a;border-color:#444;color:#777}body.dark-theme .reset-box{background:#2d2d2d;border-color:#444;color:#e0e0e0}body.dark-theme .reset-box:hover{background:#3d3d3d;border-color:#666}body.dark-theme .editor{border-color:#444;background:#2d2d2d}body.dark-theme .editor-sticky-header{background:#2d2d2d}body.dark-theme .editor-header{background:#333;border-color:#444;color:#e0e0e0}body.dark-theme .translation-item{border-color:#444}body.dark-theme .translation-item:nth-child(even){background:#252525}body.dark-theme .source-text{background:#2a4365;border-left-color:#4d8be8;color:#e0e0e0}body.dark-theme .source-text.changed{border-left-color:#5b9bd5 !important;background:#1a2d45}body.dark-theme .source-text.exact-match{border-left-color:#9c27b0 !important;background:#4a1a5a !important}body.dark-theme .source-input,body.dark-theme .translation-input{background:#333;border-color:#555;color:#e0e0e0}body.dark-theme .source-input:focus,body.dark-theme .translation-input:focus{border-color:#4d8be8;box-shadow:0 0 0 2px rgba(77,139,232,0.2)}body.dark-theme .source-input.changed,body.dark-theme .translation-input.changed{border-color:#5b9bd5 !important;background:#1a2d45}body.dark-theme .source-input.exact-match,body.dark-theme .translation-input.exact-match{border-color:#9c27b0 !important;background:#4a1a5a !important}body.dark-theme .key-path-text{color:#999}body.dark-theme .key-path-row{border-color:#444}body.dark-theme .key-path-lock-btn:hover{background:#333}body.dark-theme .key-path-copy-btn:hover{background:#333}body.dark-theme .key-path-return-btn:hover{background:#333}body.dark-theme .ignore-warning-btn:hover{background:#333}body.dark-theme .copy-source-btn:hover{background:#333}body.dark-theme .import-export-toolbar .toolbar-header{background:#333;border-color:#444;color:#e0e0e0}body.dark-theme .import-export-toolbar .toolbar-content{background:#2d2d2d;border-color:#444}body.dark-theme .changelog-header{background:#333;border-color:#444;color:#e0e0e0}body.dark-theme .changelog-content{background:#2d2d2d;border-color:#444}body.dark-theme .changelog-text{color:#e0e0e0}body.dark-theme .changelog-list{background:#2d2d2d}body.dark-theme .changelog-item{color:#e0e0e0;border-color:#444}body.dark-theme .changelog-time{color:#999}body.dark-theme .temp-message{background:#444;color:#fff}body.dark-theme .warning{background:#332b00;border-color:#665800;color:#ffd54f}body.dark-theme .warning h4{color:#ffd54f}body.dark-theme .warning .collapsible-header{background:#2a2300;color:#ffd54f}body.dark-theme .warning .collapsible-header:hover{background:#332b00}body.dark-theme .warning .collapsible-content{background:#1a1a1a;color:#e0e0e0}body.dark-theme .warning .collapsible-content code{background:#2d2d2d;color:#ffd54f;border:1px solid #444}body.dark-theme .warning .key-count{color:#ffd54f}body.dark-theme .error{background:#331a1a;color:#ff6b6b;border-color:#dc3545}body.dark-theme .placeholder{background-color:#003a6d;border-color:#005c99;color:#91d5ff}body.dark-theme .placeholder.missing{background-color:#331a1a;border-color:#662a2a;color:#ff6b6b}body.dark-theme .word-count{background:#333;border-color:#444;color:#999}body.dark-theme .format-selection{background:#2d2d2d;border-color:#444}body.dark-theme .format-option label{color:#e0e0e0}body.dark-theme .format-note{color:#999}body.dark-theme .collapsible-section .collapsible-header{background:#333;color:#e0e0e0}body.dark-theme .collapsible-section .collapsible-header:hover{background:#3d3d3d}body.dark-theme .collapsible-section .collapsible-content{background:#2d2d2d;color:#e0e0e0}body.dark-theme .collapsible-section .collapsible-content ul{background:#2d2d2d}body.dark-theme .collapsible-section .collapsible-content code{background:#1a1a1a;color:#e0e0e0;border:1px solid #444}body.dark-theme .key-count{color:#999}body.dark-theme .csv-btn{background:#5a6268;color:white}body.dark-theme .csv-btn:hover{background:#495057}body.dark-theme .array-indicator{background:#1a331a;color:#28a745;border:1px solid #28a745}body.dark-theme .error-indicator.missing{background-color:#dc3545;color:white}body.dark-theme .error-indicator.empty{background-color:#fd7e14;color:#212529}body.dark-theme .error-indicator.extra{background-color:#ffc107;color:#212529}body.dark-theme .error-indicator.type-mismatch{background-color:#17a2b8;color:white}body.dark-theme .error-indicator.exact-match{background-color:#9c27b0;color:white}body.dark-theme .translation-input.length-warning{background-color:#332b00 !important;border-color:#e6a700 !important;color:#ffd54f !important}body.dark-theme .error-indicator.type-mismatch.length-warning{background-color:#e6a700 !important;color:#212529 !important;border:1px solid #e6a700}body.dark-theme .source-text.missing,body.dark-theme .source-input.missing,body.dark-theme .translation-input.missing{border-color:#dc3545 !important;background-color:#331a1a !important;color:#ff6b6b !important}body.dark-theme .source-text.empty,body.dark-theme .source-input.empty,body.dark-theme .translation-input.empty{border-color:#fd7e14 !important;background-color:#332b00 !important;color:#ffc107 !important}body.dark-theme .source-text.extra,body.dark-theme .source-input.extra,body.dark-theme .translation-input.extra{border-color:#ffc107 !important;background-color:#332b00 !important;color:#ffd54f !important}body.dark-theme .source-text.type-mismatch,body.dark-theme .source-input.type-mismatch,body.dark-theme .translation-input.type-mismatch{border-color:#17a2b8 !important;background-color:#00323d !important;color:#6edff6 !important}body.dark-theme .source-text.exact-match,body.dark-theme .source-input.exact-match,body.dark-theme .translation-input.exact-match{border-color:#9c27b0 !important;background-color:#4a1a5a !important}body.dark-theme .status{color:#999}body.dark-theme .file-info{color:#999}body.dark-theme .file-info-display{color:#999}body.dark-theme .file-info-display.source{color:#4d8be8}body.dark-theme .file-info-display.target{color:#4d8be8}body.dark-theme .translation-item div[style*="color:#666"]{color:#999 !important}body.dark-theme .translation-item div[style*="font-style:italic"]{color:#999 !important}body.dark-theme .key-path-lock-btn{color:#999}body.dark-theme .key-path-lock-btn:hover{background:#444}body.dark-theme .toolbar-btn{background:#5a6268;color:white}body.dark-theme .toolbar-btn:hover{background:#495057}body.dark-theme .toolbar-toggle-btn{background:#5a6268;color:white}body.dark-theme .toolbar-toggle-btn:hover{background:#495057}body.dark-theme .toolbar-section{border-color:#444}body.dark-theme .toolbar-section h4{color:#999}body.dark-theme .changelog-toggle-btn{background:#5a6268;color:white}body.dark-theme .changelog-toggle-btn:hover{background:#495057}.target-info-line{display:flex;gap:8px;align-items:center;margin-top:4px;flex-wrap:wrap}.word-count-inline{font-size:10px;color:#6c757d;background:#f8f9fa;padding:2px 6px;border-radius:3px;border:1px solid #dee2e6}body.dark-theme .word-count-inline{background:#333;border-color:#444;color:#999}.progress-bar-container{position:relative;height:24px;background:#e9ecef;border-bottom:1px solid #ddd;overflow:hidden}.progress-bar-fill{height:100%;background:#adb5bd;transition:width 0.3s}.progress-text{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:12px;font-weight:bold;color:#212529}body.dark-theme .progress-bar-container{background:#333;border-color:#444}body.dark-theme .progress-bar-fill{background:#555}body.dark-theme .progress-text{color:#e0e0e0}.filter-bar{display:flex;gap:10px;align-items:center;padding:8px;background:#f8f9fa;border-bottom:1px solid #ddd;flex-wrap:wrap}.filter-input{flex:1;min-width:180px;padding:5px 8px;border:1px solid #ddd;border-radius:4px;font-size:13px;font-family:inherit}.filter-input:focus{outline:none;border-color:#0052cc;box-shadow:0 0 0 2px rgba(0,82,204,0.1)}.filter-buttons{display:flex;gap:4px;flex-wrap:wrap}.filter-btn{background:#e9ecef;color:#495057;border:1px solid #ddd;padding:4px 10px;border-radius:4px;cursor:pointer;font-size:12px;transition:all 0.2s}.filter-btn:hover{background:#dee2e6}.filter-btn.active{background:#0052cc;color:white;border-color:#0052cc}body.dark-theme .filter-bar{background:#2d2d2d;border-color:#444}body.dark-theme .filter-input{background:#333;border-color:#555;color:#e0e0e0}body.dark-theme .filter-btn{background:#444;color:#e0e0e0;border-color:#555}body.dark-theme .filter-btn:hover{background:#555}body.dark-theme .filter-btn.active{background:#4d8be8;border-color:#4d8be8}.footer{text-align:center;padding:20px;font-size:12px;color:#adb5bd}.footer a{color:#adb5bd;text-decoration:none}.footer a:hover{color:#6c757d;text-decoration:underline}body.dark-theme .footer{color:#555;border-color:#333}body.dark-theme .footer a{color:#555}body.dark-theme .footer a:hover{color:#999}.help-copyright{font-size:11px;color:#adb5bd;text-align:center;margin-top:16px}.help-copyright a{color:#adb5bd;text-decoration:none}.help-copyright a:hover{text-decoration:underline}body.dark-theme .help-copyright{color:#555}body.dark-theme .help-copyright a{color:#555}.help-btn{width:32px;height:32px;border-radius:50%;background:#6c757d;color:white;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:bold;box-shadow:0 1px 4px rgba(0,0,0,0.15);transition:all 0.2s;position:relative}.help-btn:hover{background:#5a6268;transform:scale(1.05)}.help-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:2000;justify-content:center;align-items:flex-start;padding:40px 20px;overflow-y:auto}.help-overlay.open{display:flex}.help-modal{background:#fff;border-radius:8px;padding:24px;max-width:620px;width:100%;box-shadow:0 8px 32px rgba(0,0,0,0.2);position:relative;margin:auto}.help-modal h2{margin:0 0 16px;font-size:17px;color:#212529;border-bottom:2px solid #0052cc;padding-bottom:8px}.help-modal h3{margin:16px 0 6px;font-size:13px;font-weight:bold;color:#0052cc;text-transform:uppercase;letter-spacing:0.5px}.help-modal p,.help-modal li{font-size:13px;color:#495057;line-height:1.5;margin:3px 0}.help-modal ul{margin:4px 0;padding-left:18px}.help-modal kbd{background:#e9ecef;border:1px solid #ced4da;border-radius:3px;padding:1px 5px;font-size:11px;font-family:monospace;color:#212529}.help-modal .badge{display:inline-block;padding:1px 6px;border-radius:3px;font-size:11px;font-weight:bold;margin-right:4px;vertical-align:middle}.help-modal .badge-red{background:#dc3545;color:white}.help-modal .badge-orange{background:#fd7e14;color:white}.help-modal .badge-yellow{background:#ffc107;color:#856404}.help-modal .badge-teal{background:#17a2b8;color:white}.help-modal .badge-purple{background:#9c27b0;color:white}.help-close{position:absolute;top:12px;right:14px;background:none;border:none;font-size:20px;cursor:pointer;color:#6c757d;line-height:1}.help-close:hover{color:#212529}body.dark-theme .help-modal{background:#2d2d2d;color:#e0e0e0}body.dark-theme .help-modal h2{color:#e0e0e0;border-color:#4d8be8}body.dark-theme .help-modal h3{color:#4d8be8}body.dark-theme .help-modal p,body.dark-theme .help-modal li{color:#ccc}body.dark-theme .help-modal kbd{background:#444;border-color:#555;color:#e0e0e0}body.dark-theme .help-close{color:#999}body.dark-theme .help-close:hover{color:#e0e0e0}
 </style>
-<style>.help-modal li label{cursor:pointer;display:flex;align-items:center;gap:8px}.segment-num{font-size:11px;color:#aaa;margin-right:5px;font-variant-numeric:tabular-nums}</style>
+<style>.help-modal li label{cursor:pointer;display:flex;align-items:center;gap:8px}.segment-num{font-size:11px;color:#aaa;margin-right:5px;font-variant-numeric:tabular-nums}.replace-bar{display:flex;gap:8px;align-items:center;padding:6px 10px;background:#f8f9fa;border-bottom:1px solid #e0e0e0;flex-wrap:wrap}.replace-bar .filter-input{flex:1;min-width:120px}.filter-btn#replaceToggleBtn{background:#6c757d;color:#fff}.filter-btn#replaceToggleBtn.active{background:#0052cc}.icu-source-view{padding:2px 0}.icu-badge{font-family:monospace;font-size:10px;color:#5a6268;background:#e9ecef;padding:1px 6px;border-radius:3px;margin-bottom:4px;display:inline-block}.icu-case-row{display:flex;gap:6px;align-items:baseline;margin:3px 0}.icu-case-name{font-family:monospace;font-size:10px;color:#0052cc;background:#e8f0fe;padding:1px 5px;border-radius:3px;min-width:44px;text-align:center;flex-shrink:0}.icu-case-text{font-size:12px;white-space:pre-wrap;word-break:break-word}body.dark-theme .icu-badge{background:#333;color:#999}body.dark-theme .icu-case-name{background:#1a3565;color:#7aafe8}body.dark-theme .icu-case-text{color:#ccc}.icu-subfield-cases{display:flex;flex-direction:column;gap:4px;margin-top:4px}.icu-case-edit-row{display:flex;gap:6px;align-items:flex-start}.icu-case-input{flex:1;padding:4px 6px;border:1px solid #ddd;border-radius:4px;resize:vertical;font-family:inherit;font-size:13px;min-height:30px;box-sizing:border-box;unicode-bidi:plaintext;text-align:start}.icu-case-input:focus{outline:none;border-color:#0052cc;box-shadow:0 0 0 2px rgba(0,82,204,0.1)}body.dark-theme .icu-case-input{background:#333;border-color:#555;color:#e0e0e0}body.dark-theme .icu-case-input:focus{border-color:#4d8be8;box-shadow:0 0 0 2px rgba(77,139,232,0.2)}.icu-case-input.changed{border-color:#3d85c8 !important;background:#eef4fb !important}body.dark-theme .icu-case-input.changed{border-color:#5b9bd5 !important;background:#1a2d45 !important}.icu-case-input.exact-match{border-color:#9c27b0 !important;background-color:#f3e5f5 !important}body.dark-theme .icu-case-input.exact-match{border-color:#9c27b0 !important;background-color:#4a1a5a !important}.icu-case-input.changed.exact-match{border-color:#9c27b0 !important;background-color:#f3e5f5 !important}body.dark-theme .icu-case-input.changed.exact-match{border-color:#9c27b0 !important;background-color:#4a1a5a !important}.icu-case-name-extra{color:#28a745;background:#e8f5e9}.icu-add-case-row{display:flex;gap:6px;margin-top:4px;align-items:center}.icu-add-case-input{flex:1;padding:3px 6px;border:1px dashed #ccc;border-radius:4px;font-size:12px;font-family:inherit}.icu-add-case-btn{padding:3px 8px;border:1px solid #ccc;border-radius:4px;background:#f8f9fa;font-size:12px;cursor:pointer}body.dark-theme .icu-case-name-extra{color:#4caf50;background:#1a3320}body.dark-theme .icu-add-case-input{background:#333;border-color:#555;color:#e0e0e0}body.dark-theme .icu-add-case-btn{background:#444;border-color:#555;color:#e0e0e0}.icu-case-input.empty{border-color:#fd7e14 !important;background-color:#fff3e6 !important;color:#fd7e14 !important}.icu-case-input.length-warning{border-color:#ffc107 !important;background-color:#fffbe6 !important}body.dark-theme .icu-case-input.empty{border-color:#fd7e14 !important;background-color:#332b00 !important;color:#ffc107 !important}body.dark-theme .icu-case-input.length-warning{border-color:#e6a700 !important;background-color:#332b00 !important}.icu-case-input.changed.empty{border-color:#fd7e14 !important;background-color:#fff3e6 !important;color:#fd7e14 !important}.icu-case-input.changed.length-warning{border-color:#ffc107 !important;background-color:#fffbe6 !important}body.dark-theme .icu-case-input.changed.empty{border-color:#fd7e14 !important;background-color:#332b00 !important;color:#ffc107 !important}body.dark-theme .icu-case-input.changed.length-warning{border-color:#e6a700 !important;background-color:#332b00 !important}.icu-case-info-line{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-top:2px;margin-bottom:2px;min-height:14px}.icu-case-info-line .word-count-inline{font-size:10px;color:#adb5bd}.icu-case-info-line .error-indicator{font-size:10px;padding:1px 5px}</style>
 </head>
 <body>
 <div class="container">
@@ -67,10 +67,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;m
 
 <div class="status" id="status">Load source and target JSON files to begin</div>
 <div class="editor" id="editor">
-<div class="editor-header">
-<div>Source: <span id="sourceFileNameDisplay" class="file-info-display source">No file loaded</span></div>
-<div>Target: <span id="targetFileNameDisplay" class="file-info-display target">No file loaded</span></div>
-</div>
+<div class="editor-sticky-header">
 <div class="filter-bar" id="filterBar" style="display:none">
   <input type="text" class="filter-input" id="filterInput" placeholder="Search or /regex/flags..." oninput="applyFilter()">
   <div class="filter-buttons">
@@ -79,11 +76,25 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;m
     <button class="filter-btn" data-filter="empty" onclick="setStatusFilter('empty')">Empty</button>
     <button class="filter-btn" data-filter="exact-match" onclick="setStatusFilter('exact-match')">Exact Match</button>
     <button class="filter-btn" data-filter="changed" onclick="setStatusFilter('changed')">Changed</button>
+    <button class="filter-btn" data-filter="warnings" onclick="setStatusFilter('warnings')">Warnings</button>
+    <button class="filter-btn" id="replaceToggleBtn" onclick="toggleReplaceBar()" title="Toggle search and replace">Replace</button>
   </div>
+</div>
+<div class="replace-bar" id="replaceBar" style="display:none">
+  <input type="text" class="filter-input" id="replaceFindInput" placeholder="Find in target values..." oninput="replaceNextIndex=0">
+  <span style="color:#999;font-size:13px">→</span>
+  <input type="text" class="filter-input" id="replaceWithInput" placeholder="Replace with...">
+  <button class="btn btn-small" onclick="executeReplaceNext()">Replace next</button>
+  <button class="btn btn-small btn-warning" onclick="executeReplace()">Replace all</button>
 </div>
 <div class="progress-bar-container" id="progressContainer" style="display:none">
   <div class="progress-bar-fill" id="progressFill"></div>
   <span class="progress-text" id="progressText"></span>
+</div>
+<div class="editor-header">
+<div>Source: <span id="sourceFileNameDisplay" class="file-info-display source">No file loaded</span></div>
+<div>Target: <span id="targetFileNameDisplay" class="file-info-display target">No file loaded</span></div>
+</div>
 </div>
 <div class="translation-list" id="translationList"></div>
 </div>
@@ -99,7 +110,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;m
 </div>
 </div>
 
-<footer class="footer">© 2026 Hal Yigit &mdash; <a href="mailto:yigithal@gmail.com">yigithal@gmail.com</a></footer>
+<footer class="footer">© 2026 Hal Yigit | <a href="mailto:yigithal@gmail.com">yigithal@gmail.com</a></footer>
 
 <div class="help-overlay" id="helpOverlay" onclick="handleHelpOverlayClick(event)">
   <div class="help-modal" id="helpModal">
@@ -109,23 +120,24 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;m
     <h3>Getting Started</h3>
     <ul>
       <li>Drop or click <strong>Source JSON</strong> to load the reference file.</li>
-      <li>Drop or click <strong>Target JSON</strong> to load the file you are translating into.</li>
+      <li>Drop or click <strong>Target JSON</strong> to load the file you are editing.</li>
       <li>The editor opens automatically once both files are loaded.</li>
       <li>Click <strong>Reset</strong> to start a new session. You will be prompted if there are unsaved changes.</li>
     </ul>
 
     <h3>Editor</h3>
     <ul>
-      <li>Source text is on the left (read-only by default). Type your translation in the right column.</li>
+      <li>Source values are on the left (read-only by default). Edit values in the right column.</li>
       <li><strong>🔒 / 🔓</strong> unlocks a source field if you need to correct the reference text.</li>
       <li><strong>📋</strong> copies the source value into the target field. Appears when the two values differ.</li>
-      <li><strong>↶</strong> undoes the last copy and restores the previous target value.</li>
+      <li><strong>↺</strong> undoes the last copy and restores the previous target value.</li>
       <li><strong>👁️</strong> dismisses an exact-match or length warning for that item without changing the value.</li>
       <li>A character and word count is shown below each field as you type.</li>
-      <li>A length warning is shown when the target exceeds 1.5× the source character count — a common guideline for UI strings. Use <strong>👁️</strong> to dismiss if the longer translation is intentional.</li>
+      <li>A length warning is shown when the target exceeds 1.5× the source character count. Use <strong>👁️</strong> to dismiss if the longer value is intentional.</li>
       <li>Placeholders like <code>{{name}}</code>, <code>%s</code>, <code>{key}</code>, and <code>%1$s</code> are highlighted in the source. Missing or extra ones in the target are flagged so interpolation does not break at runtime.</li>
-      <li>Special characters (<code>&lt; &gt; " &amp; `</code>) trigger a warning because they can break HTML rendering or JSON parsing depending on how the app consumes the strings.</li>
-      <li>An orange border marks fields whose current value differs from what was loaded at the start of the session, making it easy to see what you have changed.</li>
+      <li>ICU message format (<code>{count, plural, one {# item} other {# items}}</code>) is detected automatically. The source shows each case individually. The target is validated for matching cases and variables within each case. Enable <strong>ICU sub-field editing</strong> in settings to edit each case in its own field. You can also add extra cases the source does not have (e.g. <code>few</code>, <code>many</code> for languages that need them).</li>
+      <li>Special characters (<code>&lt; &gt; " &amp; `</code>) trigger a warning because they can break HTML rendering or JSON parsing depending on how the application consumes the strings.</li>
+      <li>A blue border marks fields whose current value differs from what was loaded at the start of the session, making it easy to see what you have changed.</li>
       <li>Right-to-left text direction (Arabic, Hebrew, Persian, etc.) is detected automatically per field based on Unicode character ranges and applied without any manual setup.</li>
       <li>Nested keys are shown as dot-separated paths. Array items use <code>[0]</code>, <code>[1]</code> index notation. The original structure and key order are preserved when you save.</li>
     </ul>
@@ -134,47 +146,64 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;m
     <ul>
       <li><span class="badge badge-red">Missing</span> Key exists in source but is absent from the target file entirely.</li>
       <li><span class="badge badge-orange">Empty</span> Key exists in target but its value is an empty string.</li>
-      <li><span class="badge badge-yellow">Extra</span> Key is present in target but has no corresponding source key — may be obsolete.</li>
+      <li><span class="badge badge-yellow">Extra</span> Key is present in target but has no corresponding source key. May be obsolete.</li>
       <li><span class="badge badge-teal">Type mismatch</span> Same key but the value type differs (e.g. string vs. array).</li>
-      <li><span class="badge badge-purple">Exact match</span> Target value is identical to the source, which usually means it has not been translated yet.</li>
+      <li><span class="badge badge-purple">Exact match</span> Target value is identical to the source. The value may not have been updated yet.</li>
     </ul>
 
     <h3>Filter Bar</h3>
     <ul>
-      <li>Type to filter by key path, source text, or target text.</li>
+      <li>Type to filter by key path, source text, or target text. Type a segment number (e.g. <code>25</code> or <code>#25</code>) to jump directly to that segment.</li>
       <li>Use a regex by wrapping it in slashes: <code>/pattern/flags</code> (e.g. <code>/^auth\./i</code> to show only auth-related keys).</li>
-      <li>Status buttons narrow the list: <strong>Missing</strong> and <strong>Empty</strong> are the most useful when working through outstanding items. <strong>Changed</strong> shows only items whose target differs from the originally loaded value — useful for reviewing your edits before saving.</li>
+      <li><strong>Missing</strong> and <strong>Empty</strong> are the most useful status filters when working through outstanding segments.</li>
+      <li><strong>Changed</strong> shows only segments whose target differs from the originally loaded value, useful for reviewing edits before saving.</li>
+      <li><strong>Warnings</strong> shows segments that have any active warning (length, exact match, special characters, placeholder, or ICU validation). Respects warning toggles in Settings. If a warning type is disabled, those segments will not appear here.</li>
     </ul>
 
     <h3>Progress Bar</h3>
-    <p>Shows how many items are translated out of total. An item counts as done when the target is non-empty and differs from the source.</p>
+    <p>Shows how many segments are done out of total. A segment counts as done when the target is non-empty, has no empty ICU cases, and either differs from the source or its exact-match warning has been dismissed.</p>
 
     <h3>Floating Buttons (bottom right)</h3>
     <ul>
       <li><strong>💾 green</strong> saves the source JSON as a download.</li>
-      <li><strong>💾 blue</strong> saves the target JSON as a download. Will not save if any translations are still missing.</li>
+      <li><strong>💾 blue</strong> saves the target JSON as a download. Will not save if any keys are still missing or empty.</li>
       <li><strong>↑ / ↓</strong> scroll to top or bottom of the list.</li>
-      <li><strong>📊</strong> exports a CSV with key, source, target, and max-characters columns. The max-characters value is <code>ceil(source length × 1.5)</code> — the same threshold as the in-editor length warning — so you can pass character limits directly to designers or developers.</li>
+      <li><strong>📊</strong> exports a CSV with key, source, target, and max-characters columns. The max-characters value is <code>ceil(source length × threshold)</code> using the same threshold set in settings (default 1.5×), so you can pass character limits directly to designers or developers.</li>
       <li><strong>🌓</strong> toggles dark and light theme. Your preference is saved across sessions.</li>
     </ul>
 
     <h3>Missing Translations Toolbar</h3>
-    <p>Appears when there are empty or missing keys. Export just those segments as a JSON snippet to send to a translator, then import the completed file back. Useful for handing off partial work without sharing the full target file.</p>
+    <p>Appears when there are empty or missing keys. Export just those segments as a JSON snippet, fill them in externally, then import the completed file back. Useful for handing off partial work without sharing the full file.</p>
 
     <h3>Session History</h3>
     <p>Logs every load, edit, save, import, and export during the session. Collapsed by default.</p>
 
+    <h3>Search and Replace</h3>
+    <p>Click <strong>Replace</strong> in the filter bar to open the replace row. Enter a find term and a replacement, then click <strong>Replace visible</strong> to apply to all currently visible target fields that match. Supports the same <code>/regex/flags</code> syntax as the filter. The replace is scoped to visible rows, so filter first to narrow the target set. Ctrl+Z undoes the last programmatic change (copy or replace) on the focused field.</p>
+
     <h3>Keyboard Shortcuts</h3>
     <ul>
       <li><kbd>Ctrl</kbd>+<kbd>S</kbd> saves the target file.</li>
-      <li><kbd>Ctrl</kbd>+<kbd>Enter</kbd> moves focus to the next translation field.</li>
-      <li><kbd>F8</kbd> jumps to the next empty or untranslated item, based on the active filter.</li>
+      <li><kbd>Ctrl</kbd>+<kbd>Enter</kbd> moves focus to the next target field.</li>
+      <li><kbd>Tab</kbd> / <kbd>Shift</kbd>+<kbd>Tab</kbd> moves forward and backward through visible target fields.</li>
+      <li><kbd>F8</kbd> jumps to the next empty target field, based on the active filter.</li>
+      <li><kbd>Ctrl</kbd>+<kbd>Z</kbd> inside a target field undoes the last copy or replace operation on that field.</li>
+      <li><kbd>Escape</kbd> closes the settings or help panel, or the replace bar.</li>
     </ul>
 
     <h3>Settings</h3>
-    <p>The <strong>⚙️</strong> button opens the settings panel where you can toggle individual warning types and segment numbers on or off. Settings are saved across sessions.</p>
+    <p>Click <strong>⚙️</strong> to open settings. All settings are saved to localStorage and persist across sessions.</p>
+    <ul>
+      <li><strong>Length warnings</strong> flags target values that exceed the threshold (default 1.5×) of the source length. The same threshold is used for the max-characters column in CSV export.</li>
+      <li><strong>Exact match warnings</strong> flags segments where the target is identical to the source and may not have been translated yet.</li>
+      <li><strong>Special character warnings</strong> flags <code>&lt; &gt; " &amp; `</code> in target values.</li>
+      <li><strong>Placeholder warnings</strong> flags missing or extra placeholders in the target. Skipped for ICU strings (ICU validation handles variables instead).</li>
+      <li><strong>ICU format validation</strong> validates plural/select strings against the source: checks for missing cases and variable consistency per case.</li>
+      <li><strong>ICU sub-field editing</strong> edits each plural/select case in its own field. You can also add extra cases the source does not have (e.g. <code>few</code>, <code>many</code>).</li>
+      <li><strong>ICU CSV export</strong> splits ICU strings into one row per case in the exported CSV.</li>
+      <li><strong>Hide non-editable rows</strong> hides booleans, numbers, and objects, leaving only translatable strings.</li>
+    </ul>
 
-    <hr>
     <p class="help-copyright">Free for personal use. For commercial use contact <a href="mailto:yigithal@gmail.com">yigithal@gmail.com</a><br>© 2026 Hal Yigit</p>
   </div>
 </div>
@@ -186,15 +215,28 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;m
 
     <h3>Warnings</h3>
     <ul>
-      <li><label><input type="checkbox" id="settingLength" onchange="toggleSetting('showLengthWarnings')"> Length warnings (target exceeds 1.5× source length)</label></li>
+      <li><label><input type="checkbox" id="settingLength" onchange="toggleSetting('showLengthWarnings')"> Length warnings (target exceeds <span id="thresholdDisplay">1.5×</span> source length)</label></li>
+      <li style="padding-left:4px">
+        <div style="display:flex;align-items:center;gap:10px;margin-top:4px">
+          <input type="range" id="thresholdSlider" min="1.0" max="3.0" step="0.1" value="1.5" oninput="updateThreshold(this.value)" style="flex:1">
+          <input type="number" id="thresholdNumber" min="1.0" max="3.0" step="0.1" value="1.5" oninput="updateThreshold(this.value)" style="width:60px">
+        </div>
+      </li>
       <li><label><input type="checkbox" id="settingExactMatch" onchange="toggleSetting('showExactMatchWarnings')"> Exact match warnings</label></li>
       <li><label><input type="checkbox" id="settingSpecialChar" onchange="toggleSetting('showSpecialCharWarnings')"> Special character warnings</label></li>
       <li><label><input type="checkbox" id="settingPlaceholder" onchange="toggleSetting('showPlaceholderWarnings')"> Placeholder warnings</label></li>
+      <li><label><input type="checkbox" id="settingICU" onchange="toggleSetting('parseICU')"> ICU format validation (plural/select)</label></li>
+    </ul>
+
+    <h3>ICU Subfields</h3>
+    <ul>
+      <li><label><input type="checkbox" id="settingICUSubfields" onchange="toggleSetting('icuSubfields')"> ICU sub-field editing (edit each case separately)</label></li>
+      <li><label><input type="checkbox" id="settingICUCSV" onchange="toggleSetting('icuCSV')"> ICU CSV export (split ICU strings into per-case rows)</label></li>
     </ul>
 
     <h3>Display</h3>
     <ul>
-      <li><label><input type="checkbox" id="settingSegmentNums" onchange="toggleSetting('showSegmentNumbers')"> Segment numbers</label></li>
+      <li><label><input type="checkbox" id="settingHideNonStrings" onchange="toggleSetting('hideNonStrings')"> Hide non-editable rows (booleans, numbers, objects)</label></li>
     </ul>
   </div>
 </div>
@@ -234,6 +276,13 @@ let importExportToolbarVisible = false
 
 let activeStatusFilter = 'all'
 let activeTextFilter = ''
+let undoHistory = {} // path → [value, ...]
+let replaceBarVisible = false
+let replaceNextIndex = 0
+
+// Per-file format metadata (detected on load, applied on save)
+let sourceFileFormat = { indent: 2, lineEnding: '\n', bom: false }
+let targetFileFormat = { indent: 2, lineEnding: '\n', bom: false }
 
 // ==================== DOM REFERENCES ====================
 const sourceBox = document.getElementById('sourceBox')
@@ -257,9 +306,6 @@ document.addEventListener('keydown', handleKeyboardShortcuts)
 // Load theme
 loadThemePreference()
 
-// Load settings
-loadSettings()
-
 // Show theme toggle initially
 document.getElementById('scrollButtons').style.display = 'flex'
 
@@ -274,6 +320,61 @@ function escapeHtml(text) {
     .replace(/'/g, '&#039;')
 }
 
+// Path segment with dots escaped as \. so "a.b" key ≠ nested path a→b
+function buildPath(parent, key) {
+  const escaped = key.replace(/\\/g, '\\\\').replace(/\./g, '\\.')
+  return parent ? parent + '.' + escaped : escaped
+}
+
+function parsePath(path) {
+  const parts = []
+  let current = ''
+  let i = 0
+  while (i < path.length) {
+    if (path[i] === '\\' && i + 1 < path.length && path[i + 1] === '.') {
+      current += '.'; i += 2
+    } else if (path[i] === '\\' && i + 1 < path.length && path[i + 1] === '\\') {
+      current += '\\'; i += 2
+    } else if (path[i] === '.') {
+      if (current !== '') { parts.push(current); current = '' }
+      i++
+    } else if (path[i] === '[') {
+      if (current !== '') { parts.push(current); current = '' }
+      const end = path.indexOf(']', i)
+      if (end === -1) { current += path[i]; i++; continue }
+      parts.push(parseInt(path.slice(i + 1, end), 10))
+      i = end + 1
+      if (i < path.length && path[i] === '.') i++
+    } else {
+      current += path[i]; i++
+    }
+  }
+  if (current !== '') parts.push(current)
+  return parts
+}
+
+function displayPath(path) {
+  return path.replace(/\\\\/g, '\\').replace(/\\\./g, '.')
+}
+
+function findRowByPath(path) {
+  const el = document.querySelector(`.translation-item [data-path]`)
+  if (!el) return null
+  const all = document.querySelectorAll('.translation-item [data-path]')
+  for (const node of all) {
+    if (node.dataset.path === path) return node.closest('.translation-item')
+  }
+  return null
+}
+
+function scrollToPath(path) {
+  const row = findRowByPath(path)
+  if (!row) return
+  row.scrollIntoView({ behavior: 'smooth', block: 'center' })
+  row.style.outline = '2px solid #0052cc'
+  setTimeout(() => { row.style.outline = '' }, 1500)
+}
+
 function showTempMessage(message, duration = 1000) {
   const tempMsg = document.getElementById('tempMessage')
   tempMsg.textContent = message
@@ -285,9 +386,8 @@ function showTempMessage(message, duration = 1000) {
 
 function showError(msg) {
   const e = document.getElementById('error')
-  e.innerHTML = msg
-  e.style.display = 'block'
-  document.getElementById('warning').style.display = 'none'
+  e.innerHTML = `<span>${msg}</span><button onclick="this.parentElement.style.display='none'" style="background:none;border:none;cursor:pointer;color:inherit;font-size:16px;padding:0;margin-left:auto;flex-shrink:0;line-height:1;opacity:0.7" title="Dismiss">✕</button>`
+  e.style.display = 'flex'
 }
 
 // ==================== THEME FUNCTIONS ====================
@@ -412,34 +512,43 @@ function toggleSourceLock(path) {
   itemLocks[path] = !itemLocks[path]
   
   // Find the row for this path
-  const row = document.querySelector(`.translation-item [data-path="${escapeHtml(path)}"]`)?.closest('.translation-item')
+  const row = findRowByPath(path)
   if (!row) return
   
   const sourceArea = row.querySelector('.source-area')
   const sourceVal = getValue(sourceData, path)
   
+  const parsedICU = settings.icuSubfields && settings.parseICU ? parseICU(String(sourceVal ?? '')) : null
   if (itemLocks[path]) {
-    // Switch to locked mode (display div)
-    const textarea = sourceArea.querySelector('.source-input')
-    if (textarea) {
+    // Switch to locked mode — handle both ICU subfield view and plain textarea
+    const elemToReplace = sourceArea.querySelector('.icu-source-view') || sourceArea.querySelector('.source-input')
+    if (elemToReplace) {
       const displayDiv = document.createElement('div')
       displayDiv.className = 'source-text'
       displayDiv.setAttribute('dir', detectTextDirection(sourceVal))
-      displayDiv.innerHTML = highlightPlaceholders(sourceVal)
-      textarea.replaceWith(displayDiv)
+      displayDiv.innerHTML = parsedICU ? renderICUSource(parsedICU, path, true) : highlightPlaceholders(sourceVal)
+      elemToReplace.replaceWith(displayDiv)
     }
   } else {
-    // Switch to unlocked mode (textarea)
+    // Switch to unlocked mode
     const displayDiv = sourceArea.querySelector('.source-text')
     if (displayDiv) {
-      const textarea = document.createElement('textarea')
-      textarea.className = 'source-input'
-      textarea.setAttribute('data-path', escapeHtml(path))
-      textarea.setAttribute('dir', detectTextDirection(sourceVal))
-      textarea.value = sourceVal
-      textarea.oninput = () => updateSource(textarea, path)
-      displayDiv.replaceWith(textarea)
-      autoExpand(textarea)
+      if (parsedICU) {
+        const container = document.createElement('div')
+        container.innerHTML = renderICUSourceSubfields(parsedICU, path, detectTextDirection(String(sourceVal ?? '')))
+        const subfieldEl = container.firstChild
+        displayDiv.replaceWith(subfieldEl)
+        subfieldEl.querySelectorAll('textarea').forEach(ta => autoExpand(ta))
+      } else {
+        const textarea = document.createElement('textarea')
+        textarea.className = 'source-input'
+        textarea.setAttribute('data-path', escapeHtml(path))
+        textarea.setAttribute('dir', detectTextDirection(sourceVal))
+        textarea.value = sourceVal
+        textarea.oninput = () => updateSource(textarea, path)
+        displayDiv.replaceWith(textarea)
+        autoExpand(textarea)
+      }
     }
   }
   
@@ -468,90 +577,47 @@ function copySourceToTarget(path) {
       timestamp: Date.now()
     }
   }
-  
-  // Update target value
+
+  pushUndo(path, currentTargetVal)
+
   setValue(targetData, path, sourceVal)
-  
-  // Find and update the target textarea
-  const row = document.querySelector(`.translation-item textarea[data-path="${escapeHtml(path)}"]`)?.closest('.translation-item')
+
+  const row = findRowByPath(path)
   if (row) {
     const targetTextarea = row.querySelector('.translation-input')
     if (targetTextarea) {
       targetTextarea.value = sourceVal ?? ''
-
-      // Remove error classes
-      targetTextarea.classList.remove('changed', 'missing', 'empty')
-      
-      // Check for exact match (will be true after copy)
-      if (sourceVal && sourceVal.trim() !== '') {
-        if (shouldShowWarning(path, 'exact-match')) {
-          targetTextarea.classList.add('exact-match')
-        }
-        itemIssues[path] = { type: 'exact-match', message: 'Source and target are identical' }
-      }
-      
-      // Update word count
-      updateWordCount(targetTextarea, sourceVal)
-      
-      // Update copy/return button visibility
-      updateCopyReturnButtonForRow(row, path)
-      
-      autoExpand(targetTextarea)
+      updateTranslation(targetTextarea, path)
+      updateICUSubfields(path)
     }
   }
-  
+
   targetHasUnsavedChanges = true
   addChangelogEntry('target', 'Copied source to target', path, targetFileName)
 }
 
 function returnToPreviousState(path) {
   if (!copiedStates[path]) return
-  
+
   const previousState = copiedStates[path]
-  const sourceVal = getValue(sourceData, path)
-  
+
   // Restore previous value
   setValue(targetData, path, previousState.previousValue)
-  
-  // Find and update the target textarea
-  const row = document.querySelector(`.translation-item textarea[data-path="${escapeHtml(path)}"]`)?.closest('.translation-item')
+
+  const row = findRowByPath(path)
   if (row) {
     const targetTextarea = row.querySelector('.translation-input')
     if (targetTextarea) {
       targetTextarea.value = previousState.previousValue ?? ''
-
-      // Clear all styling
-      targetTextarea.classList.remove('changed', 'missing', 'empty', 'exact-match')
-      
-      // Check what issue should be shown now
-      const targetVal = previousState.previousValue
-      if (!targetVal || targetVal.trim() === '') {
-        if (sourceVal && sourceVal.trim() !== '') {
-          targetTextarea.classList.add('empty')
-          itemIssues[path] = { type: 'empty', message: 'Empty in target' }
-        }
-      } else if (targetVal === sourceVal) {
-        if (shouldShowWarning(path, 'exact-match')) {
-          targetTextarea.classList.add('exact-match')
-        }
-        itemIssues[path] = { type: 'exact-match', message: 'Source and target are identical' }
-      } else {
-        delete itemIssues[path]
-      }
-      
-      // Update word count
-      updateWordCount(targetTextarea, targetVal)
-      
-      // Update copy/return button visibility
-      updateCopyReturnButtonForRow(row, path)
-      
-      autoExpand(targetTextarea)
+      updateTranslation(targetTextarea, path)
+      updateICUSubfields(path)
     }
   }
-  
-  // Remove from copied states
+
+  // Ensure copied state is cleared and button is removed
   delete copiedStates[path]
-  
+  if (row) updateCopyReturnButtonForRow(row, path)
+
   targetHasUnsavedChanges = true
   addChangelogEntry('target', 'Returned to previous state', path, targetFileName)
 }
@@ -575,7 +641,7 @@ function updateCopyReturnButtonForRow(row, path) {
     const returnBtn = document.createElement('button');
     returnBtn.className = 'key-path-return-btn';
     returnBtn.title = 'Return to previous state';
-    returnBtn.innerHTML = '↶';
+    returnBtn.innerHTML = '↺';
     returnBtn.onclick = (e) => {
       e.stopPropagation();
       returnToPreviousState(path);
@@ -610,43 +676,65 @@ function updateCopyReturnButtonForRow(row, path) {
 }
 
 // ==================== WARNING IGNORE SYSTEM ====================
-function ignoreWarning(path, type) {
-  // Initialize if needed
-  if (!ignoredWarnings[path]) {
-    ignoredWarnings[path] = {}
+function ignoreWarning(path, type, caseName) {
+  if (!ignoredWarnings[path]) ignoredWarnings[path] = {}
+  const key = caseName ? `${type}:${caseName}` : type
+  if (type === 'length') {
+    if (caseName) {
+      const row = findRowByPath(path)
+      const ta = row?.querySelector(`.icu-case-input[data-icu-case="${CSS.escape(caseName)}"]`)
+      ignoredWarnings[path][key] = ta ? ta.value.length : true
+    } else {
+      const curVal = getValue(targetData, path)
+      ignoredWarnings[path][key] = typeof curVal === 'string' ? curVal.length : true
+    }
+  } else {
+    ignoredWarnings[path][key] = true
   }
-  
-  // Mark this warning type as ignored
-  ignoredWarnings[path][type] = true
-  
+
+  if (caseName) {
+    applyICUCaseStyling(path)
+    updateProgressBar()
+    addChangelogEntry('target', `Ignored ${type} warning for "${caseName}" case`, path, targetFileName)
+    return
+  }
+
+  // Clear from itemIssues so status filters don't include it
+  if (itemIssues[path] && itemIssues[path].type === type) {
+    delete itemIssues[path]
+  }
+
   // Update UI immediately
-  const row = document.querySelector(`.translation-item textarea[data-path="${escapeHtml(path)}"]`)?.closest('.translation-item')
+  const row = findRowByPath(path)
   if (row) {
     if (type === 'exact-match') {
-      // Remove exact-match styling
       row.querySelector('.source-text, .source-input')?.classList.remove('exact-match')
       row.querySelector('.translation-input')?.classList.remove('exact-match')
-      
-      // Remove warning indicator
       const warningIndicator = row.querySelector('.error-indicator.exact-match')
       if (warningIndicator) warningIndicator.remove()
     } else if (type === 'length') {
-      // Remove length warning styling
       row.querySelector('.translation-input')?.classList.remove('length-warning')
-      
-      // Remove warning indicator
+      row.querySelectorAll('.icu-case-input').forEach(ta => ta.classList.remove('length-warning'))
       const warningIndicator = row.querySelector('.error-indicator.type-mismatch.length-warning')
       if (warningIndicator) warningIndicator.remove()
+    } else if (type === 'placeholder') {
+      row.querySelectorAll('.error-indicator.missing, .error-indicator.extra').forEach(el => el.remove())
+    } else if (type === 'special-char') {
+      row.querySelector('.error-indicator.special-char-warning')?.remove()
     }
-    
-    // Remove the ignore button for this specific warning
+
     const ignoreButtons = row.querySelectorAll('.ignore-warning-btn')
     ignoreButtons.forEach(btn => {
       const btnType = btn.dataset.warningType ?? (btn.onclick?.toString().includes(`'${type}'`) ? type : null)
       if (btnType === type) btn.remove()
     })
+
+    // Re-evaluate to surface next warning's ignore button
+    const ta = row.querySelector('.translation-input')
+    if (ta) updateTranslation(ta, path)
   }
-  
+
+  updateProgressBar()
   addChangelogEntry('target', `Ignored ${type} warning`, path, targetFileName)
 }
 
@@ -655,8 +743,13 @@ let settings = {
   showExactMatchWarnings: true,
   showSpecialCharWarnings: true,
   showPlaceholderWarnings: true,
-  showSegmentNumbers: true
+  parseICU: true,
+  icuSubfields: false,
+  icuCSV: false,
+  hideNonStrings: false,
+  lengthThreshold: 1.5
 }
+loadSettings()
 
 function loadSettings() {
   try {
@@ -666,7 +759,9 @@ function loadSettings() {
 }
 
 function saveSettings() {
-  localStorage.setItem('jsonloc-settings', JSON.stringify(settings))
+  try {
+    localStorage.setItem('jsonloc-settings', JSON.stringify(settings))
+  } catch (_) {}
 }
 
 function toggleSetting(key) {
@@ -683,18 +778,43 @@ function toggleSettings() {
     document.getElementById('settingExactMatch').checked = settings.showExactMatchWarnings
     document.getElementById('settingSpecialChar').checked = settings.showSpecialCharWarnings
     document.getElementById('settingPlaceholder').checked = settings.showPlaceholderWarnings
-    document.getElementById('settingSegmentNums').checked = settings.showSegmentNumbers
+    document.getElementById('settingICU').checked = settings.parseICU
+    document.getElementById('settingICUSubfields').checked = settings.icuSubfields
+    document.getElementById('settingICUCSV').checked = settings.icuCSV
+    document.getElementById('settingHideNonStrings').checked = settings.hideNonStrings
+    document.getElementById('thresholdSlider').value = settings.lengthThreshold
+    document.getElementById('thresholdNumber').value = settings.lengthThreshold
+    document.getElementById('thresholdDisplay').textContent = settings.lengthThreshold + '×'
   }
+}
+
+function updateThreshold(val) {
+  const n = Math.min(3, Math.max(1, parseFloat(val) || 1.5))
+  settings.lengthThreshold = Math.round(n * 10) / 10
+  saveSettings()
+  document.getElementById('thresholdSlider').value = settings.lengthThreshold
+  document.getElementById('thresholdNumber').value = settings.lengthThreshold
+  document.getElementById('thresholdDisplay').textContent = settings.lengthThreshold + '×'
+  if (isEditorLoaded) renderEditor()
 }
 
 function handleSettingsOverlayClick(e) {
   if (e.target === document.getElementById('settingsOverlay')) toggleSettings()
 }
 
-function shouldShowWarning(path, type) {
+function shouldShowWarning(path, type, caseName, caseValue) {
   if (type === 'length' && !settings.showLengthWarnings) return false
   if (type === 'exact-match' && !settings.showExactMatchWarnings) return false
-  return !(ignoredWarnings[path] && ignoredWarnings[path][type])
+  if (type === 'placeholder' && !settings.showPlaceholderWarnings) return false
+  if (type === 'special-char' && !settings.showSpecialCharWarnings) return false
+  const key = caseName ? `${type}:${caseName}` : type
+  const dismissed = ignoredWarnings[path]?.[key]
+  if (!dismissed) return true
+  if (type === 'length' && typeof dismissed === 'number') {
+    const val = caseValue !== undefined ? caseValue : getValue(targetData, path)
+    return typeof val === 'string' && val.length > dismissed
+  }
+  return false
 }
 
 function clearAllIgnoredWarnings() {
@@ -724,11 +844,419 @@ function extractPlaceholders(text) {
   return matches ? [...new Set(matches)] : []
 }
 
+// ==================== ICU MESSAGE FORMAT ====================
+function parseICU(str) {
+  if (typeof str !== 'string') return null
+  const s = str.trim()
+  if (!s.startsWith('{')) return null
+  let depth = 0, end = -1
+  for (let i = 0; i < s.length; i++) {
+    if (s[i] === '{') depth++
+    else if (s[i] === '}') { depth--; if (depth === 0) { end = i; break } }
+  }
+  if (end !== s.length - 1) return null
+  const inner = s.slice(1, end)
+  const topParts = []
+  let cur = '', d = 0
+  for (let i = 0; i < inner.length; i++) {
+    if (inner[i] === '{') { d++; cur += inner[i] }
+    else if (inner[i] === '}') { d--; cur += inner[i] }
+    else if (inner[i] === ',' && d === 0) { topParts.push(cur.trim()); cur = '' }
+    else cur += inner[i]
+  }
+  if (cur.trim()) topParts.push(cur.trim())
+  if (topParts.length < 3) return null
+  const variable = topParts[0]
+  const type = topParts[1].toLowerCase()
+  if (!['plural', 'select', 'selectordinal'].includes(type)) return null
+  const casesStr = topParts.slice(2).join(',').trim()
+  const cases = parseICUCases(casesStr)
+  if (Object.keys(cases).length === 0) return null
+  return { variable, type, cases }
+}
+
+function parseICUCases(str) {
+  const cases = {}
+  let i = 0
+  while (i < str.length) {
+    while (i < str.length && /\s/.test(str[i])) i++
+    if (i >= str.length) break
+    let nameStart = i
+    while (i < str.length && str[i] !== ' ' && str[i] !== '\t' && str[i] !== '{') i++
+    const name = str.slice(nameStart, i).trim()
+    if (!name) break
+    while (i < str.length && /\s/.test(str[i])) i++
+    if (i >= str.length || str[i] !== '{') break
+    let depth = 0, textStart = i + 1, textEnd = -1
+    while (i < str.length) {
+      if (str[i] === '{') depth++
+      else if (str[i] === '}') { depth--; if (depth === 0) { textEnd = i; i++; break } }
+      i++
+    }
+    if (textEnd === -1) break
+    cases[name] = str.slice(textStart, textEnd)
+  }
+  return cases
+}
+
+function renderICUSource(parsed, path, showCopyBtns, changedCases) {
+  const caseRows = Object.entries(parsed.cases).map(([name, text]) => {
+    const isChanged = changedCases && changedCases.has(name)
+    const copyBtn = (!isChanged && showCopyBtns) ? `<button class="copy-source-btn" title="Copy to target" data-path="${escapeHtml(path)}" data-icu-case="${escapeHtml(name)}" onclick="copyICUCase(this)">📋</button>` : ''
+    const returnBtn = isChanged ? `<button class="key-path-return-btn" title="Return to original" data-path="${escapeHtml(path)}" data-icu-case="${escapeHtml(name)}" onclick="returnICUCase(this.dataset.path,this.dataset.icuCase)">↺</button>` : ''
+    return `<div class="icu-case-row" data-icu-case="${escapeHtml(name)}">${returnBtn}<span class="icu-case-name">${escapeHtml(name)}</span><span class="icu-case-text">${escapeHtml(text)}</span>${copyBtn}</div>`
+  }).join('')
+  return `<div class="icu-source-view"><div class="icu-badge">{${escapeHtml(parsed.variable)}, ${escapeHtml(parsed.type)}}</div>${caseRows}</div>`
+}
+
+function renderICUSourceSubfields(parsed, path, dir) {
+  const badge = `<div class="icu-badge">{${escapeHtml(parsed.variable)}, ${escapeHtml(parsed.type)}}</div>`
+  const caseRows = Object.entries(parsed.cases).map(([name, text]) =>
+    `<div class="icu-case-edit-row" data-icu-case="${escapeHtml(name)}"><span class="icu-case-name">${escapeHtml(name)}</span><textarea class="icu-source-case-input source-input" data-path="${escapeHtml(path)}" data-icu-case="${escapeHtml(name)}" oninput="updateICUSource(this)" dir="${dir}">${escapeHtml(text)}</textarea></div>`
+  ).join('')
+  return `<div class="icu-source-view">${badge}${caseRows}</div>`
+}
+
+function extractICUVars(text) {
+  const vars = []
+  if (/#/.test(text)) vars.push('#')
+  const m = text.match(/\{[a-zA-Z_][a-zA-Z0-9_]*\}/g)
+  if (m) m.forEach(v => { if (!vars.includes(v)) vars.push(v) })
+  return vars
+}
+
+function applyICUCaseStyling(path) {
+  const row = findRowByPath(path)
+  if (!row) return
+  const sourceParsedICU = parseICU(String(getValue(sourceData, path) ?? ''))
+  if (!sourceParsedICU) return
+  const originalParsed = parseICU(String(originalTargetValues[path] ?? ''))
+  row.querySelectorAll('.icu-case-input').forEach(ta => {
+    if (ta.dataset.path !== path) return
+    const sourceCase = sourceParsedICU.cases[ta.dataset.icuCase]
+    const isExtra = sourceCase === undefined
+    const isExactMatch = !isExtra && !!ta.value && ta.value === sourceCase
+    const originalCase = originalParsed?.cases?.[ta.dataset.icuCase]
+    const isCaseChanged = originalCase !== undefined ? ta.value !== originalCase : !!ta.value
+    ta.classList.toggle('changed', isCaseChanged)
+    ta.classList.toggle('exact-match', isExactMatch && shouldShowWarning(path, 'exact-match', ta.dataset.icuCase))
+    ta.classList.toggle('empty', !isExtra && !ta.value.trim())
+    const hasLen = !isExtra && !!ta.value && checkLengthWarning(sourceCase, ta.value)
+    ta.classList.toggle('length-warning', hasLen && shouldShowWarning(path, 'length', ta.dataset.icuCase, ta.value))
+    const infoLine = ta.nextElementSibling
+    if (infoLine && infoLine.classList.contains('icu-case-info-line')) {
+      const pct = hasLen ? Math.round((ta.value.length / sourceCase.length - 1) * 100) : 0
+      const showLenIgnore = hasLen && shouldShowWarning(path, 'length', ta.dataset.icuCase, ta.value)
+      const showExactIgnore = isExactMatch && shouldShowWarning(path, 'exact-match', ta.dataset.icuCase)
+      const escapedPath = escapeHtml(path)
+      const escapedCase = escapeHtml(ta.dataset.icuCase)
+      infoLine.innerHTML =
+        (pct > 0 ? `<div class="error-indicator type-mismatch length-warning">Target is ${pct}% longer than source</div>` : '') +
+        (showLenIgnore ? `<button class="ignore-warning-btn" title="Ignore length warning" data-path="${escapedPath}" data-icu-case="${escapedCase}" onclick="ignoreWarning(this.dataset.path,'length',this.dataset.icuCase)">👁️</button>` : '') +
+        (showExactIgnore ? `<button class="ignore-warning-btn" title="Ignore exact match" data-path="${escapedPath}" data-icu-case="${escapedCase}" onclick="ignoreWarning(this.dataset.path,'exact-match',this.dataset.icuCase)">👁️</button>` : '') +
+        (isExactMatch && shouldShowWarning(path, 'exact-match', ta.dataset.icuCase) ? `<div class="error-indicator exact-match">Identical to source</div>` : '') +
+        (ta.value ? `<span class="word-count-inline">${ta.value.length} chars, ${countWords(ta.value)} words</span>` : '')
+      // sync ↺/📋 buttons on source side (mutually exclusive); .icu-case-row = read-only, .icu-case-edit-row = unlocked
+      const sourceRow = row.querySelector(`.icu-source-view .icu-case-row[data-icu-case="${CSS.escape(ta.dataset.icuCase)}"]`) ||
+                        row.querySelector(`.icu-source-view .icu-case-edit-row[data-icu-case="${CSS.escape(ta.dataset.icuCase)}"]`)
+      if (sourceRow) {
+        let retBtn = sourceRow.querySelector('.key-path-return-btn')
+        const copyBtn = sourceRow.querySelector('.copy-source-btn')
+        if (isCaseChanged) {
+          if (!retBtn) {
+            retBtn = document.createElement('button')
+            retBtn.className = 'key-path-return-btn'
+            retBtn.title = 'Return to original'
+            retBtn.innerHTML = '↺'
+            retBtn.dataset.path = path
+            retBtn.dataset.icuCase = ta.dataset.icuCase
+            retBtn.onclick = () => returnICUCase(retBtn.dataset.path, retBtn.dataset.icuCase)
+            sourceRow.appendChild(retBtn)
+          }
+          if (copyBtn) copyBtn.style.display = 'none'
+        } else {
+          retBtn?.remove()
+          if (copyBtn) {
+            copyBtn.style.display = ''
+          } else {
+            // 📋 was never in DOM (row was initially rendered while changed) — recreate it
+            const newCopyBtn = document.createElement('button')
+            newCopyBtn.className = 'copy-source-btn'
+            newCopyBtn.title = 'Copy to target'
+            newCopyBtn.textContent = '📋'
+            newCopyBtn.dataset.path = escapeHtml(path)
+            newCopyBtn.dataset.icuCase = escapeHtml(ta.dataset.icuCase)
+            newCopyBtn.onclick = function() { copyICUCase(this) }
+            sourceRow.appendChild(newCopyBtn)
+          }
+        }
+      }
+    }
+  })
+}
+
+function updateICUCase(caseTextarea) {
+  const path = caseTextarea.dataset.path
+  const row = caseTextarea.closest('.translation-item')
+  if (!row) return
+  const sourceParsedICU = parseICU(String(getValue(sourceData, path) ?? ''))
+  if (!sourceParsedICU) return
+  const newCases = {}
+  row.querySelectorAll('.icu-case-input').forEach(ta => {
+    if (ta.dataset.path === path) newCases[ta.dataset.icuCase] = ta.value
+  })
+  const assembled = '{' + sourceParsedICU.variable + ', ' + sourceParsedICU.type + ', ' +
+    Object.entries(newCases).map(([k, v]) => k + ' {' + v + '}').join(' ') + '}'
+  const hiddenTextarea = row.querySelector('.translation-input')
+  if (hiddenTextarea) { hiddenTextarea.value = assembled; updateTranslation(hiddenTextarea, path) }
+  applyICUCaseStyling(path)
+  autoExpand(caseTextarea)
+}
+
+function updateICUSource(caseTextarea) {
+  const path = caseTextarea.dataset.path
+  const row = caseTextarea.closest('.translation-item')
+  if (!row) return
+  const sourceParsedICU = parseICU(String(getValue(sourceData, path) ?? ''))
+  if (!sourceParsedICU) return
+  const newCases = {}
+  row.querySelectorAll('.icu-source-case-input').forEach(ta => {
+    if (ta.dataset.path === path) newCases[ta.dataset.icuCase] = ta.value
+  })
+  const assembled = '{' + sourceParsedICU.variable + ', ' + sourceParsedICU.type + ', ' +
+    Object.entries(newCases).map(([k, v]) => k + ' {' + v + '}').join(' ') + '}'
+  setValue(sourceData, path, assembled)
+  sourceChanged = true
+  document.getElementById('floatSaveSourceBtn').style.display = 'flex'
+  const targetTextarea = row.querySelector('.translation-input')
+  if (targetTextarea) updateTranslation(targetTextarea, path)
+  applyICUCaseStyling(path)
+  autoExpand(caseTextarea)
+}
+
+function updateICUSubfields(path) {
+  if (!settings.icuSubfields) return
+  const row = findRowByPath(path)
+  if (!row) return
+  const val = getValue(targetData, path) ?? ''
+  const parsed = parseICU(String(val))
+  row.querySelectorAll('.icu-case-input').forEach(ta => {
+    if (ta.dataset.path === path) { ta.value = parsed?.cases?.[ta.dataset.icuCase] ?? ''; autoExpand(ta) }
+  })
+  applyICUCaseStyling(path)
+}
+
+function addICUCase(btn, path) {
+  const input = btn.previousElementSibling
+  const caseName = input.value.trim().toLowerCase()
+  if (!caseName) { showTempMessage('Enter a case name first'); input.focus(); return }
+  const row = btn.closest('.translation-item')
+  const sourceParsedICU = parseICU(String(getValue(sourceData, path) ?? ''))
+  if (!sourceParsedICU) return
+  if (row.querySelector(`.icu-case-input[data-icu-case="${CSS.escape(caseName)}"]`)) {
+    showTempMessage('Case already exists')
+    return
+  }
+  const dir = detectTextDirection(getValue(targetData, path) ?? '')
+  const caseDiv = document.createElement('div')
+  caseDiv.className = 'icu-case-edit-row'
+  caseDiv.innerHTML = `<span class="icu-case-name icu-case-name-extra">${escapeHtml(caseName)}</span><div style="flex:1;display:flex;flex-direction:column"><textarea class="icu-case-input" data-path="${escapeHtml(path)}" data-icu-case="${escapeHtml(caseName)}" oninput="updateICUCase(this)" dir="${dir}"></textarea><div class="icu-case-info-line"></div></div>`
+  btn.closest('.icu-add-case-row').before(caseDiv)
+  const ta = caseDiv.querySelector('.icu-case-input')
+  autoExpand(ta)
+  ta.focus()
+  updateICUCase(ta)
+  input.value = ''
+}
+
+function copyICUCase(btn) {
+  const path = btn.dataset.path
+  const caseName = btn.dataset.icuCase
+  const sourceParsedICU = parseICU(String(getValue(sourceData, path) ?? ''))
+  if (!sourceParsedICU) return
+  const sourceCase = sourceParsedICU.cases[caseName]
+  if (sourceCase === undefined) return
+  const row = findRowByPath(path)
+  if (!row) return
+  const ta = row.querySelector(`.icu-case-input[data-icu-case="${CSS.escape(caseName)}"]`)
+  if (!ta) return
+  pushUndo(path, getValue(targetData, path))
+  ta.value = sourceCase
+  updateICUCase(ta)
+  autoExpand(ta)
+}
+
+function returnICUCase(path, caseName) {
+  const decodedPath = decodeURIComponent(path)
+  const originalParsed = parseICU(String(originalTargetValues[decodedPath] ?? ''))
+  const originalCase = originalParsed?.cases?.[caseName] ?? ''
+  const row = findRowByPath(path)
+  if (!row) return
+  const ta = row.querySelector(`.icu-case-input[data-icu-case="${CSS.escape(caseName)}"]`)
+  if (!ta) return
+  pushUndo(path, getValue(targetData, decodedPath))
+  ta.value = originalCase
+  updateICUCase(ta)
+  autoExpand(ta)
+}
+
+function validateICUTarget(sourceParsed, targetStr) {
+  if (!targetStr || !targetStr.trim()) return []
+  const targetParsed = parseICU(targetStr)
+  if (!targetParsed) return ['Not valid ICU format']
+  const issues = []
+  if (targetParsed.type !== sourceParsed.type)
+    issues.push(`Type mismatch: source is ${sourceParsed.type}, target is ${targetParsed.type}`)
+  for (const c of Object.keys(sourceParsed.cases)) {
+    if (!Object.prototype.hasOwnProperty.call(targetParsed.cases, c)) {
+      issues.push(`Missing case: ${c}`)
+    } else {
+      const sv = extractICUVars(sourceParsed.cases[c])
+      const tv = extractICUVars(targetParsed.cases[c])
+      const missing = sv.filter(v => !tv.includes(v))
+      const extra = tv.filter(v => !sv.includes(v))
+      if (missing.length) issues.push(`"${c}" missing: ${missing.join(', ')}`)
+      if (extra.length) issues.push(`"${c}" extra: ${extra.join(', ')}`)
+    }
+  }
+  return issues
+}
+
+function detectIndent(text) {
+  for (const line of text.split('\n')) {
+    if (line.startsWith('\t')) return '\t'
+    const m = line.match(/^( {2,})/)
+    if (m) return m[1].length >= 4 ? 4 : 2
+  }
+  return 2
+}
+
+function detectLineEnding(text) {
+  return text.includes('\r\n') ? '\r\n' : '\n'
+}
+
 function convertBrToNewlines(text) {
   if (!text || typeof text !== 'string') return text
   return text.replace(/<br\s*\/?>/gi, '\n')
 }
 
+
+// ==================== UNDO STACK ====================
+function pushUndo(path, value) {
+  if (!undoHistory[path]) undoHistory[path] = []
+  const stack = undoHistory[path]
+  if (stack.length > 0 && stack[stack.length - 1] === value) return
+  stack.push(value)
+  if (stack.length > 50) stack.shift()
+}
+
+function popUndo(path) {
+  return undoHistory[path]?.pop() ?? null
+}
+
+// ==================== SEARCH AND REPLACE ====================
+function toggleReplaceBar() {
+  replaceBarVisible = !replaceBarVisible
+  document.getElementById('replaceBar').style.display = replaceBarVisible ? 'flex' : 'none'
+  document.getElementById('replaceToggleBtn').classList.toggle('active', replaceBarVisible)
+  if (replaceBarVisible) {
+    document.getElementById('replaceFindInput').focus()
+    replaceNextIndex = 0
+  }
+}
+
+function executeReplaceNext() {
+  const findVal = document.getElementById('replaceFindInput').value
+  const replaceWith = document.getElementById('replaceWithInput').value
+  if (!findVal) { showTempMessage('Enter a find term'); return }
+
+  let regex = null
+  if (findVal.startsWith('/') && findVal.lastIndexOf('/') > 0) {
+    const lastSlash = findVal.lastIndexOf('/')
+    const flags = findVal.slice(lastSlash + 1) || 'g'
+    try { regex = new RegExp(findVal.slice(1, lastSlash), flags) } catch (_) {}
+  }
+
+  const visibleRows = Array.from(document.querySelectorAll('.translation-item'))
+    .filter(r => r.style.display !== 'none')
+
+  // Find next match starting from replaceNextIndex
+  for (let i = replaceNextIndex; i < visibleRows.length; i++) {
+    const row = visibleRows[i]
+    const ta = row.querySelector('.translation-input')
+    if (!ta || ta.style.display === 'none') continue
+    const old = ta.value
+    if (settings.parseICU && parseICU(old)) continue
+    const matches = regex ? regex.test(old) : old.includes(findVal)
+    if (matches) {
+      const updated = regex
+        ? old.replace(new RegExp(regex.source, regex.flags.replace('g', '') + 'g'), replaceWith)
+        : old.split(findVal).join(replaceWith)
+      if (updated !== old) {
+        pushUndo(ta.dataset.path, old)
+        ta.value = updated
+        setValue(targetData, ta.dataset.path, updated)
+        updateTranslation(ta, ta.dataset.path)
+        updateICUSubfields(ta.dataset.path)
+        row.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        row.style.outline = '2px solid #ffc107'
+        setTimeout(() => { row.style.outline = '' }, 800)
+        replaceNextIndex = i + 1
+        showTempMessage(`Replaced in segment #${i + 1}`)
+        return
+      }
+    }
+  }
+
+  // Wrap around or end
+  if (replaceNextIndex > 0) {
+    replaceNextIndex = 0
+    showTempMessage('No more matches — wrapped to start')
+  } else {
+    showTempMessage('No matches in visible rows')
+  }
+}
+
+function executeReplace() {
+  const findVal = document.getElementById('replaceFindInput').value
+  const replaceWith = document.getElementById('replaceWithInput').value
+  if (!findVal) { showTempMessage('Enter a find term'); return }
+
+  let regex = null
+  if (findVal.startsWith('/') && findVal.lastIndexOf('/') > 0) {
+    const lastSlash = findVal.lastIndexOf('/')
+    const flags = findVal.slice(lastSlash + 1) || 'g'
+    try { regex = new RegExp(findVal.slice(1, lastSlash), flags.includes('g') ? flags : flags + 'g') } catch (_) {}
+  }
+
+  const visibleRows = Array.from(document.querySelectorAll('.translation-item'))
+    .filter(r => r.style.display !== 'none')
+
+  const changes = []
+  visibleRows.forEach(row => {
+    const ta = row.querySelector('.translation-input')
+    if (!ta) return
+    if (ta.style.display === 'none') return  // ICU sub-field mode — skip hidden textarea
+    const old = ta.value
+    if (settings.parseICU && parseICU(old)) return  // skip raw ICU strings
+    const updated = regex ? old.replace(regex, replaceWith) : old.split(findVal).join(replaceWith)
+    if (updated !== old) changes.push({ ta, path: ta.dataset.path, old, updated })
+  })
+
+  if (changes.length === 0) { showTempMessage('No matches in visible rows'); return }
+  replaceNextIndex = 0
+
+  changes.forEach(({ ta, path, old, updated }) => {
+    pushUndo(path, old)
+    ta.value = updated
+    setValue(targetData, path, updated)
+    updateTranslation(ta, path)
+    updateICUSubfields(path)
+  })
+
+  showTempMessage(`Replaced in ${changes.length} field(s)`)
+  addChangelogEntry('target', `Replace "${findVal}" → "${replaceWith}"`, `${changes.length} segments`, targetFileName)
+}
 
 function checkPlaceholderConsistency(sourceText, targetText) {
   const sourcePlaceholders = extractPlaceholders(sourceText)
@@ -740,7 +1268,7 @@ function checkPlaceholderConsistency(sourceText, targetText) {
 
 function checkLengthWarning(sourceText, targetText) {
   if (!sourceText || !targetText) return false
-  return targetText.length > sourceText.length * 1.5
+  return targetText.length > sourceText.length * settings.lengthThreshold
 }
 
 function checkSpecialCharacters(text) {
@@ -772,8 +1300,7 @@ function updateWordCount(element, text) {
 // ==================== FILE HANDLING ====================
 function handleSourceBoxClick() {
   if (isEditorLoaded) {
-    showError('Source file cannot be changed while editing. Please reset first.')
-    addChangelogEntry('error', 'Cannot change source', 'Editor is active - reset required', sourceFileName)
+    showError('Source file is locked while the editor is open. Click Reset to start a new session.')
     return
   }
   
@@ -841,8 +1368,11 @@ function handleFile(e, type) {
   reader.onload = function(event) {
     try {
       let text = event.target.result
-      // Remove BOM if present
-      if (text.charCodeAt(0) === 0xFEFF) text = text.substring(1)
+      const hasBOM = text.charCodeAt(0) === 0xFEFF
+      if (hasBOM) text = text.substring(1)
+      const fmt = { indent: detectIndent(text), lineEnding: detectLineEnding(text), bom: hasBOM }
+      if (type === 'source') sourceFileFormat = fmt
+      else targetFileFormat = fmt
       
       // Convert br tags to newlines for target files to preserve exact formatting
       if (type === 'target') {
@@ -856,8 +1386,8 @@ function handleFile(e, type) {
         keyMap = createKeyMap(sourceData)
         sourceFileName = file.name
         clearAllIgnoredWarnings()
-        document.getElementById('sourceInfo').textContent = `${file.name} (${Object.keys(keyMap).length} items)`
-        addChangelogEntry('import', `Loaded source file`, `${Object.keys(keyMap).length} items`, file.name)
+        document.getElementById('sourceInfo').textContent = `${file.name} (${Object.keys(keyMap).length} segments)`
+        addChangelogEntry('import', `Loaded source file`, `${Object.keys(keyMap).length} segments`, file.name)
         
         if (targetData) {
           showTempMessage(`Source file loaded: ${file.name}`)
@@ -925,7 +1455,7 @@ function updateStatus() {
 function createKeyMap(obj, path = '') {
   const map = {}
   for (const k of Object.keys(obj)) {
-    const cur = path ? path + '.' + k : k
+    const cur = buildPath(path, k)
     const val = obj[k]
     if (val !== null && typeof val === 'object') {
       if (Array.isArray(val)) {
@@ -950,78 +1480,32 @@ function createKeyMap(obj, path = '') {
 }
 
 function getValue(obj, path) {
-  const parts = []
-  const regex = /([^\.\[\]]+)|\[(\d+)\]/g
-  let match
-  let lastIndex = 0
-  
-  while ((match = regex.exec(path)) !== null) {
-    if (match[1]) {
-      parts.push(match[1])
-    } else if (match[2]) {
-      parts.push(parseInt(match[2], 10))
-    }
-    lastIndex = regex.lastIndex
-  }
-  
-  if (lastIndex < path.length) {
-    const remaining = path.substring(lastIndex).replace(/^\./, '')
-    if (remaining) parts.push(remaining)
-  }
-  
+  if (obj === null || obj === undefined) return undefined
   let cur = obj
-  for (let p of parts) {
-    if (cur === undefined || cur === null) return undefined
+  for (const p of parsePath(path)) {
+    if (cur === null || cur === undefined) return undefined
     cur = cur[p]
   }
   return cur
 }
 
 function setValue(obj, path, value) {
-  const parts = []
-  const regex = /([^\.\[\]]+)|\[(\d+)\]/g
-  let match
-  while ((match = regex.exec(path)) !== null) {
-    if (match[1]) {
-      parts.push(match[1])
-    } else if (match[2]) {
-      parts.push(match[2])
-    }
-  }
-  
+  const parts = parsePath(path)
   let cur = obj
   for (let i = 0; i < parts.length - 1; i++) {
-    let p = parts[i]
-    if (cur[p] === undefined) {
-      const nextPart = parts[i + 1]
-      if (/^\d+$/.test(nextPart)) {
-        cur[p] = []
-      } else {
-        cur[p] = {}
-      }
+    const p = parts[i]
+    if (cur[p] === undefined || cur[p] === null) {
+      cur[p] = typeof parts[i + 1] === 'number' ? [] : {}
     }
-    
-    if (/^\d+$/.test(p)) {
-      cur = cur[parseInt(p, 10)]
-    } else {
-      cur = cur[p]
-    }
+    cur = cur[p]
   }
-  
-  if (parts.length > 0) {
-    const lastPart = parts[parts.length - 1]
-    if (/^\d+$/.test(lastPart)) {
-      cur[parseInt(lastPart, 10)] = value
-    } else {
-      cur[lastPart] = value
-    }
-  }
+  if (parts.length > 0) cur[parts[parts.length - 1]] = value
 }
 
 function extractItems(obj, path = '') {
   let result = []
   for (const k of Object.keys(obj)) {
-    const cur = path ? path + '.' + k : k
+    const cur = buildPath(path, k)
     const val = obj[k]
     if (val !== null && typeof val === 'object') {
       if (Array.isArray(val)) {
@@ -1117,7 +1601,11 @@ function loadFiles() {
   }
   
   updateMissingSegmentsSection()
-  addChangelogEntry('load', 'Editor loaded', `${Object.keys(keyMap).length} items`, `${sourceFileName} & ${targetFileName}`)
+  addChangelogEntry('load', 'Editor loaded', `${Object.keys(keyMap).length} segments`, `${sourceFileName} & ${targetFileName}`)
+  if (settings.parseICU) {
+    const icuCount = items.filter(i => i.type === 'string' && !i.isExtra && parseICU(String(getValue(sourceData, i.path) ?? ''))).length
+    if (icuCount > 0) addChangelogEntry('load', `ICU format detected in ${icuCount} key${icuCount !== 1 ? 's' : ''}`, '', sourceFileName)
+  }
   
   renderEditor()
 }
@@ -1127,6 +1615,7 @@ function checkAllIssuesAndExactMatches() {
   emptyKeys = []
   extraKeys = []
   typeMismatches = []
+  itemIssues = {}
   const targetMap = createKeyMap(targetData)
   
   // Check all source keys
@@ -1149,6 +1638,13 @@ function checkAllIssuesAndExactMatches() {
       } else {
         if (itemIssues[k] && (itemIssues[k].type === 'empty' || itemIssues[k].type === 'missing')) {
           delete itemIssues[k]
+        }
+        if (settings.parseICU && targetVal) {
+          const parsed = parseICU(String(targetVal))
+          if (parsed && Object.values(parsed.cases).some(c => !c || c.trim() === '')) {
+            emptyKeys.push(k)
+            itemIssues[k] = { type: 'empty', message: 'ICU case is empty' }
+          }
         }
       }
     }
@@ -1173,6 +1669,12 @@ function updateWarningPanel() {
   
   let warningMsg = ''
   
+  const segNum = (k) => {
+    const idx = items.findIndex(i => i.path === k)
+    return idx >= 0 ? `<span class="key-count">#${idx + 1}</span> ` : ''
+  }
+  const navLink = (k) => `<button onclick="scrollToPath(this.dataset.path)" data-path="${escapeHtml(k)}" style="background:none;border:none;cursor:pointer;color:#0052cc;font-family:monospace;font-size:11px;padding:0;text-align:left">${segNum(k)}${escapeHtml(displayPath(k))}</button>`
+
   if (missingKeys.length > 0) {
     warningMsg += `<div class="collapsible-section">
       <div class="collapsible-header" onclick="toggleCollapsible('missing')">
@@ -1180,11 +1682,11 @@ function updateWarningPanel() {
         <span class="collapsible-icon" id="missingIcon">▼</span>
       </div>
       <div class="collapsible-content" id="missingContent">
-        <ul>${missingKeys.map(k => `<li><code>${escapeHtml(k)}</code></li>`).join('')}</ul>
+        <ul>${missingKeys.map(k => `<li>${navLink(k)}</li>`).join('')}</ul>
       </div>
     </div>`
   }
-  
+
   if (emptyKeys.length > 0) {
     warningMsg += `<div class="collapsible-section">
       <div class="collapsible-header" onclick="toggleCollapsible('empty')">
@@ -1192,11 +1694,11 @@ function updateWarningPanel() {
         <span class="collapsible-icon" id="emptyIcon">▼</span>
       </div>
       <div class="collapsible-content" id="emptyContent">
-        <ul>${emptyKeys.map(k => `<li><code>${escapeHtml(k)}</code></li>`).join('')}</ul>
+        <ul>${emptyKeys.map(k => `<li>${navLink(k)}</li>`).join('')}</ul>
       </div>
     </div>`
   }
-  
+
   if (extraKeys.length > 0) {
     warningMsg += `<div class="collapsible-section">
       <div class="collapsible-header" onclick="toggleCollapsible('extra')">
@@ -1204,11 +1706,11 @@ function updateWarningPanel() {
         <span class="collapsible-icon" id="extraIcon">▼</span>
       </div>
       <div class="collapsible-content" id="extraContent">
-        <ul>${extraKeys.map(k => `<li><code>${escapeHtml(k)}</code></li>`).join('')}</ul>
+        <ul>${extraKeys.map(k => `<li>${navLink(k)}</li>`).join('')}</ul>
       </div>
     </div>`
   }
-  
+
   if (typeMismatches.length > 0) {
     warningMsg += `<div class="collapsible-section">
       <div class="collapsible-header" onclick="toggleCollapsible('type')">
@@ -1248,12 +1750,18 @@ function updateProgressBar() {
   }
   const done = stringItems.filter(i => {
     const v = getValue(targetData, i.path)
-    return v && v.trim() !== '' && v !== getValue(sourceData, i.path)
+    if (!v || v.trim() === '') return false
+    if (settings.parseICU) {
+      const parsed = parseICU(String(v))
+      if (parsed && Object.values(parsed.cases).some(c => !c || c.trim() === '')) return false
+    }
+    if (v !== getValue(sourceData, i.path)) return true
+    return ignoredWarnings[i.path]?.['exact-match'] === true
   }).length
   const pct = Math.round((done / total) * 100)
   document.getElementById('progressContainer').style.display = 'block'
   document.getElementById('progressFill').style.width = pct + '%'
-  document.getElementById('progressText').textContent = `${done} / ${total} translated (${pct}%)`
+  document.getElementById('progressText').textContent = `${done} / ${total} done (${pct}%)`
 }
 
 // ==================== FILTER BAR ====================
@@ -1294,14 +1802,27 @@ function applyFilter() {
     else if (activeStatusFilter === 'empty') statusMatch = issueType === 'empty'
     else if (activeStatusFilter === 'exact-match') statusMatch = issueType === 'exact-match'
     else if (activeStatusFilter === 'changed') statusMatch = isChanged
+    else if (activeStatusFilter === 'warnings') {
+      const hasIssue = !!issueType && (issueType !== 'exact-match' || shouldShowWarning(item.path, 'exact-match'))
+      const hasLen = item.type === 'string' && checkLengthWarning(String(sourceVal), String(targetVal)) && shouldShowWarning(item.path, 'length')
+      const hasSpecial = settings.showSpecialCharWarnings && checkSpecialCharacters(String(targetVal)).length > 0 && shouldShowWarning(item.path, 'special-char')
+      const srcIsICU = item.type === 'string' ? parseICU(String(sourceVal)) : null
+      const srcParsed = settings.parseICU ? srcIsICU : null
+      const hasICU = !!(srcParsed && targetVal && validateICUTarget(srcParsed, String(targetVal)).length > 0)
+      const hasPH = !!(settings.showPlaceholderWarnings && item.type === 'string' && !item.isExtra && !srcIsICU && shouldShowWarning(item.path, 'placeholder') && (() => { const p = checkPlaceholderConsistency(String(sourceVal), String(targetVal)); return p.missingInTarget.length > 0 || p.extraInTarget.length > 0 })())
+      statusMatch = hasIssue || hasLen || hasSpecial || hasICU || hasPH
+    }
 
     let textMatch = true
     if (rawInput) {
+      const segNum = i + 1
+      const segMatch = rawInput === String(segNum) || rawInput === `#${segNum}`
       const haystack = item.path + ' ' + String(sourceVal) + ' ' + String(targetVal)
-      textMatch = regex ? regex.test(haystack) : haystack.toLowerCase().includes(activeTextFilter)
+      textMatch = segMatch || (regex ? regex.test(haystack) : haystack.toLowerCase().includes(activeTextFilter))
     }
 
-    row.style.display = (statusMatch && textMatch) ? '' : 'none'
+    const typeMatch = !settings.hideNonStrings || item.type === 'string'
+    row.style.display = (statusMatch && textMatch && typeMatch) ? '' : 'none'
   })
 }
 
@@ -1341,10 +1862,12 @@ function renderEditor() {
       isTargetChanged = originalTargetValue !== currentTargetValue
     }
     
-    // Check for placeholder consistency
+    // Check for placeholder consistency (skip for ICU — ICU validator handles variables)
     let placeholderIssues = { missingInTarget: [], extraInTarget: [] }
-    if (item.type === 'string' && !item.isExtra && settings.showPlaceholderWarnings) {
-      placeholderIssues = checkPlaceholderConsistency(currentSourceValue, targetVal)
+    if (item.type === 'string' && !item.isExtra && settings.showPlaceholderWarnings && shouldShowWarning(item.path, 'placeholder')) {
+      if (!parseICU(currentSourceValue)) {
+        placeholderIssues = checkPlaceholderConsistency(currentSourceValue, targetVal)
+      }
     }
 
     // Check for length warning
@@ -1404,7 +1927,7 @@ function renderEditor() {
         // Add special character warning
         let specialCharWarning = ''
         if (specialChars.length > 0) {
-          specialCharWarning = `<div class="error-indicator type-mismatch">Special chars: ${escapeHtml(specialChars.join(', '))}</div>`
+          specialCharWarning = `<div class="error-indicator type-mismatch special-char-warning">Special chars: ${escapeHtml(specialChars.join(', '))}</div>`
         }
         
         html += `<div class="translation-item">
@@ -1412,11 +1935,11 @@ function renderEditor() {
             ${sourceContent}
             ${sourceError}
             <div class="key-path-row">
-              <div class="key-path-text">${escapeHtml(item.path)}</div>
+              <div class="key-path-text">${escapeHtml(displayPath(item.path))}</div>
             </div>
           </div>
           <div class="translation-input-container">
-            <textarea class="${targetClasses}" data-path="${escapeHtml(item.path)}" placeholder="Extra key in target..." oninput="updateTranslation(this,'${escapeHtml(item.path)}')" dir="${targetDir}">${targetVal !== undefined ? escapeHtml(targetVal) : ''}</textarea>
+            <textarea class="${targetClasses}" data-path="${escapeHtml(item.path)}" placeholder="Extra key in target..." oninput="updateTranslation(this, this.dataset.path)" dir="${targetDir}">${targetVal !== undefined ? escapeHtml(targetVal) : ''}</textarea>
             <div class="target-info-line">
               ${specialCharWarning}
               <span class="word-count-inline">${targetVal ? targetVal.length + ' chars, ' + countWords(targetVal) + ' words' : ''}</span>
@@ -1425,7 +1948,19 @@ function renderEditor() {
         </div>`
       } else {
         // Normal source key
-        const highlightedSource = highlightPlaceholders(currentSourceValue)
+        const sourceParsedICU = settings.parseICU ? parseICU(currentSourceValue) : null
+        const useICUSubfields = settings.icuSubfields && !!sourceParsedICU
+        const icuChangedCases = sourceParsedICU ? (() => {
+          const origParsed = parseICU(String(originalTargetValues[item.path] ?? ''))
+          const tgtParsed = parseICU(String(targetVal ?? ''))
+          const s = new Set()
+          Object.keys(sourceParsedICU.cases).forEach(cn => {
+            const oc = origParsed?.cases?.[cn]; const cv = tgtParsed?.cases?.[cn] ?? ''
+            if (oc !== undefined ? cv !== oc : !!cv) s.add(cn)
+          })
+          return s
+        })() : null
+        const highlightedSource = sourceParsedICU ? renderICUSource(sourceParsedICU, item.path, useICUSubfields, icuChangedCases) : highlightPlaceholders(currentSourceValue)
         let placeholderWarning = ''
         
         if (placeholderIssues.missingInTarget.length > 0) {
@@ -1438,7 +1973,7 @@ function renderEditor() {
         // Add special character warning
         let specialCharWarning = ''
         if (specialChars.length > 0) {
-          specialCharWarning = `<div class="error-indicator type-mismatch">Special chars: ${escapeHtml(specialChars.join(', '))}</div>`
+          specialCharWarning = `<div class="error-indicator type-mismatch special-char-warning">Special chars: ${escapeHtml(specialChars.join(', '))}</div>`
         }
         
         // Add length warning
@@ -1447,48 +1982,102 @@ function renderEditor() {
         if (hasLengthWarning && shouldShowWarning(item.path, 'length')) {
           const percentage = Math.round((targetVal.length / currentSourceValue.length - 1) * 100)
           lengthWarning = `<div class="error-indicator type-mismatch length-warning">Target is ${percentage}% longer than source</div>`
-          ignoreWarningButton = `<button class="ignore-warning-btn" data-warning-type="length" title="Ignore length warning" onclick="ignoreWarning('${escapeHtml(item.path)}', 'length')">👁️</button>`
+          ignoreWarningButton = `<button class="ignore-warning-btn" data-warning-type="length" data-path="${escapeHtml(item.path)}" title="Ignore length warning" onclick="ignoreWarning(this.dataset.path, 'length')">👁️</button>`
         }
         
         // Exact match warning
         if (issue && issue.type === 'exact-match' && shouldShowWarning(item.path, 'exact-match')) {
           if (!ignoreWarningButton) {
-            ignoreWarningButton = `<button class="ignore-warning-btn" data-warning-type="exact-match" title="Ignore exact match warning" onclick="ignoreWarning('${escapeHtml(item.path)}', 'exact-match')">👁️</button>`
+            ignoreWarningButton = `<button class="ignore-warning-btn" data-warning-type="exact-match" data-path="${escapeHtml(item.path)}" title="Ignore exact match warning" onclick="ignoreWarning(this.dataset.path, 'exact-match')">👁️</button>`
+          }
+        }
+
+        // Placeholder warning ignore button
+        const hasPlaceholderWarning = placeholderIssues.missingInTarget.length > 0 || placeholderIssues.extraInTarget.length > 0
+        if (hasPlaceholderWarning && !ignoreWarningButton) {
+          ignoreWarningButton = `<button class="ignore-warning-btn" data-warning-type="placeholder" data-path="${escapeHtml(item.path)}" title="Ignore placeholder warnings" onclick="ignoreWarning(this.dataset.path, 'placeholder')">👁️</button>`
+        }
+
+        // ICU validation warning
+        let icuWarning = ''
+        if (sourceParsedICU && targetVal) {
+          const icuIssues = validateICUTarget(sourceParsedICU, targetVal)
+          if (icuIssues.length > 0) {
+            const label = `ICU: ${escapeHtml(icuIssues[0])}${icuIssues.length > 1 ? ` (+${icuIssues.length - 1} more)` : ''}`
+            icuWarning = `<div class="error-indicator missing icu-warning" title="${escapeHtml(icuIssues.join('\n'))}">${label}</div>`
           }
         }
         
         // Determine copy/return button
         let copyReturnButton = ''
-        const escapedPath = escapeHtml(item.path);
+        const encodedPath = escapeHtml(item.path)
         if (copiedStates[item.path]) {
-          copyReturnButton = `<button class="key-path-return-btn" title="Return to previous state" onclick="event.stopPropagation(); returnToPreviousState('${escapedPath}')">↶</button>`
+          copyReturnButton = `<button class="key-path-return-btn" data-path="${encodedPath}" title="Return to previous state" onclick="event.stopPropagation(); returnToPreviousState(this.dataset.path)">↺</button>`
         } else if (currentSourceValue !== targetVal) {
-          copyReturnButton = `<button class="key-path-copy-btn" title="Copy source to target" onclick="event.stopPropagation(); copySourceToTarget('${escapedPath}')">📋</button>`
+          copyReturnButton = `<button class="key-path-copy-btn" data-path="${encodedPath}" title="Copy source to target" onclick="event.stopPropagation(); copySourceToTarget(this.dataset.path)">📋</button>`
         }
-        // If values are equal and not in copiedStates, don't show any button
-        
+
         if (isLocked) {
           sourceClasses = 'source-text'
           if (isSourceChangedForHighlight) sourceClasses += ' changed'
           sourceClasses += sourceExtraClasses
           sourceContent = `<div class="${sourceClasses}" dir="${sourceDir}">${highlightedSource}${item.isArray ? `<span class="array-indicator">[${item.index}]</span>` : ''}</div>`
+        } else if (useICUSubfields) {
+          sourceContent = renderICUSourceSubfields(sourceParsedICU, item.path, sourceDir)
         } else {
           sourceClasses = 'source-input'
           if (isSourceChangedForHighlight) sourceClasses += ' changed'
           sourceClasses += sourceExtraClasses
-          sourceContent = `<textarea class="${sourceClasses}" data-path="${escapeHtml(item.path)}" oninput="updateSource(this,'${escapeHtml(item.path)}')" dir="${sourceDir}">${escapeHtml(currentSourceValue)}</textarea>`
+          sourceContent = `<textarea class="${sourceClasses}" data-path="${encodedPath}" oninput="updateSource(this, this.dataset.path)" dir="${sourceDir}">${escapeHtml(currentSourceValue)}</textarea>`
         }
-        
+
         targetClasses = 'translation-input'
         if (isTargetChanged) targetClasses += ' changed'
         targetClasses += targetExtraClasses
-        
-        let placeholderText = 'Translation...'
+
+        let placeholderText = 'Enter value...'
         if (issue) {
           if (issue.type === 'missing') placeholderText = 'Missing in target'
           else if (issue.type === 'empty') placeholderText = 'Empty in target'
         }
-        
+
+        // ICU sub-field editing
+        let icuSubfieldHtml = ''
+        if (useICUSubfields) {
+          const targetParsedICU = parseICU(targetVal)
+          const sourceCaseNames = Object.keys(sourceParsedICU.cases)
+          const targetCaseNames = targetParsedICU ? Object.keys(targetParsedICU.cases) : []
+          const allCaseNames = [...sourceCaseNames, ...targetCaseNames.filter(c => !sourceCaseNames.includes(c))]
+          const originalParsedICU = parseICU(String(originalTargetValues[item.path] ?? ''))
+          const changedCases = new Set()
+          allCaseNames.forEach(cn => {
+            const oc = originalParsedICU?.cases?.[cn]
+            const cv = targetParsedICU?.cases?.[cn] ?? ''
+            if (oc !== undefined ? cv !== oc : !!cv) changedCases.add(cn)
+          })
+          icuSubfieldHtml = '<div class="icu-subfield-cases">' +
+            allCaseNames.map(caseName => {
+              const caseText = sourceParsedICU.cases[caseName]
+              const caseVal = targetParsedICU?.cases?.[caseName] ?? ''
+              const isExtra = caseText === undefined
+              const isExactMatch = !isExtra && !!caseVal && caseVal === caseText
+              const isCaseChanged = changedCases.has(caseName)
+              const exactClass = isExactMatch && shouldShowWarning(item.path, 'exact-match', caseName) ? ' exact-match' : ''
+              const emptyClass = !isExtra && !caseVal ? ' empty' : ''
+              const hasLen = !isExtra && !!caseVal && checkLengthWarning(caseText, caseVal)
+              const lengthClass = hasLen && shouldShowWarning(item.path, 'length', caseName, caseVal) ? ' length-warning' : ''
+              const changedClass = isCaseChanged ? ' changed' : ''
+              const lenPct = hasLen ? Math.round((caseVal.length / caseText.length - 1) * 100) : 0
+              const showLenIgnoreHtml = lenPct && shouldShowWarning(item.path, 'length', caseName, caseVal) ? `<button class="ignore-warning-btn" title="Ignore length warning" data-path="${encodedPath}" data-icu-case="${escapeHtml(caseName)}" onclick="ignoreWarning(this.dataset.path,'length',this.dataset.icuCase)">👁️</button>` : ''
+              const showExactIgnoreHtml = isExactMatch && shouldShowWarning(item.path, 'exact-match', caseName) ? `<button class="ignore-warning-btn" title="Ignore exact match" data-path="${encodedPath}" data-icu-case="${escapeHtml(caseName)}" onclick="ignoreWarning(this.dataset.path,'exact-match',this.dataset.icuCase)">👁️</button>` : ''
+              const exactMatchBadge = isExactMatch && shouldShowWarning(item.path, 'exact-match', caseName) ? `<div class="error-indicator exact-match">Identical to source</div>` : ''
+              const infoHtml = `<div class="icu-case-info-line">${lenPct > 0 ? `<div class="error-indicator type-mismatch length-warning">Target is ${lenPct}% longer than source</div>` : ''}${showLenIgnoreHtml}${showExactIgnoreHtml}${exactMatchBadge}${caseVal ? `<span class="word-count-inline">${caseVal.length} chars, ${countWords(caseVal)} words</span>` : ''}</div>`
+              return `<div class="icu-case-edit-row"><span class="icu-case-name${isExtra ? ' icu-case-name-extra' : ''}">${escapeHtml(caseName)}</span><div style="flex:1;display:flex;flex-direction:column"><textarea class="icu-case-input${exactClass}${emptyClass}${lengthClass}${changedClass}" data-path="${encodedPath}" data-icu-case="${escapeHtml(caseName)}" oninput="updateICUCase(this)" dir="${targetDir}">${escapeHtml(caseVal)}</textarea>${infoHtml}</div></div>`
+            }).join('') +
+            `<div class="icu-add-case-row"><input type="text" class="icu-add-case-input" placeholder="Add case (e.g. few, many)"><button class="icu-add-case-btn" data-path="${encodedPath}" onclick="addICUCase(this,this.dataset.path)">+</button></div>` +
+            '</div>'
+        }
+
         html += `<div class="translation-item">
           <div class="source-area">
             ${sourceContent}
@@ -1497,20 +2086,22 @@ function renderEditor() {
             </div>
             ${sourceError}
             <div class="key-path-row">
-              <div class="key-path-text">${settings.showSegmentNumbers ? `<span class="segment-num">#${index + 1}</span>` : ''}${escapeHtml(item.path)}</div>
+              <div class="key-path-text"><span class="segment-num">#${index + 1}</span>${escapeHtml(displayPath(item.path))}</div>
               <div>
                 ${copyReturnButton}
-                <button class="key-path-lock-btn" title="${isLocked ? 'Unlock source' : 'Lock source'}" onclick="toggleSourceLock('${escapeHtml(item.path)}')">${isLocked ? '🔒' : '🔓'}</button>
+                <button class="key-path-lock-btn" data-path="${encodedPath}" title="${isLocked ? 'Unlock source' : 'Lock source'}" onclick="toggleSourceLock(this.dataset.path)">${isLocked ? '🔒' : '🔓'}</button>
               </div>
             </div>
           </div>
           <div class="translation-input-container">
-            <textarea class="${targetClasses}" data-path="${escapeHtml(item.path)}" placeholder="${placeholderText}" oninput="updateTranslation(this,'${escapeHtml(item.path)}')" dir="${targetDir}">${targetVal !== undefined ? escapeHtml(targetVal) : ''}</textarea>
+            <textarea class="${targetClasses}" data-path="${encodedPath}" placeholder="${placeholderText}" oninput="updateTranslation(this, this.dataset.path)" dir="${targetDir}" ${useICUSubfields ? 'style="display:none"' : ''}>${targetVal !== undefined ? escapeHtml(targetVal) : ''}</textarea>
+            ${icuSubfieldHtml}
             <div class="target-info-line">
               ${lengthWarning}
               ${placeholderWarning}
               ${specialCharWarning}
-              <span class="word-count-inline">${targetVal ? targetVal.length + ' chars, ' + countWords(targetVal) + ' words' : ''}</span>
+              ${icuWarning}
+              ${useICUSubfields ? '' : `<span class="word-count-inline">${targetVal ? targetVal.length + ' chars, ' + countWords(targetVal) + ' words' : ''}</span>`}
               ${ignoreWarningButton}
             </div>
           </div>
@@ -1525,7 +2116,7 @@ function renderEditor() {
       
       html += `<div class="translation-item">
         <div class="source-text ${sourceExtraClasses}" dir="ltr">${escapeHtml(String(currentSourceValue))}<div class="key-path-row">
-          <div class="key-path-text">${escapeHtml(item.path)} (${item.type})</div>
+          <div class="key-path-text">${escapeHtml(displayPath(item.path))} (${item.type})</div>
         </div></div>
         <div style="padding:6px;color:#666;font-style:italic;font-size:13px">Not editable - ${item.type}</div>
       </div>`
@@ -1592,7 +2183,7 @@ function updateFileNameDisplays() {
   
   if (sourceData) {
     const itemCount = Object.keys(keyMap).length
-    sourceDisplay.textContent = `${sourceFileName} (${itemCount} items)`
+    sourceDisplay.textContent = `${sourceFileName} (${itemCount} segments)`
     sourceDisplay.className = 'file-info-display source'
   } else {
     sourceDisplay.textContent = 'No file loaded'
@@ -1632,18 +2223,32 @@ function updateTranslation(textarea, path) {
   textarea.classList.remove('changed', 'exact-match', 'missing', 'empty', 'extra', 'type-mismatch', 'length-warning')
   
   // Check if value has changed from original
-  if (originalTargetVal !== undefined && newValue !== originalTargetVal) {
+  const isNowChanged = originalTargetVal !== undefined && newValue !== originalTargetVal
+  if (isNowChanged) {
     textarea.classList.add('changed')
   }
-  
-  // Check for exact match
+
+  // Check for exact match — sync target textarea, source element, and badge
+  const rowForExact = textarea.closest('.translation-item')
+  const sourceArea = rowForExact?.querySelector('.source-area')
+  const sourceEl = sourceArea?.querySelector('.source-text, .source-input')
   if (sourceVal === newValue && sourceVal !== '') {
     if (shouldShowWarning(path, 'exact-match')) {
       textarea.classList.add('exact-match')
+      if (sourceEl) sourceEl.classList.add('exact-match')
+      if (sourceArea && !sourceArea.querySelector('.error-indicator.exact-match')) {
+        const badge = document.createElement('div')
+        badge.className = 'error-indicator exact-match'
+        badge.textContent = 'Source and target are identical'
+        const keyPathRow = sourceArea.querySelector('.key-path-row')
+        keyPathRow ? sourceArea.insertBefore(badge, keyPathRow) : sourceArea.appendChild(badge)
+      }
       itemIssues[path] = { type: 'exact-match', message: 'Source and target are identical' }
     }
   } else {
-    if (itemIssues[path] && itemIssues[path].type === 'exact-match') {
+    if (sourceEl) sourceEl.classList.remove('exact-match')
+    sourceArea?.querySelector('.error-indicator.exact-match')?.remove()
+    if (itemIssues[path] && (itemIssues[path].type === 'exact-match' || itemIssues[path].type === 'empty')) {
       delete itemIssues[path]
     }
   }
@@ -1667,10 +2272,51 @@ function updateTranslation(textarea, path) {
     if (lengthWarningDiv) lengthWarningDiv.remove()
   }
 
-  // Manage ignore button — one button, always reflects the current active warning
+  // Check if empty
+  if (!newValue || newValue.trim() === '') {
+    if (sourceVal && sourceVal.trim() !== '') {
+      textarea.classList.add('empty')
+      itemIssues[path] = { type: 'empty', message: 'Empty in target' }
+    }
+  } else if (settings.parseICU) {
+    const parsed = parseICU(String(newValue))
+    if (parsed && Object.values(parsed.cases).some(c => !c || c.trim() === '')) {
+      itemIssues[path] = { type: 'empty', message: 'ICU case is empty' }
+    } else if (itemIssues[path]?.type === 'empty') {
+      delete itemIssues[path]
+    }
+  }
+
+  // Compute placeholder issues (needed for button logic below)
+  const sourceIsICU = !!parseICU(String(sourceVal ?? ''))
+  const placeholderIssues = (settings.showPlaceholderWarnings && !sourceIsICU && shouldShowWarning(path, 'placeholder'))
+    ? checkPlaceholderConsistency(String(sourceVal ?? ''), newValue)
+    : { missingInTarget: [], extraInTarget: [] }
+  const hasPlaceholderWarning = placeholderIssues.missingInTarget.length > 0 || placeholderIssues.extraInTarget.length > 0
+
+  // Special character warning (live)
+  const specialChars = settings.showSpecialCharWarnings ? checkSpecialCharacters(newValue) : []
+  const hasSpecialCharWarning = specialChars.length > 0 && shouldShowWarning(path, 'special-char')
+  if (targetInfoLine) {
+    let scEl = targetInfoLine.querySelector('.error-indicator.special-char-warning')
+    if (hasSpecialCharWarning) {
+      if (!scEl) {
+        scEl = document.createElement('div')
+        scEl.className = 'error-indicator type-mismatch special-char-warning'
+        targetInfoLine.insertBefore(scEl, targetInfoLine.firstChild)
+      }
+      scEl.textContent = `Special chars: ${specialChars.join(', ')}`
+    } else if (scEl) {
+      scEl.remove()
+    }
+  }
+
+  // Manage ignore button — one button, reflects the highest-priority active warning
   if (targetInfoLine) {
     const activeWarning = (hasLengthWarning && shouldShowWarning(path, 'length')) ? 'length'
       : (sourceVal === newValue && sourceVal !== '' && shouldShowWarning(path, 'exact-match')) ? 'exact-match'
+      : (hasPlaceholderWarning) ? 'placeholder'
+      : (hasSpecialCharWarning) ? 'special-char'
       : null
     let btn = targetInfoLine.querySelector('.ignore-warning-btn')
     if (activeWarning) {
@@ -1679,7 +2325,10 @@ function updateTranslation(textarea, path) {
         btn.className = 'ignore-warning-btn'
         targetInfoLine.appendChild(btn)
       }
-      btn.title = activeWarning === 'length' ? 'Ignore length warning' : 'Ignore exact match warning'
+      btn.title = activeWarning === 'length' ? 'Ignore length warning'
+        : activeWarning === 'exact-match' ? 'Ignore exact match warning'
+        : activeWarning === 'special-char' ? 'Ignore special character warning'
+        : 'Ignore placeholder warnings'
       btn.textContent = '👁️'
       btn.dataset.warningType = activeWarning
       btn.onclick = () => ignoreWarning(path, activeWarning)
@@ -1688,31 +2337,40 @@ function updateTranslation(textarea, path) {
     }
   }
 
-  // Check if empty
-  if (!newValue || newValue.trim() === '') {
-    if (sourceVal && sourceVal.trim() !== '') {
-      textarea.classList.add('empty')
-      itemIssues[path] = { type: 'empty', message: 'Empty in target' }
+  // Apply placeholder warnings to DOM
+  if (targetInfoLine) {
+    targetInfoLine.querySelectorAll('.error-indicator.missing, .error-indicator.extra').forEach(el => el.remove())
+    if (hasPlaceholderWarning) {
+      if (placeholderIssues.missingInTarget.length > 0) {
+        const el = document.createElement('div')
+        el.className = 'error-indicator missing'
+        el.textContent = `Missing placeholders: ${placeholderIssues.missingInTarget.join(', ')}`
+        targetInfoLine.insertBefore(el, targetInfoLine.firstChild)
+      }
+      if (placeholderIssues.extraInTarget.length > 0) {
+        const el = document.createElement('div')
+        el.className = 'error-indicator extra'
+        el.textContent = `Extra placeholders: ${placeholderIssues.extraInTarget.join(', ')}`
+        targetInfoLine.insertBefore(el, targetInfoLine.firstChild)
+      }
     }
   }
 
-  // Update placeholder warnings
+  // Update ICU validation warnings
   if (targetInfoLine) {
-    const placeholderIssues = settings.showPlaceholderWarnings
-      ? checkPlaceholderConsistency(String(sourceVal ?? ''), newValue)
-      : { missingInTarget: [], extraInTarget: [] }
-    targetInfoLine.querySelectorAll('.error-indicator.missing, .error-indicator.extra').forEach(el => el.remove())
-    if (placeholderIssues.missingInTarget.length > 0) {
-      const el = document.createElement('div')
-      el.className = 'error-indicator missing'
-      el.textContent = `Missing placeholders: ${placeholderIssues.missingInTarget.join(', ')}`
-      targetInfoLine.insertBefore(el, targetInfoLine.firstChild)
-    }
-    if (placeholderIssues.extraInTarget.length > 0) {
-      const el = document.createElement('div')
-      el.className = 'error-indicator extra'
-      el.textContent = `Extra placeholders: ${placeholderIssues.extraInTarget.join(', ')}`
-      targetInfoLine.insertBefore(el, targetInfoLine.firstChild)
+    targetInfoLine.querySelectorAll('.icu-warning').forEach(el => el.remove())
+    if (settings.parseICU) {
+      const sourceParsedICU = parseICU(String(sourceVal ?? ''))
+      if (sourceParsedICU) {
+        const icuIssues = validateICUTarget(sourceParsedICU, newValue)
+        if (icuIssues.length > 0) {
+          const el = document.createElement('div')
+          el.className = 'error-indicator missing icu-warning'
+          el.textContent = `ICU: ${icuIssues[0]}${icuIssues.length > 1 ? ` (+${icuIssues.length - 1} more)` : ''}`
+          el.title = icuIssues.join('\n')
+          targetInfoLine.appendChild(el)
+        }
+      }
     }
   }
 
@@ -1771,12 +2429,13 @@ function updateSource(textarea, path) {
   sourceChanged = isChangedForSave
   document.getElementById('floatSaveSourceBtn').style.display = sourceChanged ? 'flex' : 'none'
   
-  // Update copy/return button visibility
+  // Re-evaluate target warnings when source changes (updateTranslation also updates the button)
   const row = textarea.closest('.translation-item')
   if (row) {
-    updateCopyReturnButtonForRow(row, path)
+    const targetTextarea = row.querySelector('.translation-input')
+    if (targetTextarea) updateTranslation(targetTextarea, path)
   }
-  
+
   autoExpand(textarea)
 }
 
@@ -1806,8 +2465,9 @@ function saveSource() {
     }
   })
   
-  const jsonStr = JSON.stringify(sourceData, null, 2)
-  const blob = new Blob(['\uFEFF' + jsonStr], { type: 'application/json;charset=utf-8' })
+  let jsonStr = JSON.stringify(sourceData, null, sourceFileFormat.indent)
+  if (sourceFileFormat.lineEnding === '\r\n') jsonStr = jsonStr.replace(/\n/g, '\r\n')
+  const blob = new Blob([(sourceFileFormat.bom ? '\uFEFF' : '') + jsonStr], { type: 'application/json;charset=utf-8' })
   const a = document.createElement('a')
   a.href = URL.createObjectURL(blob)
   a.download = sourceFileName
@@ -1832,6 +2492,11 @@ function checkForMissingTranslations() {
       const targetVal = getValue(targetData, k)
       if (!targetVal || targetVal.trim() === '') {
         missing.push(k)
+      } else if (settings.parseICU) {
+        const parsed = parseICU(String(targetVal))
+        if (parsed && Object.values(parsed.cases).some(c => !c || c.trim() === '')) {
+          missing.push(k)
+        }
       }
     }
   }
@@ -1885,8 +2550,9 @@ function saveTarget() {
     }
   })
   
-  const jsonStr = JSON.stringify(dataToSave, null, 2)
-  const blob = new Blob(['\uFEFF' + jsonStr], { type: 'application/json;charset=utf-8' })
+  let jsonStr = JSON.stringify(dataToSave, null, targetFileFormat.indent)
+  if (targetFileFormat.lineEnding === '\r\n') jsonStr = jsonStr.replace(/\n/g, '\r\n')
+  const blob = new Blob([(targetFileFormat.bom ? '\uFEFF' : '') + jsonStr], { type: 'application/json;charset=utf-8' })
   const a = document.createElement('a')
   a.href = URL.createObjectURL(blob)
   a.download = targetFileName
@@ -1933,10 +2599,13 @@ function resetAll() {
   itemIssues = {}
   copiedStates = {}
   ignoredWarnings = {}
+  undoHistory = {}
   targetHasUnsavedChanges = false
   initialLoadCompleted = false
   isEditorLoaded = false
-  
+  sourceFileFormat = { indent: 2, lineEnding: '\n', bom: false }
+  targetFileFormat = { indent: 2, lineEnding: '\n', bom: false }
+
   // Clear file inputs
   sourceFileInput.value = ''
   targetFileInput.value = ''
@@ -2001,7 +2670,7 @@ function resetAll() {
 
 // ==================== UTILITY FUNCTIONS ====================
 function autoExpandTextareas() {
-  document.querySelectorAll('.source-input, .translation-input').forEach(t => autoExpand(t))
+  document.querySelectorAll('.source-input, .translation-input, .icu-case-input').forEach(t => autoExpand(t))
 }
 
 function autoExpand(t) {
@@ -2010,7 +2679,7 @@ function autoExpand(t) {
 }
 
 function scrollToTop() {
-  document.getElementById('editor').scrollIntoView({ behavior: 'smooth' })
+  window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 
 function scrollToBottom() {
@@ -2029,7 +2698,9 @@ function handleKeyboardShortcuts(e) {
     if (settingsOverlay.classList.contains('open')) { settingsOverlay.classList.remove('open'); return }
     const helpOverlay = document.getElementById('helpOverlay')
     if (helpOverlay.classList.contains('open')) { helpOverlay.classList.remove('open'); return }
+    if (replaceBarVisible) { toggleReplaceBar(); return }
   }
+
   if (e.ctrlKey && e.key === 's') {
     e.preventDefault()
     if (targetData && isEditorLoaded) saveTarget()
@@ -2042,11 +2713,54 @@ function handleKeyboardShortcuts(e) {
     return
   }
 
+  // Tab / Shift+Tab inside target textareas
+  if (e.key === 'Tab' && !e.ctrlKey && !e.altKey) {
+    const active = document.activeElement
+    if (active && (active.classList.contains('translation-input') || active.classList.contains('icu-case-input'))) {
+      e.preventDefault()
+      const visible = Array.from(document.querySelectorAll('.translation-input, .icu-case-input'))
+        .filter(el => el.style.display !== 'none' && el.closest('.translation-item')?.style.display !== 'none')
+      const idx = visible.indexOf(active)
+      const next = e.shiftKey ? visible[idx - 1] : visible[idx + 1]
+      if (next) { next.focus(); next.scrollIntoView({ behavior: 'smooth', block: 'center' }) }
+      return
+    }
+  }
+
+  // Ctrl+Z: pop from manual undo stack when inside a target field
+  if (e.ctrlKey && e.key === 'z' && !e.shiftKey) {
+    const active = document.activeElement
+    const isTargetField = active && (active.classList.contains('translation-input') || active.classList.contains('icu-case-input'))
+    if (isTargetField) {
+      const path = active.dataset.path
+      if (undoHistory[path]?.length > 0) {
+        e.preventDefault()
+        const prev = popUndo(path)
+        const row = active.closest('.translation-item')
+        const hiddenTextarea = row?.querySelector('.translation-input')
+        if (active.classList.contains('icu-case-input') && hiddenTextarea) {
+          hiddenTextarea.value = prev
+          setValue(targetData, path, prev)
+          updateTranslation(hiddenTextarea, path)
+          updateICUSubfields(path)
+        } else {
+          active.value = prev
+          setValue(targetData, path, prev)
+          updateTranslation(active, path)
+        }
+        showTempMessage('Undone')
+        return
+      }
+      // else fall through to browser native undo
+    }
+  }
+
   if (e.ctrlKey && e.key === 'Enter') {
     e.preventDefault()
     const activeElement = document.activeElement
-    if (activeElement && activeElement.classList.contains('translation-input')) {
-      const allFields = Array.from(document.querySelectorAll('.translation-input'))
+    if (activeElement && (activeElement.classList.contains('translation-input') || activeElement.classList.contains('icu-case-input'))) {
+      const allFields = Array.from(document.querySelectorAll('.translation-input, .icu-case-input'))
+        .filter(el => el.style.display !== 'none')
       const currentIndex = allFields.indexOf(activeElement)
       if (currentIndex >= 0 && currentIndex < allFields.length - 1) {
         const nextField = allFields[currentIndex + 1]
@@ -2071,14 +2785,21 @@ function jumpToNextUntranslated() {
   }
   for (let i = startIndex; i < visibleRows.length; i++) {
     const row = visibleRows[i]
+    // Check ICU case inputs first when in sub-field mode
+    const caseInputs = row.querySelectorAll('.icu-case-input')
+    if (caseInputs.length > 0) {
+      const emptyCase = Array.from(caseInputs).find(ta => !ta.value || ta.value.trim() === '')
+      if (emptyCase) { emptyCase.focus(); emptyCase.scrollIntoView({ behavior: 'smooth', block: 'center' }); return }
+      continue
+    }
     const textarea = row.querySelector('.translation-input')
-    if (textarea && (!textarea.value || textarea.value.trim() === '')) {
+    if (textarea && textarea.style.display !== 'none' && (!textarea.value || textarea.value.trim() === '')) {
       textarea.focus()
       textarea.scrollIntoView({ behavior: 'smooth', block: 'center' })
       return
     }
   }
-  showTempMessage('No more untranslated items')
+  showTempMessage('No more empty segments')
 }
 
 function updateMissingSegmentsSection() {
@@ -2114,20 +2835,33 @@ function exportCSV() {
   
   let csv = 'Key,Description,Source Value,Target Value,Max Characters,Reference URL\n'
   
+  const escapeCSV = (text) => {
+    if (text === null || text === undefined) return ''
+    const s = String(text)
+    if (s.includes(',') || s.includes('"') || s.includes('\n') || s.includes('\r')) {
+      return '"' + s.replace(/"/g, '""') + '"'
+    }
+    return s
+  }
+
   stringItems.forEach(item => {
     const sourceVal = item.value
     const targetVal = getValue(targetData, item.path) || ''
-    const maxCharacters = Math.ceil(sourceVal.length * 1.5)
-    
-    const escapeCSV = (text) => {
-      if (text === null || text === undefined) return ''
-      const stringText = String(text)
-      if (stringText.includes(',') || stringText.includes('"') || stringText.includes('\n') || stringText.includes('\r')) {
-        return '"' + stringText.replace(/"/g, '""') + '"'
-      }
-      return stringText
+
+    const sourceParsedICU = (settings.parseICU && settings.icuCSV) ? parseICU(sourceVal) : null
+    if (sourceParsedICU) {
+      // ICU sub-fields: export one row per case with per-case source/target text
+      const targetParsedICU = parseICU(targetVal)
+      Object.entries(sourceParsedICU.cases).forEach(([caseName, caseText]) => {
+        const casePath = `${displayPath(item.path)} [${sourceParsedICU.type}.${caseName}]`
+        const caseTarget = targetParsedICU?.cases?.[caseName] ?? ''
+        const maxChars = Math.ceil(caseText.length * settings.lengthThreshold)
+        csv += `${escapeCSV(casePath)},${escapeCSV('')},${escapeCSV(caseText)},${escapeCSV(caseTarget)},${escapeCSV(maxChars)},\n`
+      })
+      return
     }
-    
+
+    const maxCharacters = Math.ceil(sourceVal.length * settings.lengthThreshold)
     csv += `${escapeCSV(item.path)},${escapeCSV('')},${escapeCSV(sourceVal)},${escapeCSV(targetVal)},${escapeCSV(maxCharacters)},\n`
   })
   
@@ -2163,7 +2897,7 @@ function exportMissingTranslations() {
   
   function filterMissing(obj, path = '') {
     for (const k of Object.keys(obj)) {
-      const curPath = path ? path + '.' + k : k
+      const curPath = buildPath(path, k)
       const val = obj[k]
 
       if (val !== null && typeof val === 'object') {
@@ -2202,8 +2936,9 @@ function exportMissingTranslations() {
   
   filterMissing(missingJSON)
   
-  const jsonStr = JSON.stringify(missingJSON, null, 2)
-  const blob = new Blob(['\uFEFF' + jsonStr], { type: 'application/json;charset=utf-8' })
+  let jsonStr = JSON.stringify(missingJSON, null, targetFileFormat.indent)
+  if (targetFileFormat.lineEnding === '\r\n') jsonStr = jsonStr.replace(/\n/g, '\r\n')
+  const blob = new Blob([(targetFileFormat.bom ? '\uFEFF' : '') + jsonStr], { type: 'application/json;charset=utf-8' })
   const a = document.createElement('a')
   a.href = URL.createObjectURL(blob)
   const sourceName = sourceFileName.replace('.json', '').replace(/[^a-zA-Z0-9_-]/g, '_')
@@ -2254,7 +2989,7 @@ function importMissingTranslations() {
           const results = []
           for (const key of Object.keys(obj)) {
             const value = obj[key]
-            const path = currentPath ? currentPath + '.' + key : key
+            const path = buildPath(currentPath, key)
             
             if (typeof value === 'string') {
               results.push({ path, value })
