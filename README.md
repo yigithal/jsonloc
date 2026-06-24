@@ -27,8 +27,6 @@ Browser-based JSON localization editor. Load a source and target JSON file side 
 
 ## License
 
-## License
-
 Free for personal use. For commercial use, contact [yigithal@gmail.com](mailto:yigithal@gmail.com).
 
 © 2026 Hal Yigit | [linkedin.com/in/yigithal](https://www.linkedin.com/in/yigithal/)
