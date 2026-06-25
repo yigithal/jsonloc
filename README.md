@@ -20,11 +20,11 @@ Browser-based JSON localization editor. Load a source and target JSON file side 
 - Placeholder detection for `{{name}}`, `%s`, `{key}` — flags missing or extra ones
 - ICU plural/select support: edit each case in its own field, validate coverage and variables, add extra cases (e.g. `few`, `many`), copy or revert individual cases
 - Filter bar with regex, status filters, and segment number search; search and replace with undo
-- CSV export with max-characters column; export/import missing keys as JSON
-- Correctly handles dotted key names (e.g. `"error.code"` vs nested `error → code`)
+- CSV export
+- Export/import missing keys as JSON
 - Preserves indentation, line endings, and BOM on export
 - Auto-saves work in progress to localStorage; restores on next visit if you close the tab mid-session
-- Dark/light theme, session history, keyboard shortcuts
+- Dark/light theme, session history, keyboard shortcuts...
 
 ## License
 
